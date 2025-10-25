@@ -19,7 +19,6 @@ namespace Boom {
             bool  clampPitch = true;
             float minPitchDeg = -89.f;
             float maxPitchDeg = 89.f;
-            
         };
 
         explicit CameraController(AppWindow* window, Config cfg = {})
@@ -31,6 +30,7 @@ namespace Boom {
 
             auto& input = m_app->input;
             const auto& s = input.current();
+
             const bool middleMouse = s.Mouse.test(GLFW_MOUSE_BUTTON_MIDDLE);
             const bool mmbPress = m_app->input.mousePressed(GLFW_MOUSE_BUTTON_MIDDLE);
             const bool inRegion = !m_cfg.gateToViewportRect || m_app->IsMouseInCameraRegion(m_app->Handle().get());
@@ -65,23 +65,17 @@ namespace Boom {
             const float fovDeg = (m_cam ? m_cam->FOV : CONSTANTS::MIN_FOV);
             // --- Give pan priority over look ---
             if (canPan) {
-                // IMPORTANT: consume the delta every frame (Unity-like feel)
-                glm::vec2 pixDelta = glm::vec2(curPos - m_prevPanPos);
-                m_prevPanPos = curPos; 
-
-               
+             
+                const float W = float(m_app->getWidth());
                 const float H = float(m_app->getHeight());
-                const float d = panFocusDist; // pick your pivot distance; tune this
-                const float wpp = 2.f * d * std::tan(fovDeg * 0.5f) / H; 
 
-                // Camera-local right/up displacement (no forward, no speed multiplier)
+                glm::vec2 panNorm{ -mdPan.x / W, mdPan.y / H };   // 
                 glm::vec3 localMove{
-                    -pixDelta.x * wpp,    // right (flip sign if it feels backwards)
-                     pixDelta.y * wpp,    // up
-                     0.0f
+                    panNorm.x * fovDeg*0.01f,   // local right
+                    panNorm.y * fovDeg*0.01f,   // local up
+                    0.0f                          // no forward on pan
                 };
-
-                m_app->camMoveDir = localMove; // treated as per-frame displacement
+                m_app->camMoveDir = localMove * base;
             }
             else if (canUse) {
                 // Look (RMB) using the same md
@@ -112,17 +106,12 @@ namespace Boom {
 
             // Scroll: speed multiplier and FOV
             const glm::vec2 sd = input.scrollDelta();
-            if (sd.y != 0.0f && inRegion) {
-                if (rmb) {
-                    float next = m_app->camMoveMultiplier + sd.y * m_cfg.multiplierStep;
-                    m_app->camMoveMultiplier = std::clamp(next, 0.01f, 100.0f);
-                }
-                else if (m_cam) {
-                    float nextFov = std::clamp(m_cam->FOV - sd.y, m_cfg.minFov, m_cfg.maxFov);
-                    if (nextFov != m_cam->FOV) m_cam->SetFOV(nextFov);
-                }
+            if (rmb && inRegion) {
+                m_app->camMoveMultiplier = std::clamp(m_app->camMoveMultiplier + sd.y * m_cfg.multiplierStep, 0.01f, 100.0f);
             }
-          
+            if (inRegion) {
+                m_cam->SetFOV(m_cam->FOV - sd.y);
+            }
         }
 
 
@@ -133,6 +122,5 @@ namespace Boom {
         bool        m_prevRmb = false;        // last-frame RMB state
         glm::dvec2  m_prevLookPos = {};           // last cursor pos used for look
         glm::dvec2  m_prevPanPos{};
-        float panFocusDist = 5.f;//adjust this if the pan dist is slow
     };
 }

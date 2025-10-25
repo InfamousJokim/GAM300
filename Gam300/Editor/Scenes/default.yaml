@@ -103,7 +103,7 @@ ENTITIES:
       Transform:
         Translate: [2.5, 1.2, 0]
         Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
+        Scale: [1, 2, 1]
     ModelComponent:
       ModelID: 6147709962160563775
       MaterialID: 11573253777835523025
@@ -111,13 +111,15 @@ ENTITIES:
       ModelSource: "sphere.fbx"
       MaterialSource: "Marble"
     RigidBodyComponent:
-      Density: 1.0
-      Type: DYNAMIC
+      RigidBody:
+        Density: 1.0
+        Type: DYNAMIC
     ColliderComponent:
-      DynamicFriction: 0.5
-      StaticFriction: 0.5
-      Restitution: 0.6
-      Type: SPHERE
+      Collider:
+        DynamicFriction: 0.5
+        StaticFriction: 0.5
+        Restitution: 0.6
+        Type: CAPSULE
 
   - InfoComponent:
       Parent: 0

@@ -1,215 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="includes">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="includes\common">
-      <UniqueIdentifier>{b649e3bd-a460-42c1-b965-43557631212d}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="includes\Audio\Audio.cpp" />
+    <ClCompile Include="src\Application\Context.cpp" />
+    <ClCompile Include="src\Auxiliaries\AssetSerializer.cpp" />
+    <ClCompile Include="src\Auxiliaries\ComponentSerializer.cpp" />
+    <ClCompile Include="src\Auxiliaries\PropertyAPI.cpp" />
+    <ClCompile Include="src\Auxiliaries\RegisterProperties.cpp" />
+    <ClCompile Include="src\Auxiliaries\SerializationRegistry.cpp" />
+    <ClCompile Include="src\Auxiliaries\SerializerInit.cpp" />
+    <ClCompile Include="src\BoomEngine.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\Scripting\ScriptAPI.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Scripting\ScriptRunTime.cpp" />
+    <ClCompile Include="src\Textures\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\BoomEngine.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Common\framework.h">
-      <Filter>includes\common</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Common\Core.h">
-      <Filter>includes\common</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Application\Context.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Application\Interface.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Application\Application.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Common\Events.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\AppWindow.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Renderer.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Buffers\Frame.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Buffers\Mesh.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Buffers\Vertex.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Utilities\Quad.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Final.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\PBR.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Shader.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Utilities\Data.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\GlobalConstants.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Color.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Models\Helper.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Models\Model.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Textures\Texture.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Utilities\Skybox.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\SkyMap.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Skybox.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\ECS\ECS.hpp">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Physics\Callback.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Physics\Helpers.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Physics\Context.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Physics\Utilities.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Models\Animator.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Models\Animation.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Shadow.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Shaders\Bloom.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\Assets.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Common\YAML.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\Profiler.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Scripting\ScriptAPI.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Scripting\ScriptingSystem.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Scripting\ScriptRuntime.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="thirdparty\dotnet\hostfxr.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="thirdparty\dotnet\nethost.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Audio\Audio.hpp">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\SerializationRegistry.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\DataSerializer.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\PrefabUtility.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Graphics\Utilities\Culling.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Window\InputSystem.h">
-    <ClInclude Include="includes\Common\BoomProperties.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Auxiliaries\PropertyAPI.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\BoomEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Application\Context.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Textures\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scripting\ScriptAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scripting\ScriptingSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scripting\ScriptRunTime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\Audio\Audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\SerializationRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\AssetSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\ComponentSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\SerializerInit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\RegisterProperties.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Auxiliaries\PropertyAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="includes\Application\Application.h" />
+    <ClInclude Include="includes\Application\Context.h" />
+    <ClInclude Include="includes\Application\Interface.h" />
+    <ClInclude Include="includes\AppWindow.h" />
+    <ClInclude Include="includes\Audio\Audio.hpp" />
+    <ClInclude Include="includes\Auxiliaries\Assets.h" />
+    <ClInclude Include="includes\Auxiliaries\DataSerializer.h" />
+    <ClInclude Include="includes\Auxiliaries\PrefabUtility.h" />
+    <ClInclude Include="includes\Auxiliaries\Profiler.h" />
+    <ClInclude Include="includes\Auxiliaries\PropertyAPI.h" />
+    <ClInclude Include="includes\Auxiliaries\SerializationRegistry.h" />
+    <ClInclude Include="includes\BoomEngine.h" />
+    <ClInclude Include="includes\Common\BoomProperties.h" />
+    <ClInclude Include="includes\Common\Events.h" />
+    <ClInclude Include="includes\Common\framework.h" />
+    <ClInclude Include="includes\Common\Core.h" />
+    <ClInclude Include="includes\Common\YAML.h" />
+    <ClInclude Include="includes\ECS\ECS.hpp" />
+    <ClInclude Include="includes\GlobalConstants.h" />
+    <ClInclude Include="includes\Graphics\Buffers\Frame.h" />
+    <ClInclude Include="includes\Graphics\Buffers\Mesh.h" />
+    <ClInclude Include="includes\Graphics\Buffers\Vertex.h" />
+    <ClInclude Include="includes\Graphics\Models\Animation.h" />
+    <ClInclude Include="includes\Graphics\Models\Animator.h" />
+    <ClInclude Include="includes\Graphics\Models\Helper.h" />
+    <ClInclude Include="includes\Graphics\Models\Model.h" />
+    <ClInclude Include="includes\Graphics\Renderer.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Bloom.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Color.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Final.h" />
+    <ClInclude Include="includes\Graphics\Shaders\PBR.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Shader.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Shadow.h" />
+    <ClInclude Include="includes\Graphics\Shaders\Skybox.h" />
+    <ClInclude Include="includes\Graphics\Shaders\SkyMap.h" />
+    <ClInclude Include="includes\Graphics\Textures\Texture.h" />
+    <ClInclude Include="includes\Graphics\Utilities\Culling.h" />
+    <ClInclude Include="includes\Graphics\Utilities\Data.h" />
+    <ClInclude Include="includes\Graphics\Utilities\Quad.h" />
+    <ClInclude Include="includes\Graphics\Utilities\Skybox.h" />
+    <ClInclude Include="includes\Physics\Callback.h" />
+    <ClInclude Include="includes\Physics\Context.h" />
+    <ClInclude Include="includes\Physics\Helpers.h" />
+    <ClInclude Include="includes\Physics\Utilities.h" />
+    <ClInclude Include="includes\Scripting\ScriptAPI.h" />
+    <ClInclude Include="includes\Scripting\ScriptingSystem.h" />
+    <ClInclude Include="includes\Scripting\ScriptRuntime.h" />
+    <ClInclude Include="includes\Window\InputSystem.h" />
+    <ClInclude Include="thirdparty\dotnet\hostfxr.h" />
+    <ClInclude Include="thirdparty\dotnet\nethost.h" />
+    <ClInclude Include="includes\Input\CameraManager.h" />
+    <ClInclude Include="includes\Input\InputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="thirdparty\dotnet\nethost.lib" />

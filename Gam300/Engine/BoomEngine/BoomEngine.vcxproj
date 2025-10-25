@@ -208,6 +208,8 @@
     <ClInclude Include="includes\Graphics\Utilities\Data.h" />
     <ClInclude Include="includes\Graphics\Utilities\Quad.h" />
     <ClInclude Include="includes\Graphics\Utilities\Skybox.h" />
+    <ClInclude Include="includes\Input\CameraManager.h" />
+    <ClInclude Include="includes\Input\InputHandler.h" />
     <ClInclude Include="includes\Physics\Callback.h" />
     <ClInclude Include="includes\Physics\Context.h" />
     <ClInclude Include="includes\Physics\Helpers.h" />

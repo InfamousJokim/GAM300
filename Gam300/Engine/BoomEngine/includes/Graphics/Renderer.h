@@ -95,6 +95,8 @@ namespace Boom {
 			}
 		}
 
+		BOOM_INLINE float Aspect() const { return frame->Ratio(); }
+
 	public: //helper functions
 		BOOM_INLINE void Resize(int32_t w, int32_t h) {
 			frame->Resize(w, h);

@@ -15,6 +15,7 @@ namespace Boom {
 
         float mass = 1.0f;
         glm::vec3 initialVelocity = glm::vec3(0.0f); // Default to zero
+        glm::vec3 previousScale = glm::vec3(0.0f);
         // rigidbody type
         enum Type{
             DYNAMIC = 0,
@@ -28,6 +29,7 @@ namespace Boom {
             obj_member<"Density", &Boom::RigidBody3D::density>,
             obj_member<"Mass", &Boom::RigidBody3D::mass>,
             obj_member<"InitialVelocity", &Boom::RigidBody3D::initialVelocity>,
+            obj_member<"Previous Scale", &Boom::RigidBody3D::previousScale>,
             obj_member<"Type", &Boom::RigidBody3D::type,
             member_enum_value<"DYNAMIC", Boom::RigidBody3D::Type::DYNAMIC>,
             member_enum_value<"STATIC", Boom::RigidBody3D::Type::STATIC>
@@ -60,6 +62,7 @@ namespace Boom {
         enum Type{
             BOX = 0,
             SPHERE,
+            CAPSULE,
             MESH
         } type;
 
@@ -73,6 +76,7 @@ namespace Boom {
             obj_member<"Type", &Boom::Collider3D::type,
             member_enum_value<"BOX", Boom::Collider3D::Type::BOX>,
             member_enum_value<"SPHERE", Boom::Collider3D::Type::SPHERE>,
+			member_enum_value<"CAPSULE", Boom::Collider3D::Type::CAPSULE>,
             member_enum_value<"MESH", Boom::Collider3D::Type::MESH>
             >
         )
