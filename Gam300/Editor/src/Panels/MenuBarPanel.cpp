@@ -122,7 +122,7 @@ namespace EditorUI {
             ImGui::Separator();
 
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
-                if (m.app) m.app->Exit();
+                if (m.app) m.app->Stop();
             }
 
             ImGui::EndMenu();

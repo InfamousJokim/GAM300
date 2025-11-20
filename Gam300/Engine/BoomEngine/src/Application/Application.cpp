@@ -136,14 +136,10 @@ namespace Boom
 
             // Always update delta time, but adjust for pause state
             ComputeFrameDeltaTime();
-
-            // Only run scripts and AI in play mode when RUNNING
-            if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
-                InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
-                m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
-                if (m_Nav) {
-                    m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
-                }
+            InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
+            m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
+            if (m_Nav) {
+                m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
             }
 
             //compute camera position to colliders
@@ -159,8 +155,8 @@ namespace Boom
             m_Context->renderer->NewFrame();
             m_Context->profiler.End("Renderer Start Frame");
 
-            // Only update physics/gameplay when in play mode
-            if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
+            // Only update rotation when running
+            if (m_AppState == ApplicationState::RUNNING) {
                 EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) {
                     rb.RigidBody.isColliding = false;
                     });
@@ -175,8 +171,8 @@ namespace Boom
 
             //temp input for mouse motion
             glfwGetCursorPos(m_Context->window->Handle().get(), &curMP.x, &curMP.y);
-            // ONLY update the flycam controller if NOT in play mode (edit mode)
-            if (!m_IsInPlayMode) {
+            // ONLY update the flycam controller if the game is PAUSED
+            if (m_AppState != ApplicationState::RUNNING) {
                 camera.update(static_cast<float>(m_Context->DeltaTime));
             }
 
@@ -187,10 +183,10 @@ namespace Boom
             EnttView<Entity, CameraComponent>([this, &curMP, &prevMP, &dbgView, &dbgProj, &dbgCamPos](auto entity, CameraComponent& comp) {
                 Transform3D& transform{ entity.template Get<TransformComponent>().transform };
 
-                // ONLY apply flycam logic if NOT in play mode (edit mode camera)
-                if (!m_IsInPlayMode)
+                // ONLY apply flycam logic if the game is PAUSED
+                if (m_AppState != ApplicationState::RUNNING)
                 {
-                    // This is the flycam logic, only run in edit mode
+                    // This is the flycam logic, only run when not playing
                     transform.rotate.x += m_Context->window->camRot.x;
                     transform.rotate.y += m_Context->window->camRot.y;
                     glm::quat quat{ glm::radians(transform.rotate) };
@@ -204,7 +200,7 @@ namespace Boom
                     }
                 }
 
-                // This part is needed by BOTH edit and play mode cameras
+                // This part is needed by BOTH cameras, so leave it outside the 'if'
                 m_Context->renderer->SetCamera(comp.camera, transform);
                 dbgView = comp.camera.View(transform);
                 dbgProj = comp.camera.Projection(m_Context->renderer->Aspect());
@@ -242,7 +238,7 @@ namespace Boom
                         lineVerts.push_back(Boom::LineVert{ l.p1, l.c1 });
                     }
 
-                    // Cull any segments within a small radius of the camera (fix ï¿½ball in faceï¿½)
+                    // Cull any segments within a small radius of the camera (fix “ball in face”)
                     std::vector<Boom::LineVert> filtered;
                     filtered.reserve(lineVerts.size());
                     const float camCullRadius = 0.6f;
@@ -274,7 +270,7 @@ namespace Boom
             }
             if (m_Context->ShowNavDebug && m_DebugLinesShader && m_Nav) {
                 // Draw navmesh edges & centroids near the camera. Tweak radius to taste.
-                const float navDrawRadius = 60.0f; // try 40ï¿½100 to see more/less
+                const float navDrawRadius = 60.0f; // try 40–100 to see more/less
                 m_Nav->DrawDetourNavMesh_Query(*m_DebugLinesShader, dbgView, dbgProj, dbgCamPos, navDrawRadius);
             }
 
@@ -314,13 +310,12 @@ namespace Boom
                 ModelAsset& model{ m_Context->assets->Get<ModelAsset>(comp.modelID) };
                 if (entity.Has<AnimatorComponent>()) {
                     auto& an = entity.Get<AnimatorComponent>();
-                    // Only update animations in play mode when RUNNING
-                    float dt = (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) ? (float)m_Context->DeltaTime : 0.0f;
+                    float dt = (m_AppState == ApplicationState::RUNNING) ? (float)m_Context->DeltaTime : 0.0f;
                     auto& joints = an.animator->Animate(dt);
-                    m_Context->renderer->SetJoints(joints);
+                    m_Context->renderer->SetJoints(joints);           // existing
                 }
                 else {
-                    // Ensure no stale palette leaks into this draw
+                    // NEW: ensure no stale palette leaks into this draw
                     if (model.hasJoints)
                     {
                         static std::vector<glm::mat4> identityPalette(100, glm::mat4(1.0f));
