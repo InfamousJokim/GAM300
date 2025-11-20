@@ -43,6 +43,40 @@ namespace Boom {
 		)
 
 	};
+	
+	struct Transform2D {
+		BOOM_INLINE Transform2D() : translate{}, rotate{}, scale{ 1.f } {}
+		BOOM_INLINE Transform2D(Transform2D const& t) = default;
+		BOOM_INLINE Transform2D(glm::vec3 t, float r, glm::vec2 s)
+			: translate{ t }
+			, rotate{ r }
+			, scale{ s }
+		{
+		}
+		BOOM_INLINE Transform2D(Transform3D const& t)
+			: translate{ t.translate.x,  t.translate.y, t.translate.z }
+			, rotate{ t.rotate.z }
+			, scale{ t.scale.x, t.scale.y }
+		{
+		}
+		BOOM_INLINE glm::mat3 Matrix() const {
+			float rad{ glm::radians(rotate) };
+			return {  cosf(rad) * scale.x, -sinf(rad) * scale.x, 0.f,
+					  sinf(rad) * scale.y,  cosf(rad) * scale.y, 0.f,
+					  translate.x,		    translate.y,		 1.f };
+		}
+
+		glm::vec3 translate; //needs to be vec3 due to z-rendering order
+		float rotate;
+		glm::vec2 scale;
+
+		XPROPERTY_DEF
+		("Transform2D", Transform2D
+			, obj_member<"Translate", &Transform2D::translate>
+			, obj_member<"Rotate", &Transform2D::rotate>
+			, obj_member<"Scale", &Transform2D::scale>
+		)
+	};
 
 	struct Camera3D {
 		//transform here refers to the camera's transformation variables

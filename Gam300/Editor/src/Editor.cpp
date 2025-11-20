@@ -185,6 +185,9 @@ namespace EditorUI {
         // --- Start frame ---
         BeginImguiFrame(m_ImGuiContext);
 
+        // --- Global keyboard shortcuts (processed before panels) ---
+        HandleGlobalShortcuts();
+
         // --- Layout root dockspace ---
         CreateMainDockSpace();
 		
@@ -206,6 +209,46 @@ namespace EditorUI {
         // --- End frame / draw ---
         EndImguiFrame();
     }
+
+    void Editor::HandleGlobalShortcuts()
+    {
+        if (!m_App) return;
+
+        ImGuiIO& io = ImGui::GetIO();
+        bool ctrl = io.KeyCtrl;
+        bool shift = io.KeyShift;
+
+        // Ctrl+P: Play/Resume
+        if (ctrl && !shift && ImGui::IsKeyPressed(ImGuiKey_P, false))
+        {
+            if (!m_App->IsPlaying()) {
+                m_App->Play();
+                BOOM_INFO("[Shortcut] Play mode started (Ctrl+P)");
+            } else if (m_App->IsPaused()) {
+                m_App->Resume();
+                BOOM_INFO("[Shortcut] Resumed from pause (Ctrl+P)");
+            }
+        }
+
+        // Ctrl+Shift+P: Pause
+        if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_P, false))
+        {
+            if (m_App->IsPlaying() && !m_App->IsPaused()) {
+                m_App->Pause();
+                BOOM_INFO("[Shortcut] Paused (Ctrl+Shift+P)");
+            }
+        }
+
+        // Ctrl+Shift+S: Stop
+        if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_S, false))
+        {
+            if (m_App->IsPlaying()) {
+                m_App->Stop();
+                BOOM_INFO("[Shortcut] Stopped play mode (Ctrl+Shift+S)");
+            }
+        }
+    }
+
     void Editor::RefreshSceneList(bool force) {
         namespace fs = std::filesystem;
 
