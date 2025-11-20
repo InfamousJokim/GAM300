@@ -91,7 +91,7 @@ namespace Boom
 
 
         // Application state management
-        ApplicationState m_AppState = ApplicationState::RUNNING;
+        ApplicationState m_AppState = ApplicationState::STOPPED;  // Start in edit mode (like Unity)
         double m_PausedTime = 0.0;  // Track time spent paused
         double m_LastPauseTime = 0.0;  // When the last pause started
         bool m_ShouldExit = false;  // Flag for graceful shutdown
@@ -162,10 +162,51 @@ namespace Boom
         glm::mat4 GetWorldMatrix(Entity& entity);
 
         /**
+        * @brief Enters play mode (like Unity's Play button)
+        * Saves the current scene state so it can be restored when Stop is called
+        */
+        BOOM_INLINE void Play()
+        {
+            if (m_IsInPlayMode) {
+                BOOM_WARN("[Application] Already in play mode");
+                return;
+            }
+
+            // Save current scene state to temporary file
+            m_PrePlayScenePath = "Scenes/__temp_preplay_state__.yaml";
+            DataSerializer serializer;
+            serializer.Serialize(m_Context->scene, m_PrePlayScenePath);
+            BOOM_INFO("[Application] Saved pre-play scene state");
+
+            // Initialize physics actors for all rigid bodies
+            EnttView<Entity, RigidBodyComponent>([this](auto entity, auto&) {
+                if (!entity.template Get<RigidBodyComponent>().RigidBody.actor) {
+                    m_Context->physics->AddRigidBody(entity, *m_Context->assets);
+                }
+            });
+
+            // Reset time tracking
+            m_PausedTime = 0.0;
+            m_LastPauseTime = 0.0;
+
+            // Enter play mode
+            m_IsInPlayMode = true;
+            m_AppState = ApplicationState::RUNNING;
+            m_ShouldExit = false;
+
+            BOOM_INFO("[Application] Entered play mode");
+        }
+
+        /**
         * @brief Pauses the application (stops updates but continues rendering)
         */
         BOOM_INLINE void Pause()
         {
+            if (!m_IsInPlayMode) {
+                BOOM_WARN("[Application] Cannot pause - not in play mode");
+                return;
+            }
+
             if (m_AppState == ApplicationState::RUNNING) {
                 m_AppState = ApplicationState::PAUSED;
                 m_LastPauseTime = glfwGetTime();
@@ -180,6 +221,11 @@ namespace Boom
          */
         BOOM_INLINE void Resume()
         {
+            if (!m_IsInPlayMode) {
+                BOOM_WARN("[Application] Cannot resume - not in play mode");
+                return;
+            }
+
             if (m_AppState == ApplicationState::PAUSED) {
                 m_AppState = ApplicationState::RUNNING;
 
@@ -193,22 +239,74 @@ namespace Boom
         }
 
         /**
-         * @brief Stops the application gracefully
+         * @brief Stops play mode and restores the scene to pre-play state (like Unity's Stop button)
          */
         BOOM_INLINE void Stop()
         {
-            m_AppState = ApplicationState::STOPPED;
-            m_ShouldExit = true;
-            BOOM_INFO("[Application] Stopping application...");
+            if (!m_IsInPlayMode) {
+                BOOM_WARN("[Application] Not in play mode, nothing to stop");
+                return;
+            }
 
-            // Stop audio if available
+            BOOM_INFO("[Application] Stopping play mode...");
+
+            // Destroy all physics actors before restoring scene
+            DestroyPhysicsActors();
+
+            // Restore pre-play scene state
+            if (!m_PrePlayScenePath.empty() && std::filesystem::exists(m_PrePlayScenePath)) {
+                DataSerializer serializer;
+
+                // Clear the current scene
+                m_Context->scene.clear();
+
+                // Deserialize the saved state
+                serializer.Deserialize(m_Context->scene, *m_Context->assets, m_PrePlayScenePath);
+
+                // Delete the temporary file
+                std::filesystem::remove(m_PrePlayScenePath);
+                m_PrePlayScenePath.clear();
+
+                BOOM_INFO("[Application] Restored pre-play scene state");
+            }
+
+            // Reinitialize systems (skybox, etc.) but NOT physics
+            EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
+                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+                m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
+            });
+
+            // Reset time tracking
+            m_PausedTime = 0.0;
+            m_LastPauseTime = 0.0;
+
+            // Exit play mode but keep application running
+            m_IsInPlayMode = false;
+            m_AppState = ApplicationState::STOPPED;
+            // NOTE: m_ShouldExit stays false - we don't exit the app!
+
+            BOOM_INFO("[Application] Exited play mode");
         }
 
         /**
-         * @brief Toggles between pause and resume
+         * @brief Exits the application completely
+         */
+        BOOM_INLINE void Exit()
+        {
+            m_ShouldExit = true;
+            BOOM_INFO("[Application] Exiting application...");
+        }
+
+        /**
+         * @brief Toggles between pause and resume (only works in play mode)
          */
         BOOM_INLINE void TogglePause()
         {
+            if (!m_IsInPlayMode) {
+                BOOM_WARN("[Application] Cannot toggle pause - not in play mode");
+                return;
+            }
+
             if (m_AppState == ApplicationState::RUNNING) {
                 Pause();
             }
@@ -221,6 +319,16 @@ namespace Boom
          * @brief Gets the current application state
          */
         BOOM_INLINE ApplicationState GetState() const { return m_AppState; }
+
+        /**
+         * @brief Checks if the application is currently in play mode
+         */
+        BOOM_INLINE bool IsPlaying() const { return m_IsInPlayMode; }
+
+        /**
+         * @brief Checks if the application is paused (in play mode but not updating)
+         */
+        BOOM_INLINE bool IsPaused() const { return m_IsInPlayMode && m_AppState == ApplicationState::PAUSED; }
 
         /**
          * @brief Gets the adjusted time (excluding paused time)
@@ -513,6 +621,10 @@ namespace Boom
         char m_PreviousScenePath[512] = "\0";
         bool m_SceneLoaded = false;
         std::unique_ptr<DetourNavSystem> m_Nav;
+
+        // Pre-play state storage for Unity-like play/stop behavior
+        std::string m_PrePlayScenePath = "";
+        bool m_IsInPlayMode = false;
        
         Boom::AISystem                         m_AIagents;
         Boom::NavAgentSystem                   m_NavAgents;
@@ -750,12 +862,21 @@ namespace Boom
             // Calculate raw delta time
             double rawDelta = (currentTime - sLastTime);
 
-            // Only update delta time if not paused
-            if (m_AppState == ApplicationState::RUNNING) {
+            // Delta time behavior:
+            // - Edit mode: Always update (for smooth camera movement)
+            // - Play mode running: Update normally
+            // - Play mode paused: No time progression (0)
+            if (!m_IsInPlayMode) {
+                // Edit mode - camera needs delta time
+                m_Context->DeltaTime = rawDelta;
+            }
+            else if (m_AppState == ApplicationState::RUNNING) {
+                // Play mode running - normal time
                 m_Context->DeltaTime = rawDelta;
             }
             else {
-                m_Context->DeltaTime = 0.0; // No time progression when paused
+                // Play mode paused - freeze time
+                m_Context->DeltaTime = 0.0;
             }
 
             sLastTime = currentTime;

@@ -31,6 +31,8 @@ namespace {
         if (scale.z != 0) col2 /= scale.z;
 
         glm::mat3 rotationMatrix(col0, col1, col2);
+
+        // Extract rotation in radians
         rotation.y = asin(-rotationMatrix[0][2]);
 
         if (cos(rotation.y) != 0) {
@@ -41,6 +43,9 @@ namespace {
             rotation.x = atan2(-rotationMatrix[2][1], rotationMatrix[1][1]);
             rotation.z = 0;
         }
+
+        // Convert rotation from radians to degrees (engine expects degrees)
+        rotation = glm::degrees(rotation);
     }
 }
 
@@ -89,6 +94,34 @@ namespace EditorUI {
                 const ImVec2 itemMax = ImGui::GetItemRectMax();
                 const ImVec2 rectSz = ImVec2(itemMax.x - itemMin.x, itemMax.y - itemMin.y);
                 const bool hovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
+                const bool viewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+
+                // Handle gizmo shortcuts when viewport is focused (no need to check WantCaptureKeyboard)
+                // These shortcuts consume the key press, preventing camera movement
+                bool gizmoShortcutPressed = false;
+                if (viewportFocused && hovered)
+                {
+                    if (ImGui::IsKeyPressed(ImGuiKey_W, false)) {
+                        m_GizmoOperation = ImGuizmo::TRANSLATE;
+                        gizmoShortcutPressed = true;
+                        BOOM_INFO("[Gizmo] Switched to TRANSLATE mode");
+                    }
+                    if (ImGui::IsKeyPressed(ImGuiKey_E, false)) {
+                        m_GizmoOperation = ImGuizmo::ROTATE;
+                        gizmoShortcutPressed = true;
+                        BOOM_INFO("[Gizmo] Switched to ROTATE mode");
+                    }
+                    if (ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+                        m_GizmoOperation = ImGuizmo::SCALE;
+                        gizmoShortcutPressed = true;
+                        BOOM_INFO("[Gizmo] Switched to SCALE mode");
+                    }
+                    if (ImGui::IsKeyPressed(ImGuiKey_T, false)) {
+                        m_GizmoMode = (m_GizmoMode == ImGuizmo::WORLD) ? ImGuizmo::LOCAL : ImGuizmo::WORLD;
+                        gizmoShortcutPressed = true;
+                        BOOM_INFO("[Gizmo] Toggled to {} mode", m_GizmoMode == ImGuizmo::WORLD ? "WORLD" : "LOCAL");
+                    }
+                }
 
                 // Get gizmo state BEFORE handling mouse clicks
                 bool gizmoWantsInput = false;
@@ -151,9 +184,14 @@ namespace EditorUI {
 
                 if (m_Ctx && m_Ctx->window)
                 {
+                    // Allow camera mouse input if viewport is focused and gizmo isn't being used
                     const bool allowCameraInput = hovered && focused && !gizmoWantsInput;
                     m_Ctx->window->SetCameraInputRegion(localX, localY, localW, localH, allowCameraInput);
-                    m_Ctx->window->SetViewportKeyboardFocus(focused && !gizmoWantsInput);
+
+                    // Allow keyboard input for camera when viewport is focused and not using gizmo
+                    // Block keyboard on frames where gizmo shortcuts were pressed to prevent camera movement
+                    const bool allowKeyboard = focused && !gizmoWantsInput && !gizmoShortcutPressed;
+                    m_Ctx->window->SetViewportKeyboardFocus(allowKeyboard);
                 }
 
                 if (hovered) ImGui::SetTooltip("Engine Viewport - Scene render output");
@@ -240,15 +278,7 @@ namespace EditorUI {
         ImGuizmo::SetRect(itemMin.x, itemMin.y, rectSz.x, rectSz.y);
         ImGuizmo::SetGizmoSizeClipSpace(0.15f);
 
-        const bool viewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
-        if (viewportFocused && !ImGui::GetIO().WantCaptureKeyboard)
-        {
-            if (ImGui::IsKeyPressed(ImGuiKey_W)) m_GizmoOperation = ImGuizmo::TRANSLATE;
-            if (ImGui::IsKeyPressed(ImGuiKey_E)) m_GizmoOperation = ImGuizmo::ROTATE;
-            if (ImGui::IsKeyPressed(ImGuiKey_R)) m_GizmoOperation = ImGuizmo::SCALE;
-            if (ImGui::IsKeyPressed(ImGuiKey_T))
-                m_GizmoMode = (m_GizmoMode == ImGuizmo::WORLD) ? ImGuizmo::LOCAL : ImGuizmo::WORLD;
-        }
+        // Gizmo shortcuts are now handled globally in OnShow(), before this function is called
 
         ImGuizmo::SetImGuiContext(ImGui::GetCurrentContext());
 

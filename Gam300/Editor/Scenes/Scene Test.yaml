@@ -1,0 +1,211 @@
+Version: 1.0
+ENTITIES:
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: New Entity
+      UID: 3875600682111670756
+    TransformComponent:
+      Transform:
+        Translate: [0, 2.5539732, 0]
+        Rotate: [0, 0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 14319818634218203947
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Level
+      UID: 14423942184205972563
+    TransformComponent:
+      Transform:
+        Translate: [218.288223, -1.12436485, -197.363632]
+        Rotate: [0, -0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 4870100003065702807
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Samurai
+      UID: 16439367912350421013
+    TransformComponent:
+      Transform:
+        Translate: [-0.64111948, -1.18457508, 0]
+        Rotate: [0, -0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 9858498430227169258
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Ninja
+      UID: 12784200605494588253
+    TransformComponent:
+      Transform:
+        Translate: [-1.16412485, -1.14540207, -0.968141139]
+        Rotate: [0, -0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 15771049607565255665
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Spot Light
+      UID: 12363776012929465708
+    TransformComponent:
+      Transform:
+        Translate: [2, 2, 2]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SpotLightComponent:
+      Light:
+        Radiance: [0.699999988, 0.800000012, 1]
+        Intensity: 15
+        FallOff: 1.05592418
+        CutOff: 0.34906584
+  - InfoComponent:
+      Parent: 0
+      Name: Directional Light
+      UID: 16395980114807373968
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, -1, 0]
+        Scale: [1, 1, 1]
+    DirectLightComponent:
+      Light:
+        Radiance: [1, 1, 0.899999976]
+        Intensity: 0.879999995
+  - InfoComponent:
+      Parent: 0
+      Name: Point Light
+      UID: 5315588240363654174
+    TransformComponent:
+      Transform:
+        Translate: [0, 0.5, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    PointLightComponent:
+      Light:
+        Radiance: [1, 0.899999976, 0.699999988]
+        Intensity: 10
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Camera
+      UID: 9201024860084647067
+    TransformComponent:
+      Transform:
+        Translate: [-0.301954448, 1.42409861, -6.07314396]
+        Rotate: [-7.8125, 1649.6875, 0]
+        Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        NearPlane: 0.300000012
+        FarPlane: 1000
+        FOV: 100
+  - InfoComponent:
+      Parent: 0
+      Name: Skybox
+      UID: 3009173759421305309
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SkyboxComponent:
+      SkyboxID: 10427935764841817814
+  - {}
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0.5
+        Restitution: 0
+        PhysicsMesh: 0
+        Type: BOX
+    InfoComponent:
+      Parent: 0
+      Name: Ground
+      UID: 10000000000000000002
+    TransformComponent:
+      Transform:
+        Translate: [0, -1.29999995, 0]
+        Rotate: [0, 0, 0]
+        Scale: [20, 0.200000003, 20]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 0
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [20, 0.200000003, 20]
+        Type: STATIC
+    ModelComponent:
+      ModelID: 7633162898494281895
+      MaterialID: 11573253777835523025
+      ModelName: Cube
+      MaterialName: ""
+      ModelSource: Resources/Models/Cube.fbx
+      MaterialSource: Marble
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0
+        Restitution: 0.100000001
+        PhysicsMesh: 0
+        Type: BOX
+    InfoComponent:
+      Parent: 0
+      Name: NavAgent
+      UID: 1992698266524408743
+    TransformComponent:
+      Transform:
+        Translate: [2, 1, 2]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.5]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 1
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [0.5, 0.5, 0.5]
+        Type: STATIC
+  - {}

@@ -28,57 +28,107 @@ namespace EditorUI {
             if (!app) { ImGui::TextDisabled("Application not wired"); ImGui::End(); return; }
 
             auto state = app->GetState();
+            bool isPlaying = app->IsPlaying();
+            bool isPaused = app->IsPaused();
 
-            ImGui::Text("Application State: "); ImGui::SameLine();
-            switch (state) {
-            case Boom::ApplicationState::RUNNING: ImGui::TextColored(ImVec4(0, 1, 0, 1), "RUNNING"); break;
-            case Boom::ApplicationState::PAUSED:  ImGui::TextColored(ImVec4(1, 1, 0, 1), "PAUSED");  break;
-            case Boom::ApplicationState::STOPPED: ImGui::TextColored(ImVec4(1, 0, 0, 1), "STOPPED"); break;
+            // Display mode (like Unity's edit/play mode indicator)
+            ImGui::Text("Mode: "); ImGui::SameLine();
+            if (isPlaying) {
+                if (isPaused) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "PLAY MODE (PAUSED)");
+                } else {
+                    ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "PLAY MODE");
+                }
+            } else {
+                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "EDIT MODE");
             }
 
             ImGui::Separator();
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
 
-            // Play/Resume
+            // Play Button (Green when available, like Unity)
             {
-                bool can = (state == Boom::ApplicationState::PAUSED || state == Boom::ApplicationState::STOPPED);
-                if (!can) ImGui::BeginDisabled();
-                if (ImGui::Button("Play/Resume", ImVec2(100, 30)) && can) app->Resume();
-                if (!can) ImGui::EndDisabled();
+                bool canPlay = !isPlaying || isPaused;
+
+                if (canPlay) {
+                    // Green color when play button is active (like Unity)
+                    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
+                }
+
+                if (!canPlay) ImGui::BeginDisabled();
+
+                const char* playLabel = (!isPlaying) ? "Play" : "Resume";
+                if (ImGui::Button(playLabel, ImVec2(100, 30))) {
+                    if (!isPlaying) {
+                        app->Play();
+                    } else if (isPaused) {
+                        app->Resume();
+                    }
+                }
+
+                if (!canPlay) ImGui::EndDisabled();
+                if (canPlay) ImGui::PopStyleColor(3);
             }
 
             ImGui::SameLine();
 
-            // Pause
+            // Pause Button
             {
-                bool can = (state == Boom::ApplicationState::RUNNING);
-                if (!can) ImGui::BeginDisabled();
-                if (ImGui::Button("Pause", ImVec2(100, 30)) && can) app->Pause();
-                if (!can) ImGui::EndDisabled();
+                bool canPause = isPlaying && !isPaused;
+
+                if (!canPause) ImGui::BeginDisabled();
+                if (ImGui::Button("Pause", ImVec2(100, 30))) {
+                    app->Pause();
+                }
+                if (!canPause) ImGui::EndDisabled();
             }
 
             ImGui::SameLine();
 
-            // Stop
+            // Stop Button (Red when available, like Unity)
             {
-                bool can = (state != Boom::ApplicationState::STOPPED);
-                if (!can) ImGui::BeginDisabled();
-                if (ImGui::Button("Stop", ImVec2(100, 30)) && can) app->Stop();
-                if (!can) ImGui::EndDisabled();
+                bool canStop = isPlaying;
+
+                if (canStop) {
+                    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 0.2f, 0.2f, 1.0f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.3f, 0.3f, 1.0f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
+                }
+
+                if (!canStop) ImGui::BeginDisabled();
+                if (ImGui::Button("Stop", ImVec2(100, 30))) {
+                    app->Stop();
+                }
+                if (!canStop) ImGui::EndDisabled();
+                if (canStop) ImGui::PopStyleColor(3);
             }
 
             ImGui::PopStyleVar();
 
             ImGui::Separator();
             ImGui::Text("Keyboard Shortcuts:");
-            ImGui::BulletText("Spacebar: Toggle Pause/Resume");
-            ImGui::BulletText("Escape: Stop Application");
+            ImGui::BulletText("Ctrl+P: Play/Resume");
+            ImGui::BulletText("Ctrl+Shift+P: Pause");
+            ImGui::BulletText("Ctrl+Shift+S: Stop");
 
-            if (state != Boom::ApplicationState::STOPPED) {
+            if (isPlaying) {
                 ImGui::Separator();
-                ImGui::Text("Adjusted Time: %.2f seconds", app->GetAdjustedTime());
-                if (state == Boom::ApplicationState::PAUSED)
-                    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Time is paused");
+
+                // Warning about changes being lost (like Unity)
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.6f, 0.2f, 1.0f));
+                ImGui::TextWrapped("WARNING: Changes made during play mode will be lost when you stop!");
+                ImGui::PopStyleColor();
+
+                ImGui::Separator();
+                ImGui::Text("Play Time: %.2f seconds", app->GetAdjustedTime());
+                if (isPaused) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "Time is paused");
+                }
+            } else {
+                ImGui::Separator();
+                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Edit Mode: Changes will be saved. Press Play to test.");
             }
         }
         ImGui::End();
