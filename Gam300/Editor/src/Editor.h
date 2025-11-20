@@ -94,13 +94,15 @@ namespace EditorUI {
 		std::unique_ptr<NavmeshPanel>            m_Navmesh;
         std::unique_ptr<AnimatorGraphPanel>     m_AnimatorGraph;
     private:
+        void HandleGlobalShortcuts();
+
         std::filesystem::path m_ScenesDir = std::filesystem::path("Scenes");
         std::unordered_map<std::string, std::filesystem::file_time_type> m_SceneStamp;
         std::vector<std::string> m_AvailableScenes;
         int m_SelectedSceneIndex = 0;
 
-       
-      
+
+
     };
 
 } // namespace EditorUI
