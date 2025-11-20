@@ -2,6 +2,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#pragma once
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -23,6 +24,8 @@
 #include "../Graphics/Utilities/Culling.h"
 #include "Input/CameraManager.h"
 #include "Graphics/Shaders/DebugLines.h"
+//#include "../../../Editor/src/Vendors/imgui/imgui.h"
+//#include "../../../Editor/src/Vendors/imGuizmo/ImGuizmo.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
 #include "Scripting/MonoRuntime.h"
@@ -94,16 +97,7 @@ namespace Boom
         double m_LastPauseTime = 0.0;  // When the last pause started
         bool m_ShouldExit = false;  // Flag for graceful shutdown
         float m_TestRot = 0.0f;
-
         bool m_PhysDebugViz = true;
-
-        // --- Mono State ---
-        MonoDomain* m_MonoRootDomain = nullptr;
-        MonoDomain* m_MonoAppDomain = nullptr;
-        MonoAssembly* m_GameAssembly = nullptr;
-        MonoImage* m_GameImage = nullptr;
-        std::string      m_MonoBase;       // e.g. "<EditorRoot>/Mono"
-        std::string      m_AssembliesPath; // e.g. "<EditorRoot>/Scripts/bin/x64/Debug"
 
 
         // Temporary for showing physics
@@ -144,7 +138,7 @@ namespace Boom
         BOOM_INLINE ~Application()
         {
             DestroyPhysicsActors();
-            ShutdownMonoRuntime();
+            m_Context->scriptingSystem->Shutdown();
             BOOM_DELETE(m_Context);
             //called here in case of the need of multiple windows
             glfwTerminate();
@@ -341,6 +335,427 @@ namespace Boom
             return currentTime - adjustedPausedTime;
         }
 
+
+        /**
+         * @brief Runs the main loop, calling OnUpdate() on every attached layer.
+         *
+         * BOOM_INLINE suggests inlining this hot-path entry point so
+         * the call to RunContext itself adds minimal overhead.
+         */
+        BOOM_INLINE void RunContext(bool showFrame = false)
+        {
+            BOOM_INFO("[Application] RunContext started");
+
+            // -- LOADING in MONO --
+            const std::string exeDir = GetExeDir();
+            
+
+            std::filesystem::path repoRoot = std::filesystem::path(exeDir)
+                .parent_path()  // Debug -> x64
+                .parent_path()  // x64 -> Gam300
+                .parent_path(); // Gam300 -> GAM300
+
+            const std::string monoBase = (repoRoot / "mono").string();
+#if defined(_DEBUG)
+            
+            const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Debug").string();
+#else
+            const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Release").string();
+#endif
+
+            
+            if (!m_Context->scriptingSystem->Init(asmDir, m_Context))
+            {
+                BOOM_ERROR("[Scripting] Failed to initialize scripting system!");
+            }
+            else
+            {
+
+                std::string dllPath = (std::filesystem::path(asmDir) / "GameScripts.dll").string();
+
+                if (!m_Context->scriptingSystem->LoadScriptsDll(dllPath))
+                {
+                    BOOM_ERROR("[Scripting] Failed to load GameScripts.dll");
+                }
+                else
+                {
+
+                    // Auto enabling of hot reload
+                    m_Context->scriptingSystem->EnableAutoHotReload(true);
+
+                    if (!m_Context->scriptingSystem->CallStart())
+                        BOOM_ERROR("[Scripting] GameScripts.Entry:Start() failed");
+                    else
+                        BOOM_INFO("[Scripting] GameScripts entry invoked.");
+
+                    int scriptsCreated = 0;
+                    auto& registry = m_Context->scene;
+                    auto scriptView = registry.view<Boom::ScriptComponent>();
+                    for (auto entity : scriptView) {
+                        auto& sc = scriptView.get<Boom::ScriptComponent>(entity);
+                        if (m_Context->scriptingSystem->RecreateForEntity(entity, sc)) {
+                            scriptsCreated++;
+                            BOOM_INFO("[Scripting] Created instance for entity {} (type: {})",
+                                static_cast<uint32_t>(entity), sc.TypeName);
+                        }
+                    }
+                    if (scriptsCreated > 0) {
+                        BOOM_INFO("[Scripting] Created {} script instances after scene load", scriptsCreated);
+                    }
+                }
+            }
+            // --- END MONO INITIALIZE ---
+            
+            LoadScene("level");
+
+            InitNavRuntime();
+			//EnsureNinjaSeeksSamurai();
+            CameraController camera(
+                m_Context->window.get()
+            );
+
+            ////init skybox
+            EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
+                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+                m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
+                });
+
+            m_DebugLinesShader = std::make_unique<Boom::DebugLinesShader>("debug_lines.glsl");
+            m_Context->physics->EnableDebugVisualization(m_PhysDebugViz, 1.0f);
+
+            //temp input for mouse motion
+            glm::dvec2 curMP{};
+            glm::dvec2 prevMP{};
+            while (m_Context->window->PollEvents() && !m_ShouldExit)
+            {
+                std::shared_ptr<GLFWwindow> engineWindow = m_Context->window->Handle();
+                SoundEngine::Instance().Update();
+                Camera3D* activeCam = nullptr;
+                EnttView<Entity, CameraComponent>([&](auto, CameraComponent& comp) {
+                    if (!activeCam && comp.camera.cameraType == Camera3D::CameraType::Main)
+                        activeCam = &comp.camera;
+                    });
+                if (!activeCam) { // fallback: first camera
+                    EnttView<Entity, CameraComponent>([&](auto, CameraComponent& comp) {
+                        if (!activeCam) activeCam = &comp.camera;
+                        });
+                }
+
+                // 2) Attach BEFORE update so scroll/pan use this camera's FOV in this frame
+                if (activeCam) camera.attachCamera(activeCam);
+                glfwMakeContextCurrent(engineWindow.get());
+
+                // NEW: runtime toggle with F9
+                {
+                    static bool prevF9 = false;
+                    bool f9Pressed = glfwGetKey(engineWindow.get(), GLFW_KEY_F9) == GLFW_PRESS;
+                    if (f9Pressed && !prevF9)   
+                    {
+                        m_PhysDebugViz = !m_PhysDebugViz;
+                        m_Context->physics->EnableDebugVisualization(m_PhysDebugViz, 1.0f);
+                        BOOM_INFO("[PhysX] Debug visualization: {}", m_PhysDebugViz ? "ON" : "OFF");
+                    }
+                    prevF9 = f9Pressed;
+                }
+
+                //   F11 for testing change of rigid body type
+                {
+                    static bool prevF11 = false;
+                    bool f11Pressed = glfwGetKey(engineWindow.get(), GLFW_KEY_F11) == GLFW_PRESS;
+                    if (f11Pressed && !prevF11)
+                    {
+                        // Find the "Sphere" entity to toggle its type
+                        EnttView<Entity, InfoComponent, RigidBodyComponent>([this](auto entity, InfoComponent& info, RigidBodyComponent& rb) {
+                            if (info.name == "Sphere") {
+                                // Determine the new type by flipping the current one
+                                RigidBody3D::Type currentType = rb.RigidBody.type;
+                                RigidBody3D::Type newType = (currentType == RigidBody3D::DYNAMIC)
+                                    ? RigidBody3D::STATIC
+                                    : RigidBody3D::DYNAMIC;
+
+                                // Call the function to perform the switch!
+                                m_Context->physics->SetRigidBodyType(entity, newType);
+
+                                // Log the change to the console for confirmation
+                                BOOM_INFO("[Test F11] Toggled Sphere rigid body to: {}", (newType == RigidBody3D::DYNAMIC) ? "DYNAMIC" : "STATIC");
+                            }
+                            });
+                    }
+                    prevF11 = f11Pressed;
+                }
+
+
+                // Always update delta time, but adjust for pause state
+                ComputeFrameDeltaTime();
+                float dt = static_cast<float>(m_Context->DeltaTime);
+
+                m_Context->scriptingSystem->UpdateFileWatcher();
+
+                m_Context->scriptingSystem->CallUpdate(dt);
+
+                auto& registry = m_Context->scene;
+                auto scriptView = registry.view<Boom::ScriptComponent>();
+                for (auto entity : scriptView) {
+                    auto& sc = scriptView.get<Boom::ScriptComponent>(entity);
+                    m_Context->scriptingSystem->TickEntity(entity, sc, dt);
+                }
+
+                m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
+                if (m_Nav) {
+                    m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
+                }
+                // Animation testing controls
+                {
+                    // Press L to load additional animations
+                    static bool lastLPressed = false;
+                    bool lPressed = glfwGetKey(engineWindow.get(), GLFW_KEY_L) == GLFW_PRESS;
+                    if (lPressed && !lastLPressed) {
+                        EnttView<Entity, AnimatorComponent>([this]([[maybe_unused]] auto entity, auto& animComp) {
+
+                            auto& animator = animComp.animator;
+
+
+                            BOOM_INFO("=== Loading additional animations ===");
+                            size_t beforeCount = animator->GetClipCount();
+
+                            // Try to load these - they need to exist in your Models folder!
+                            animator->LoadAnimationFromFile("Resources/Models/idle.fbx", "Idle");
+                            animator->LoadAnimationFromFile("Resources/Models/walking.fbx", "Walk");
+                            animator->LoadAnimationFromFile("Resources/Models/run.fbx", "Run");
+
+                            size_t afterCount = animator->GetClipCount();
+                            BOOM_WARN("Loaded {} new animations (total: {})", afterCount - beforeCount, afterCount);
+
+                            // List all animations
+                            for (size_t i = 0; i < animator->GetClipCount(); ++i) {
+                                const auto* clip = animator->GetClip(i);
+                                if (clip) {
+                                    BOOM_INFO("  [{}] '{}' - {:.2f}s", i, clip->name, clip->duration);
+                                }
+                            }
+                            });
+                    }
+                    lastLPressed = lPressed;
+
+                    // Press 1-9 to switch animations
+                    EnttView<Entity, AnimatorComponent>([this, &engineWindow]([[maybe_unused]]auto entity, auto& animComp) {
+
+                        auto& animator = animComp.animator;
+
+                        if (glfwGetKey(engineWindow.get(), GLFW_KEY_1) == GLFW_PRESS && animator->GetClipCount() > 0) {
+                            animator->PlayClip(0);
+#ifdef DEBUG
+                            const auto* clip = animator->GetClip(0);
+                            if (clip) BOOM_INFO("Switched to [0]: '{}'", clip->name);
+#endif // DEBUG
+
+                        }
+                        if (glfwGetKey(engineWindow.get(), GLFW_KEY_2) == GLFW_PRESS && animator->GetClipCount() > 1) {
+                            animator->PlayClip(1);
+
+#ifdef DEBUG
+                            const auto* clip = animator->GetClip(1);
+                            if (clip) BOOM_INFO("Switched to [1]: '{}'", clip->name);
+#endif // DEBUG
+
+                        }
+                        if (glfwGetKey(engineWindow.get(), GLFW_KEY_3) == GLFW_PRESS && animator->GetClipCount() > 2) {
+                            animator->PlayClip(2);
+
+#ifdef DEBUG
+                            const auto* clip = animator->GetClip(2);
+                            if (clip) BOOM_INFO("Switched to [2]: '{}'", clip->name);
+#endif // DEBUG
+                        }
+                        if (glfwGetKey(engineWindow.get(), GLFW_KEY_4) == GLFW_PRESS && animator->GetClipCount() > 3) {
+                            animator->PlayClip(3);
+#ifdef DEBUG
+                            const auto* clip = animator->GetClip(3);
+                            if (clip) BOOM_INFO("Switched to [3]: '{}'", clip->name);
+#endif // DEBUG
+                        }
+
+                        // Press I for info about current animation
+                        static bool lastIPressed = false;
+                        bool iPressed = glfwGetKey(engineWindow.get(), GLFW_KEY_I) == GLFW_PRESS;
+                        if (iPressed && !lastIPressed) {
+                            BOOM_INFO("=== Current Animation Info ===");
+                            BOOM_INFO("Current Clip: {} / {}", animator->GetCurrentClip(), animator->GetClipCount() - 1);
+                            const auto* clip = animator->GetClip(animator->GetCurrentClip());
+                            if (clip) {
+#ifdef DEBUG
+
+                                BOOM_INFO("  Name: '{}'", clip->name);
+                                BOOM_INFO("  Duration: {:.2f}s", clip->duration);
+                                BOOM_INFO("  Current Time: {:.2f}s", animator->GetTime());
+                                BOOM_INFO("  Tracks: {}", clip->tracks.size());
+#endif // DEBUG
+
+                            }
+                        }
+                        lastIPressed = iPressed;
+                        });
+                }
+
+
+                // ============ END NEW SECTION ============
+                m_Context->profiler.BeginFrame();
+                m_Context->profiler.Start("Total Frame");
+                m_Context->profiler.Start("Renderer Start Frame");
+                std::apply(glClearColor, CONSTANTS::DEFAULT_BACKGROUND_COLOR);
+                RenderShadowScene();
+                m_Context->renderer->NewFrame();
+                m_Context->profiler.End("Renderer Start Frame");
+
+                // Only update rotation when running
+                if (m_AppState == ApplicationState::RUNNING) {
+                    EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) {
+                        rb.RigidBody.isColliding = false;
+                        });
+                    UpdateStaticTransforms();
+                    RunPhysicsSimulation();
+                    InitNavRuntime();
+                    UpdateThirdPersonCameras();
+                }
+                
+                m_SphereTimer += m_Context->DeltaTime;
+                if (m_SphereTimer >= m_SphereResetInterval) {
+                    ResetAllSpheres();
+                    ResetSphere();
+                    m_SphereTimer = 0.0;
+                }
+
+                LightsUpdate();
+
+                //temp input for mouse motion
+                glfwGetCursorPos(m_Context->window->Handle().get(), &curMP.x, &curMP.y);
+                // ONLY update the flycam controller if the game is PAUSED
+                if (m_AppState != ApplicationState::RUNNING) {
+                    camera.update(static_cast<float>(m_Context->DeltaTime));
+                }
+
+                glm::mat4 dbgView(1.0f);
+                glm::mat4 dbgProj(1.0f);
+                glm::vec3 dbgCamPos(0.0f);
+
+                EnttView<Entity, CameraComponent>([this, &curMP, &prevMP, &dbgView, &dbgProj, &dbgCamPos](auto entity, CameraComponent& comp) {
+                    Transform3D& transform{ entity.template Get<TransformComponent>().transform };
+
+                    // ONLY apply flycam logic if the game is PAUSED
+                    if (m_AppState != ApplicationState::RUNNING)
+                    {
+                        // This is the flycam logic, only run when not playing
+                        transform.rotate.x += m_Context->window->camRot.x;
+                        transform.rotate.y += m_Context->window->camRot.y;
+                        glm::quat quat{ glm::radians(transform.rotate) };
+                        glm::vec3 dir{ quat * m_Context->window->camMoveDir };
+                        transform.translate += dir;
+
+                        if (curMP == prevMP) {
+                            m_Context->window->camRot = {};
+                            if (m_Context->window->isMiddleClickDown)
+                                m_Context->window->camMoveDir = {};
+                        }
+                    }
+
+                    // This part is needed by BOTH cameras, so leave it outside the 'if'
+                    m_Context->renderer->SetCamera(comp.camera, transform);
+                    dbgView = comp.camera.View(transform);
+                    dbgProj = comp.camera.Projection(m_Context->renderer->Aspect());
+                    dbgCamPos = transform.translate;
+                    });
+                {
+                    prevMP = curMP;
+
+                    EnttView<Entity, TransformComponent, RigidBodyComponent>([this](auto entity, TransformComponent& tc, RigidBodyComponent& rbc) {
+                        // Check if the current scale is different from the stored scale
+                        if (tc.transform.scale != rbc.RigidBody.previousScale)
+                        {
+                            // If it changed, update the collider shape
+                            m_Context->physics->UpdateColliderShape(entity, GetAssetRegistry());
+
+                            // Then, update the stored scale to the new value for the next frame
+                            rbc.RigidBody.previousScale = tc.transform.scale;
+                        }
+                        });
+                }
+               
+                RenderScene();
+                if (m_PhysDebugViz && m_DebugLinesShader)
+                {
+                    m_Context->physics->CollectDebugLines(m_PhysLinesCPU);
+                    if (!m_PhysLinesCPU.empty())
+                    {
+                        // Build CPU line list
+                        std::vector<Boom::LineVert> lineVerts;
+                        lineVerts.reserve(m_PhysLinesCPU.size() * 2);
+                        for (const auto& l : m_PhysLinesCPU)
+                        {
+                            lineVerts.push_back(Boom::LineVert{ l.p0, l.c0 });
+                            lineVerts.push_back(Boom::LineVert{ l.p1, l.c1 });
+                        }
+
+                        // Cull any segments within a small radius of the camera (fix “ball in face”)
+                        std::vector<Boom::LineVert> filtered;
+                        filtered.reserve(lineVerts.size());
+                        const float camCullRadius = 0.6f;
+
+                        for (size_t i = 0; i + 1 < lineVerts.size(); i += 2)
+                        {
+                            const auto& a = lineVerts[i + 0];
+                            const auto& b = lineVerts[i + 1];
+
+                            const float segDist = DistancePointSegment(dbgCamPos, a.pos, b.pos);
+                            const float endA = glm::distance(a.pos, dbgCamPos);
+                            const float endB = glm::distance(b.pos, dbgCamPos);
+
+                            // Keep only segments not near the camera (endpoints and segment body)
+                            if (segDist >= camCullRadius && endA >= camCullRadius && endB >= camCullRadius)
+                            {
+                                filtered.push_back(a);
+                                filtered.push_back(b);
+                            }
+                        }
+
+                        if (!filtered.empty())
+                            m_DebugLinesShader->Draw(dbgView, dbgProj, filtered, 50.5f);
+                    }
+                }
+                if (m_PhysDebugViz && m_DebugLinesShader)
+                {
+                    DrawRigidBodiesDebugOnly(dbgView, dbgProj);
+                }
+                if (m_Context->ShowNavDebug && m_DebugLinesShader && m_Nav) {
+                    // Draw navmesh edges & centroids near the camera. Tweak radius to taste.
+                    const float navDrawRadius = 60.0f; // try 40–100 to see more/less
+                    m_Nav->DrawDetourNavMesh_Query(*m_DebugLinesShader, dbgView, dbgProj, dbgCamPos, navDrawRadius);
+                }
+                
+                //skybox ecs (should be drawn at the end)
+                EnttView<Entity, SkyboxComponent>([this](auto entity, SkyboxComponent& comp) {
+                    Transform3D& transform{ entity.template Get<TransformComponent>().transform };
+                    SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+                    m_Context->renderer->DrawSkybox(skybox.data, transform);
+                    });
+                
+                m_Context->profiler.Start("Renderer End Frame");
+                m_Context->renderer->EndFrame();
+                m_Context->profiler.End("Renderer End Frame");
+
+                //draw the updated frame
+                m_Context->renderer->ShowFrame(showFrame);
+
+
+                for (auto layer : m_Context->layers)
+                {
+                    layer->OnUpdate();
+                }
+
+                m_Context->profiler.End("Total Frame");
+                m_Context->profiler.EndFrame();
+            }
+        }
+
         /**
         * 
          * @brief Saves the current scene and assets to files
@@ -500,7 +915,8 @@ namespace Boom
             EnttView<Entity, RigidBodyComponent>(
                 [this](auto entity, RigidBodyComponent& rb)
                 {
-                    if (rb.RigidBody.type == RigidBody3D::Type::KINEMATIC) {
+                    if (rb.RigidBody.type == RigidBody3D::Type::STATIC)
+                    {
                         auto* actor = rb.RigidBody.actor;
                         if (!actor) return;
 
@@ -592,7 +1008,7 @@ namespace Boom
         {
             if (m_NavInitialized) return;
 
-            //auto& reg = m_Context->scene;
+            auto& reg = m_Context->scene;
 
             // 1) Build / load navmesh only once
             if (!m_Nav) {
@@ -730,6 +1146,17 @@ namespace Boom
                 m_Context->physics->AddRigidBody(entity, *m_Context->assets);
                 });
 
+            // Creating a script instances 
+            int scriptsCreated = 0;
+            EnttView<Entity, ScriptComponent>([this, &scriptsCreated](auto entity, ScriptComponent& sc) {
+                if (m_Context->scriptingSystem->RecreateForEntity(entity, sc)) {
+                    scriptsCreated++;
+                }
+                });
+
+            if (scriptsCreated > 0) {
+                BOOM_INFO("[Scene] Created {} script instances", scriptsCreated);
+            }
 
             BOOM_INFO("[Scene] Scene systems reinitialization complete");
         }
@@ -929,200 +1356,99 @@ namespace Boom
 #endif
         }
 
-        BOOM_INLINE bool InitMonoRuntime(const std::string& monoBaseDir,
-            const std::string& assembliesDir,
-            const char* domainName = "BoomDomain")
+        BOOM_INLINE void RecreateScriptForEntity(entt::entity entity)
         {
-            // 0) sanity on folders
-            if (!std::filesystem::exists(monoBaseDir) ||
-                !std::filesystem::exists(monoBaseDir + "/lib") ||
-                !std::filesystem::exists(monoBaseDir + "/etc"))
-            {
-                
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] Invalid mono base folder: '{}'", monoBaseDir);
+            if (!m_Context->scene.valid(entity)) return;
 
-#endif // DEBUG
-                return false;
-            }
-            if (!std::filesystem::exists(assembliesDir))
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] Assemblies folder not found: '{}'", assembliesDir);
+            auto* sc = m_Context->scene.try_get<ScriptComponent>(entity);
+            if (!sc) return;
 
-#endif // DEBUG
-                
-                return false;
-            }
-
-            m_MonoBase = monoBaseDir;
-            m_AssembliesPath = assembliesDir;
-
-            // 1) point Mono at its runtime folders
-            //    On Windows, make sure the Mono DLLs (e.g., mono-2.0-sgen.dll) are next to the EXE or in PATH.
-            mono_set_dirs((m_MonoBase + "/lib").c_str(),
-                (m_MonoBase + "/etc").c_str());
-
-            // 2) config (enables machine.config etc.)
-            //mono_config_parse(nullptr);
-
-            // 3) assembly search paths (so "GameScripts.dll" can be found by name)
-            mono_set_assemblies_path(m_AssembliesPath.c_str());
-
-            // 4) root domain
-            m_MonoRootDomain = mono_jit_init_version(domainName, "v4.0.30319");
-            if (!m_MonoRootDomain)
-            {
-                BOOM_ERROR("[Mono] mono_jit_init_version failed.");
-                return false;
-            }
-
-            // 5) create a child/app domain (optional but recommended for unload/reload patterns)
-            m_MonoAppDomain = mono_domain_create_appdomain(const_cast<char*>("BoomAppDomain"), nullptr);
-            if (!m_MonoAppDomain)
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] mono_domain_create_appdomain failed.");
-
-#endif // DEBUG
-                return false;
-            }
-            mono_domain_set(m_MonoAppDomain, /* force */ false);
-#ifdef _DEBUG
-            BOOM_INFO("[Mono] Initialized. Base='{}', Assemblies='{}'", m_MonoBase, m_AssembliesPath);
-#endif // DEBUG
-            return true;
+            m_Context->scriptingSystem->RecreateForEntity(entity, *sc);
         }
 
-        BOOM_INLINE void ShutdownMonoRuntime()
+        BOOM_INLINE void UpdateThirdPersonCameras()
         {
-            if (m_MonoAppDomain)
-            {
-                // Switch back to root to safely unload app domain
-                mono_domain_set(m_MonoRootDomain, false);
-                mono_domain_unload(m_MonoAppDomain);
-                m_MonoAppDomain = nullptr;
-            }
-            if (m_MonoRootDomain)
-            {
-                mono_jit_cleanup(m_MonoRootDomain);
-                m_MonoRootDomain = nullptr;
-            }
-            m_GameAssembly = nullptr;
-            m_GameImage = nullptr;
+            // 1. Get input
+            glm::vec2 mouseDelta = m_Context->window->input.mouseDeltaLast();
+            glm::vec2 scrollDelta = m_Context->window->input.scrollDelta();
 
-#ifdef _DEBUG
-            BOOM_INFO("[Mono] Shutdown complete.");
-#endif // DEBUG
+            // 2. Iterate over all third-person cameras
+            EnttView<Entity, ThirdPersonCameraComponent, TransformComponent>(
+                [this, &mouseDelta, &scrollDelta](Entity entity, ThirdPersonCameraComponent& cam, TransformComponent& tc)
+                {
 
-        }
+#define UNUSED(x) (void)(x)
+                    UNUSED(entity);
 
-        BOOM_INLINE bool LoadGameAssembly(const std::string& dllName /* e.g., "GameScripts.dll" */)
-        {
-            if (!m_MonoAppDomain)
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] App domain not initialized.");
-#endif // DEBUG
 
-                return false;
-            }
 
-            const std::string full = (std::filesystem::path(m_AssembliesPath) / dllName).string();
-            if (!std::filesystem::exists(full))
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] Assembly not found: {}", full);
+                    // 3. Find the target entity by its UID
+                    if (cam.targetUID == 0) return; // No target UID set
 
-#endif // DEBUG
-                return false;
-            }
+                    entt::entity targetEnttID = entt::null;
+                    auto infoView = m_Context->scene.view<InfoComponent>();
+                    for (auto e : infoView) {
+                        if (infoView.get<InfoComponent>(e).uid == cam.targetUID) {
+                            targetEnttID = e;
+                            break;
+                        }
+                    }
 
-            m_GameAssembly = mono_domain_assembly_open(m_MonoAppDomain, full.c_str());
-            if (!m_GameAssembly)
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] Failed to load assembly: {}", full);
-#endif // DEBUG
-                return false;
-            }
+                    if (targetEnttID == entt::null) return; // Target not found
 
-            m_GameImage = mono_assembly_get_image(m_GameAssembly);
-            if (!m_GameImage)
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] mono_assembly_get_image failed.");
-#endif // DEBUG
-                return false;
-            }
-#ifdef _DEBUG
-            BOOM_INFO("[Mono] Loaded assembly: {}", full);
-#endif // DEBUG
-            return true;
-        }
+                    Entity target{ &m_Context->scene, targetEnttID };
+                    if (!target.Has<TransformComponent>()) return; // Target has no position
 
-        BOOM_INLINE bool InvokeStaticVoid(const char* nsName,
-            const char* className,
-            const char* methodName,
-            void** args = nullptr)
-        {
-            if (!m_GameImage) { BOOM_ERROR("[Mono] No assembly image loaded."); return false; }
+                    //
+                    // === NEW LOGIC STARTS HERE ===
+                    //
 
-            MonoClass* klass = mono_class_from_name(m_GameImage, nsName, className);
-            if (!klass) { BOOM_ERROR("[Mono] Class not found: {}.{}", nsName, className); return false; }
+                    // 4. Get the target's full transform
+                    Transform3D& targetTransform = target.Get<TransformComponent>().transform;
+                    glm::vec3 targetPosition = targetTransform.translate;
+                    float targetYaw = targetTransform.rotate.y; // Get the player's Y rotation
 
-            MonoMethod* method = mono_class_get_method_from_name(klass, methodName, /*param_count*/ 0);
-            if (!method) { BOOM_ERROR("[Mono] Method not found: {}.{}", className, methodName); return false; }
+                    // 5. Update Pitch (up/down) from the mouse
+                   // cam.currentPitch -= mouseDelta.y * cam.mouseSensitivity;
 
-            MonoObject* exc = nullptr;
-            mono_runtime_invoke(method, /*this*/ nullptr, args, &exc);
-            if (exc)
-            {
-                // print exception
-                MonoString* s = mono_object_to_string(exc, nullptr);
-                char* utf8 = mono_string_to_utf8(s);
-#ifdef _DEBUG
-                BOOM_ERROR("[Mono] Exception: {}", utf8 ? utf8 : "(null)");
-#endif // DEBUG
-                if (utf8) mono_free(utf8);
-                return false;
-            }
-            return true;
-        }
+                    // 6. Apply new Pitch Limits
+                    //    We clamp the pitch from 5 (slightly looking down) to 40 (about 45 degrees)
+                    //    This prevents the camera from going "below the plane".
+                    cam.currentPitch = glm::clamp(cam.currentPitch, 2.0f, 40.0f);
 
-        BOOM_INLINE bool InvokeStatic1Float(const char* nsName,
-            const char* className,
-            const char* methodName,
-            float value)
-        {
-            if (!m_GameImage) { BOOM_ERROR("[Mono] No assembly image loaded."); return false; }
+                    // 7. Lock Yaw (left/right) to the target's yaw
+                    //    This keeps the camera locked behind the player.
+                    cam.currentYaw = targetYaw + 180.0f;
 
-            MonoClass* klass = mono_class_from_name(m_GameImage, nsName, className);
-            if (!klass) { BOOM_ERROR("[Mono] Class not found: {}.{}", nsName, className); return false; }
+                    // 8. Update distance (zoom) from the scroll wheel
+                    cam.currentDistance -= scrollDelta.y * cam.scrollSensitivity;
+                    cam.currentDistance = glm::clamp(cam.currentDistance, cam.minDistance, cam.maxDistance);
 
-            // method with 1 parameter
-            MonoMethod* method = mono_class_get_method_from_name(klass, methodName, 1);
-            if (!method) { BOOM_ERROR("[Mono] Method not found: {}.{}", className, methodName); return false; }
+                    // 9. Calculate the camera's final orientation
+                    glm::quat orientation = glm::quat(glm::vec3(glm::radians(cam.currentPitch),
+                        glm::radians(cam.currentYaw),
+                        0.0f));
 
-            void* args[1];
-            args[0] = &value;
+                    // 10. Define the pivot point (e.g., 5 units above the player's origin)
+                    glm::vec3 pivotPosition = targetPosition + glm::vec3(0.0f, cam.offset.y, 0.0f);
 
-            MonoObject* exc = nullptr;
-            mono_runtime_invoke(method, nullptr, args, &exc);
-            if (exc)
-            {
-                MonoString* s = mono_object_to_string(exc, nullptr);
-                char* utf8 = mono_string_to_utf8(s);
-                BOOM_ERROR("[Mono] Exception: {}", utf8 ? utf8 : "(null)");
-                if (utf8) mono_free(utf8);
-                return false;
-            }
-            return true;
-        }
+                    // 11. Calculate the final camera position
+                    //     Start with a vector pointing "back" by the zoom distance
+                    glm::vec3 offsetVector = glm::vec3(0.0f, 0.0f, -cam.currentDistance);
+                    //     Rotate that vector by the final orientation
+                    glm::vec3 rotatedOffset = orientation * offsetVector;
+                    //     Add it to the pivot point
+                    glm::vec3 desiredPosition = pivotPosition + rotatedOffset;
 
-        BOOM_INLINE void DrawDebugTPC() {
-            ModelAsset const* mdl{ m_Context->assets->TryGet<ModelAsset>("Cube.FBX") };
-            m_Context->renderer->Draw(mdl->data, Transform3D{ pivotPosition, glm::vec3(0.f), glm::vec3(.2f) });
+                    // 12. Update the camera's actual transform
+                    tc.transform.translate = desiredPosition;
+
+                    // 13. Make the camera look at the pivot point
+                    tc.transform.rotate = glm::degrees(glm::eulerAngles(
+                        glm::quatLookAt(glm::normalize(pivotPosition - desiredPosition), glm::vec3(0, 1, 0))
+                    ));
+                }
+            );
         }
     };
 

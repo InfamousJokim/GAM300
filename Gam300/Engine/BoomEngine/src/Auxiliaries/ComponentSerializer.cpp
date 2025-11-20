@@ -103,20 +103,6 @@ namespace Boom
                             e << YAML::BeginMap;
                             e << YAML::Key << "name" << YAML::Value << clip->name;
                             e << YAML::Key << "filePath" << YAML::Value << clip->filePath;
-
-                            // Serialize animation events
-                            e << YAML::Key << "events" << YAML::Value << YAML::BeginSeq;
-                            for (const auto& event : clip->events) {
-                                e << YAML::BeginMap;
-                                e << YAML::Key << "time" << YAML::Value << event.time;
-                                e << YAML::Key << "functionName" << YAML::Value << event.functionName;
-                                e << YAML::Key << "stringParameter" << YAML::Value << event.stringParameter;
-                                e << YAML::Key << "floatParameter" << YAML::Value << event.floatParameter;
-                                e << YAML::Key << "intParameter" << YAML::Value << event.intParameter;
-                                e << YAML::EndMap;
-                            }
-                            e << YAML::EndSeq;
-
                             e << YAML::EndMap;
                         }
                     }
@@ -195,31 +181,11 @@ namespace Boom
 
                 // Deserialize clips
                 if (data["Clips"]) {
-                    size_t clipIndex = 0;
                     for (const auto& clipNode : data["Clips"]) {
                         std::string filePath = clipNode["filePath"].as<std::string>("");
                         std::string name = clipNode["name"].as<std::string>("");
                         if (!filePath.empty()) {
                             animator->LoadAnimationFromFile(filePath, name);
-
-                            // Deserialize animation events for this clip
-                            if (clipNode["events"]) {
-                                auto* clip = const_cast<AnimationClip*>(animator->GetClip(clipIndex));
-                                if (clip) {
-                                    clip->events.clear();
-                                    for (const auto& eventNode : clipNode["events"]) {
-                                        AnimationEvent event;
-                                        event.time = eventNode["time"].as<float>(0.0f);
-                                        event.functionName = eventNode["functionName"].as<std::string>("");
-                                        event.stringParameter = eventNode["stringParameter"].as<std::string>("");
-                                        event.floatParameter = eventNode["floatParameter"].as<float>(0.0f);
-                                        event.intParameter = eventNode["intParameter"].as<int>(0);
-                                        clip->events.push_back(event);
-                                    }
-                                    clip->SortEvents();
-                                }
-                            }
-                            clipIndex++;
                         }
                     }
                 }

@@ -2,7 +2,8 @@
 #include "Helpers.h"
 #include "ECS/ECS.hpp"
 
-#include "common/Core.h"
+// Make sure you have the necessary PhysX headers included
+#include "PxPhysicsAPI.h"
 
 // Using the physx namespace for brevity
 using namespace physx;

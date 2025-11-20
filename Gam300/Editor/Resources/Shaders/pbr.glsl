@@ -89,7 +89,6 @@ struct PointLight {
     vec3 position;
     vec3 radiance;
     float intensity;
-    float range;
 };
 uniform PointLight pointLights[MAX_LIGHTS];
 uniform int noPointLight;
@@ -274,10 +273,7 @@ vec3 ComputePointLights(vec3 N, vec3 V, vec3 f0, vec3 albedo, float roughness, f
         vec3 diffuse = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
         vec3 specular = (NDF * GS * FS) / max(4.0 * nDotV * nDotL, 0.0001);
         float dist = length(pointLights[i].position - vertex.position);
-        if (dist > pointLights[i].range)
-    continue;
         float attenuation = pointLights[i].intensity / (dist * dist);
-        float theta = dot(L, normalize(-spotLights[i].dir));
 
         result += (diffuse + specular) * pointLights[i].radiance * attenuation * nDotL;
     }

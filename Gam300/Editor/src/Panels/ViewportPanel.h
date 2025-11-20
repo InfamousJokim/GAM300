@@ -40,8 +40,6 @@ namespace EditorUI {
         // Ray casting
         void HandleMouseClick(const ImVec2& mousePos, const ImVec2& viewportSize);
 
-        void DrawGuizmo3D(ImVec2 const& itemMin, ImVec2 const& rectSz, glm::mat4 const& view, glm::mat4 const& proj, bool& gizmoWantsInput);
-        void DrawGuizmo2D(ImVec2 const& itemMin, ImVec2 const& rectSz, bool& gizmoWantsInput);
     private:
         Editor* m_Owner = nullptr;  // non-owning
         Boom::AppInterface* m_App = nullptr;  // optionally sourced from owner

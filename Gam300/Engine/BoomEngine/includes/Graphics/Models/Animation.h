@@ -48,29 +48,9 @@ namespace Boom
     struct KeyFrame
     {
         glm::vec3 position = glm::vec3(0.0f);
-        glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);  // Identity quaternion (w,x,y,z)
+        glm::quat rotation = glm::vec3(0.0f);
         glm::vec3 scale = glm::vec3(1.0f);
         float timeStamp = 0.0f;
-    };
-
-    /**
-    * @brief Animation event that triggers callbacks at specific times
-    *
-    * Events fire when the animation playhead crosses their timestamp.
-    * Use for: footstep sounds, VFX spawning, gameplay triggers, etc.
-    */
-    struct AnimationEvent
-    {
-        float time = 0.0f;              // Time in seconds (absolute, not normalized)
-        std::string functionName;       // Name of the function to call
-        std::string stringParameter;    // Optional string data
-        float floatParameter = 0.0f;    // Optional float data
-        int intParameter = 0;           // Optional int data
-
-        // Constructor for easy creation
-        AnimationEvent() = default;
-        AnimationEvent(float t, const std::string& func)
-            : time(t), functionName(func) {}
     };
 
     /**
@@ -90,30 +70,11 @@ namespace Boom
         // Map of joint name -> keyframes for that joint
         std::unordered_map<std::string, std::vector<KeyFrame>> tracks;
 
-        // Animation events that fire at specific times
-        std::vector<AnimationEvent> events;
-
         // Get keyframes for a specific joint
         const std::vector<KeyFrame>* GetTrack(const std::string& jointName) const
         {
             auto it = tracks.find(jointName);
             return (it != tracks.end()) ? &it->second : nullptr;
-        }
-
-        // Add an event to this clip
-        void AddEvent(float time, const std::string& functionName)
-        {
-            events.emplace_back(time, functionName);
-            SortEvents();
-        }
-
-        // Sort events by time for efficient processing
-        void SortEvents()
-        {
-            std::sort(events.begin(), events.end(),
-                [](const AnimationEvent& a, const AnimationEvent& b) {
-                    return a.time < b.time;
-                });
         }
     };
 

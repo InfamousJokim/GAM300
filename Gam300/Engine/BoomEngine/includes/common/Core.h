@@ -12,7 +12,7 @@
 #define GLM_DLL
 
 #pragma warning(push)
-#pragma warning(disable : 4101 4244 4267 4365 4458 4100 5054 4189 26819 6262 26495 33010) //library warnings disable
+#pragma warning(disable : 4101 4244 4267 4365 4458 4100 5054 4189 26819 6262 26495) //library warnings disable
 // add headers that you want to pre-compile here
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -21,7 +21,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
-#include <glm/gtx/euler_angles.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
@@ -42,8 +41,6 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
-#include "PxPhysicsAPI.h"
-
 #pragma warning(pop)
 
 

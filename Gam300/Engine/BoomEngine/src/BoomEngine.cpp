@@ -1,8 +1,8 @@
 ﻿// BoomEngine.cpp : Defines the functions for the static library.
 //
 //Build BoomEngine before running debuger or building Gam300
-#include "Core.h"
 #include "BoomEngine.h"
+#include "Core.h"
 #include "framework.h"
 #include "common/Events.h"
 

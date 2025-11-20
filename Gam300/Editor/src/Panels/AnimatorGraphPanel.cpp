@@ -137,33 +137,34 @@ void AnimatorGraphPanel::Render()
             ImGui::TextDisabled("Initializing graph view...");
         }
 
-        // Manual right-click detection
-        // Check mouse position against node bounds to find which node was clicked
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
-            ImVec2 mousePos = ImGui::GetMousePos();
+            ImVec2 mouseScreen = ImGui::GetMousePos();
 
-            // Check if mouse is within the graph canvas area
-            ImRect canvasRect(canvasPos, ImVec2(canvasPos.x + graphSize.x, canvasPos.y + graphSize.y));
+            // Check if mouse is inside the graph canvas rect
+            bool insideCanvas =
+                mouseScreen.x >= canvasPos.x &&
+                mouseScreen.x <= canvasPos.x + graphSize.x &&
+                mouseScreen.y >= canvasPos.y &&
+                mouseScreen.y <= canvasPos.y + graphSize.y;
 
-            if (canvasRect.Contains(mousePos)) {
+            if (insideCanvas) {
+                // Mouse position in canvas-local coordinates
+                ImVec2 mouseGraph;
+                mouseGraph.x = mouseScreen.x - canvasPos.x;
+                mouseGraph.y = mouseScreen.y - canvasPos.y;
+
+                // Assume node positions are in the same canvas-local space as in GetNode
                 m_ContextNode = (size_t)-1;
 
-                // Check each node's bounds (nodes are 200x100 in size based on GetNode)
                 for (size_t i = 0; i < m_CurrentAnimator->GetStateCount(); ++i) {
                     auto it = m_NodePositions.find(i);
-                    if (it == m_NodePositions.end()) continue;
+                    if (it == m_NodePositions.end())
+                        continue;
 
-                    // Node position in screen space (accounting for canvas position and view offset)
-                    ImVec2 nodeScreenPos;
-                    nodeScreenPos.x = canvasPos.x + it->second.x * m_ViewState.mFactor + m_ViewState.mPosition.x;
-                    nodeScreenPos.y = canvasPos.y + it->second.y * m_ViewState.mFactor + m_ViewState.mPosition.y;
+                    ImVec2 nodePos = it->second;
+                    ImRect nodeRect(nodePos, nodePos + ImVec2(200, 100));
 
-                    // Node size (200x100 scaled by zoom factor)
-                    ImVec2 nodeSize(200.0f * m_ViewState.mFactor, 100.0f * m_ViewState.mFactor);
-
-                    ImRect nodeRect(nodeScreenPos, ImVec2(nodeScreenPos.x + nodeSize.x, nodeScreenPos.y + nodeSize.y));
-
-                    if (nodeRect.Contains(mousePos)) {
+                    if (nodeRect.Contains(mouseGraph)) {
                         m_ContextNode = i;
                         break;
                     }
@@ -173,18 +174,11 @@ void AnimatorGraphPanel::Render()
             }
         }
 
+
         // Context menu MUST be inside the GraphView child window
         if (m_ShowContextMenu) {
             ImGui::OpenPopup("GraphContextMenu");
             m_ShowContextMenu = false;
-
-            // Debug: Log what was right-clicked
-            if (m_ContextNode != (size_t)-1 && m_ContextNode < m_CurrentAnimator->GetStateCount()) {
-                auto* state = m_CurrentAnimator->GetState(m_ContextNode);
-                BOOM_INFO("[Graph] Right-clicked node: {} ('{}')", m_ContextNode, state ? state->name : "unknown");
-            } else {
-                BOOM_INFO("[Graph] Right-clicked empty space");
-            }
         }
 
         if (ImGui::BeginPopup("GraphContextMenu")) {
@@ -545,8 +539,8 @@ void AnimatorGraphPanel::MoveSelectedNodes(const ImVec2 delta)
     }
 }
 
-void AnimatorGraphPanel::AddLink(GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex /*inputSlotIndex*/,
-    GraphEditor::NodeIndex outputNodeIndex, GraphEditor::SlotIndex /*outputSlotIndex*/)
+void AnimatorGraphPanel::AddLink(GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex inputSlotIndex,
+    GraphEditor::NodeIndex outputNodeIndex, GraphEditor::SlotIndex outputSlotIndex)
 {
     if (!m_CurrentAnimator) return;
 
@@ -618,16 +612,16 @@ void AnimatorGraphPanel::CustomDraw(ImDrawList* drawList, ImRect rectangle, Grap
     }
 }
 
-void AnimatorGraphPanel::RightClick(GraphEditor::NodeIndex nodeIndex, GraphEditor::SlotIndex /*slotIndexInput*/,
-    GraphEditor::SlotIndex /*slotIndexOutput*/)
+void AnimatorGraphPanel::RightClick(GraphEditor::NodeIndex nodeIndex, GraphEditor::SlotIndex slotIndexInput,
+    GraphEditor::SlotIndex slotIndexOutput)
 {
-    // nodeIndex is -1 when clicking on empty space
-    if (nodeIndex == (GraphEditor::NodeIndex)-1) {
-        m_ContextNode = (size_t)-1;
-    } else {
-        m_ContextNode = nodeIndex;
-    }
-    m_ShowContextMenu = true;
+    //// nodeIndex is -1 when clicking on empty space
+    //if (nodeIndex == (GraphEditor::NodeIndex)-1) {
+    //    m_ContextNode = (size_t)-1;
+    //} else {
+    //    m_ContextNode = nodeIndex;
+    //}
+    //m_ShowContextMenu = true;
 }
 
 const size_t AnimatorGraphPanel::GetTemplateCount()
@@ -635,7 +629,7 @@ const size_t AnimatorGraphPanel::GetTemplateCount()
     return 1; // Single template for state nodes
 }
 
-const GraphEditor::Template AnimatorGraphPanel::GetTemplate(GraphEditor::TemplateIndex /*index*/)
+const GraphEditor::Template AnimatorGraphPanel::GetTemplate(GraphEditor::TemplateIndex index)
 {
     static const char* inputs[] = { "In" };
     static const char* outputs[] = { "Out" };

@@ -7,7 +7,6 @@
 #include "Shaders/Skybox.h"
 #include "Shaders/Bloom.h"
 #include "Shaders/Shadow.h"
-#include "Shaders/Color.h"
 #include "GlobalConstants.h"
 
 #include <memory>
@@ -53,8 +52,6 @@ namespace Boom {
             pbrShader = std::make_unique<PBRShader>("pbr.glsl");
             bloom = std::make_unique<BloomShader>("bloom.glsl", w, h);
             shadowShader = std::make_unique<ShadowShader>("shadow.glsl");
-			colorShader = std::make_unique<ColorShader>("color2D.glsl", glm::vec4(1.f));
-			color3DShader = std::make_unique<Color3DShader>("color3D.glsl", glm::vec4(1.f));
 
             // --- Framebuffers ---
             frame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/false);
@@ -130,7 +127,6 @@ namespace Boom {
                 : frame->Ratio();
             pbrShader->SetCamera(cam, transform, aspect);
             skyBoxShader->SetCamera(cam, transform, aspect);
-			color3DShader->SetCamera(cam, transform, aspect);
             pbrShader->Use();
         }
 
@@ -146,15 +142,6 @@ namespace Boom {
                 pbrShader->Draw(model, transform, material, showNormalTexture);
             }
         }
-
-        BOOM_INLINE void DrawQuad(Texture const& tex, Transform3D const& transform, glm::vec4 col = glm::vec4{1.f}) {
-			color3DShader->ChangeColor(col);
-            color3DShader->Show(*tex.get(), transform);
-        }
-        BOOM_INLINE void DrawQuad(Texture const& tex, Transform2D const& transform, glm::vec4 col = glm::vec4{ 1.f }) {
-			colorShader->ChangeColor(col);
-            colorShader->Show(*tex.get(), transform);
-		}
 
         BOOM_INLINE float Aspect() const { return frame->Ratio(); } // kept for backward compatibility
 
@@ -286,8 +273,6 @@ namespace Boom {
         std::unique_ptr<FrameBuffer>   frame;
         std::unique_ptr<FrameBuffer>   lowPolyFrame;
         std::unique_ptr<BloomShader>   bloom;
-		std::unique_ptr<ColorShader>   colorShader;
-		std::unique_ptr<Color3DShader> color3DShader;
         SkyboxMesh                     skyboxMesh;
 
     private: // ---------------------- Internal state -----------------------

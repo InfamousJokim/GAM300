@@ -333,27 +333,9 @@ namespace EditorUI {
             }
         }
 
-        if (selected.Has<Boom::SpriteComponent>()) {
-            if (ImGui::CollapsingHeader("Quad 2D", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap)) {
-                ComponentSettings<Boom::SpriteComponent>(ctx);
-
-                auto& q = selected.Get<Boom::SpriteComponent>();
-
-				ImGui::Checkbox("GUI", &q.uiOverlay);
-                ImGui::BeginTable("##maps", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_BordersInnerV);
-                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthFixed);
-                ImGui::TableSetupColumn("Asset", ImGuiTableColumnFlags_WidthStretch);
-                InputAssetWidget<CONSTANTS::DND_PAYLOAD_TEXTURE>("texture", q.textureID);
-                ImGui::EndTable();
-				ImGui::ColorEdit3("color", &q.color[0]);
-            }
-		}
-
         if (selected.Has<Boom::AnimatorComponent>()) {
             AnimatorComponentUI(selected);
         }
-
-        // In: InspectorPanel.cpp
 
         if (selected.Has<Boom::RigidBodyComponent>()) {
             ImGui::PushID("Rigid Body");
@@ -361,7 +343,7 @@ namespace EditorUI {
             // 1. Draw Header
             bool isOpen = ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 
-            // 2. Draw "..." Button
+            // 2. Draw "..." Button (to match photo)
             const ImVec2 headerMin = ImGui::GetItemRectMin();
             const ImVec2 headerMax = ImGui::GetItemRectMax();
             const float  lineH = ImGui::GetFrameHeight();
@@ -392,10 +374,9 @@ namespace EditorUI {
                 const char* currentTypeName;
                 switch (currentType)
                 {
-                case RigidBody3D::Type::STATIC:    currentTypeName = "Static";    break;
-                case RigidBody3D::Type::DYNAMIC:   currentTypeName = "Dynamic";   break;
-                case RigidBody3D::Type::KINEMATIC: currentTypeName = "Kinematic"; break;
-                default:                           currentTypeName = "Unknown";   break;
+                case RigidBody3D::Type::STATIC:  currentTypeName = "Static";  break;
+                case RigidBody3D::Type::DYNAMIC: currentTypeName = "Dynamic"; break;
+                default:                         currentTypeName = "Unknown"; break;
                 }
 
                 ImGui::AlignTextToFramePadding();
@@ -419,13 +400,6 @@ namespace EditorUI {
                     }
                     if (isDynamicSelected) ImGui::SetItemDefaultFocus();
 
-                    bool isKinematicSelected = (currentType == RigidBody3D::Type::KINEMATIC);
-                    if (ImGui::Selectable("Kinematic", isKinematicSelected))
-                    {
-                        m_App->GetPhysicsContext().SetRigidBodyType(selected, RigidBody3D::Type::KINEMATIC);
-                    }
-                    if (isKinematicSelected) ImGui::SetItemDefaultFocus();
-
                     ImGui::EndCombo();
                 }
 
@@ -442,51 +416,6 @@ namespace EditorUI {
                 ImGui::SameLine(150);
                 ImGui::SetNextItemWidth(-1);
                 ImGui::DragFloat("##Mass", &rigidBody->mass, 0.1f, 0.0f, 1000.0f);
-
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Initial Velocity");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(-1);
-                ImGui::DragFloat3("##InitialVelocity", &rigidBody->initialVelocity.x, 0.01f);
-
-                // --- ADD THIS NEW SECTION ---
-                ImGui::Spacing();
-                ImGui::SeparatorText("Constraints"); // Uses a nice separator
-                ImGui::Spacing();
-
-                // Store old values to detect changes
-                bool oldFreezeX = rigidBody->freezeRotationX;
-                bool oldFreezeY = rigidBody->freezeRotationY;
-                bool oldFreezeZ = rigidBody->freezeRotationZ;
-
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Freeze Rotation");
-                ImGui::SameLine(150);
-
-                // We use Push/PopID to make the labels unique for ImGui
-                ImGui::PushID("FreezeRot");
-                ImGui::Checkbox("X", &rigidBody->freezeRotationX);
-                ImGui::SameLine();
-                ImGui::Checkbox("Y", &rigidBody->freezeRotationY);
-                ImGui::SameLine();
-                ImGui::Checkbox("Z", &rigidBody->freezeRotationZ);
-                ImGui::PopID();
-
-                // If any value changed, notify the physics context
-                if (rigidBody->freezeRotationX != oldFreezeX ||
-                    rigidBody->freezeRotationY != oldFreezeY ||
-                    rigidBody->freezeRotationZ != oldFreezeZ)
-                {
-                    // This is a new function we will need to create in PhysicsContext 
-                    m_App->GetPhysicsContext().SetRotationLock(
-                        selected,
-                        rigidBody->freezeRotationX,
-                        rigidBody->freezeRotationY,
-                        rigidBody->freezeRotationZ
-                    );
-                }
-                // --- END OF NEW SECTION ---
-
 
                 ImGui::Spacing();
                 ImGui::Unindent(12.0f);
@@ -739,10 +668,10 @@ namespace EditorUI {
                                         break;
                                     }
                                     if (ImGui::MenuItem("Insert After (use Selected Transform if any)")) {
-                                        glm::vec3 path = a->path[i];
+                                        glm::vec3 p = a->path[i];
                                         if (selected.Has<Boom::TransformComponent>())
-                                            path = selected.Get<Boom::TransformComponent>().transform.translate;
-                                        a->path.insert(a->path.begin() + i + 1, path);
+                                            p = selected.Get<Boom::TransformComponent>().transform.translate;
+                                        a->path.insert(a->path.begin() + i + 1, p);
                                         ImGui::EndPopup();
                                         break;
                                     }
@@ -985,60 +914,207 @@ namespace EditorUI {
 
         if (selected.Has<DirectLightComponent>()) {
             auto& dl = selected.Get<DirectLightComponent>();
-            DrawComponentSection(
-                "Direct Light",
-                &dl,
-                [&](void* p) -> const xproperty::type::object*
-                {
-                    auto* comp = static_cast<DirectLightComponent*>(p);
-                    ImGui::ColorEdit3("Irradiance", &comp->light.radiance[0]);
-
-                    return GetDirectLightComponentProperties(p);
-                },
-                true,
-                [&]() { ctx->scene.remove<DirectLightComponent>(m_App->SelectedEntity()); }
-            );
+            DrawComponentSection("Directional Light", &dl, GetDirectLightComponentProperties, true,
+                [&]() { ctx->scene.remove<DirectLightComponent>(m_App->SelectedEntity()); });
         }
 
         if (selected.Has<PointLightComponent>()) {
             auto& pl = selected.Get<PointLightComponent>();
-
-            DrawComponentSection(
-                "Point Light",
-                &pl,
-                [&](void* p) -> const xproperty::type::object*
-                {
-                    auto* comp = static_cast<PointLightComponent*>(p);
-                    ImGui::ColorEdit3("Irradiance", &comp->light.radiance[0]);
-                    
-                    return GetPointLightComponentProperties(p);
-                },
-                true,
-                [&]() { ctx->scene.remove<PointLightComponent>(m_App->SelectedEntity()); }
-            );
+            DrawComponentSection("Point Light", &pl, GetPointLightComponentProperties, true,
+                [&]() { ctx->scene.remove<PointLightComponent>(m_App->SelectedEntity()); });
         }
 
         if (selected.Has<SpotLightComponent>()) {
             auto& sl = selected.Get<SpotLightComponent>();
-            DrawComponentSection(
-                "Spot Light",
-                &sl,
-                [&](void* p) -> const xproperty::type::object*
-                {
-                    auto* comp = static_cast<SpotLightComponent*>(p);
-                    ImGui::ColorEdit3("Irradiance", &comp->light.radiance[0]);
-
-                    return GetSpotLightComponentProperties(p);
-                },
-                true,
-                [&]() { ctx->scene.remove<SpotLightComponent>(m_App->SelectedEntity()); }
-            );
+            DrawComponentSection("Spot Light", &sl, GetSpotLightComponentProperties, true,
+                [&]() { ctx->scene.remove<SpotLightComponent>(m_App->SelectedEntity()); });
         }
 
         if (selected.Has<SkyboxComponent>()) {
             auto& sky = selected.Get<SkyboxComponent>();
             DrawComponentSection("Skybox", &sky, GetSkyboxComponentProperties, true,
                 [&]() { ctx->scene.remove<SkyboxComponent>(m_App->SelectedEntity()); });
+        }
+
+        if (selected.Has<Boom::ScriptComponent>()) {
+            auto& sc = selected.Get<Boom::ScriptComponent>();
+
+            // Collapsing header + settings ("..." to remove), matching your style
+            bool isOpen = ImGui::CollapsingHeader("Script",
+                ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+
+            // Settings button (remove)
+            const ImVec2 headerMin = ImGui::GetItemRectMin();
+            const ImVec2 headerMax = ImGui::GetItemRectMax();
+            const float  lineH = ImGui::GetFrameHeight();
+            const float  y = headerMin.y + (headerMax.y - headerMin.y - lineH) * 0.5f;
+            ImGui::SetCursorScreenPos(ImVec2(headerMax.x - lineH, y));
+            if (ImGui::Button("...", ImVec2(lineH, lineH)))
+                ImGui::OpenPopup("ScriptSettings");
+
+            bool removed = false;
+            if (ImGui::BeginPopup("ScriptSettings")) {
+                if (ImGui::MenuItem("Remove Component"))
+                    removed = true;
+                ImGui::EndPopup();
+            }
+
+            // Reset cursor for contents
+            ImGui::SetCursorScreenPos(ImVec2(headerMin.x,
+                headerMax.y + ImGui::GetStyle().ItemSpacing.y));
+
+            if (isOpen) {
+                ImGui::Indent(12.0f);
+
+                // Track changes to trigger recreation
+                static std::string lastTypeName;
+                static bool lastEnabled = false;
+                static entt::entity lastEntity = entt::null;
+
+                entt::entity currentEntity = m_App->SelectedEntity();
+
+                // Reset tracking when switching entities
+                if (currentEntity != lastEntity) {
+                    lastTypeName = sc.TypeName;
+                    lastEnabled = sc.Enabled;
+                    lastEntity = currentEntity;
+                }
+
+                // ----- Enabled toggle -----
+                bool enabledChanged = false;
+                if (ImGui::Checkbox("Enabled", &sc.Enabled)) {
+                    if (sc.Enabled != lastEnabled) {
+                        enabledChanged = true;
+                        lastEnabled = sc.Enabled;
+                    }
+                }
+
+                // ----- Type name (namespace.Type) -----
+                ImGui::AlignTextToFramePadding();
+                ImGui::Text("Type");
+                ImGui::SameLine(150);
+                ImGui::SetNextItemWidth(-1);
+
+                static char typeBuf[256];
+#ifdef _MSC_VER
+                strncpy_s(typeBuf, sizeof(typeBuf), sc.TypeName.c_str(), sizeof(typeBuf) - 1);
+#else
+                std::snprintf(typeBuf, sizeof(typeBuf), "%s", sc.TypeName.c_str());
+#endif
+
+                bool typeNameChanged = false;
+                if (ImGui::InputText("##ScriptTypeName", typeBuf, sizeof(typeBuf),
+                    ImGuiInputTextFlags_EnterReturnsTrue))
+                {
+                    sc.TypeName = typeBuf;
+                    if (sc.TypeName != lastTypeName) {
+                        typeNameChanged = true;
+                        lastTypeName = sc.TypeName;
+                    }
+                }
+
+                // Auto-recreate if TypeName changed (on Enter) or Enabled toggled
+                if ((typeNameChanged || enabledChanged) && m_Owner && m_Owner->GetContext()) {
+                    auto* appCtx = m_Owner->GetContext();
+                    if (appCtx->scriptingSystem) {
+                        appCtx->scriptingSystem->RecreateForEntity(currentEntity, sc);
+                        BOOM_INFO("[Inspector] Auto-reloaded script due to changes");
+                    }
+                }
+
+                // ----- Params (JSON) -----
+                ImGui::AlignTextToFramePadding();
+                ImGui::Text("Params (JSON)");
+                ImGui::SameLine(150);
+                ImGui::SetNextItemWidth(-1);
+
+                // persistent buffer per-selected entity
+                static char paramsBuf[2048];
+                static entt::entity lastJsonEntity = entt::null;
+
+                if (currentEntity != lastJsonEntity) {
+                    std::string initial = sc.Params.dump(2); // pretty JSON
+#ifdef _MSC_VER
+                    strncpy_s(paramsBuf, sizeof(paramsBuf), initial.c_str(), sizeof(paramsBuf) - 1);
+#else
+                    std::snprintf(paramsBuf, sizeof(paramsBuf), "%s", initial.c_str());
+#endif
+                    lastJsonEntity = currentEntity;
+                }
+
+                if (ImGui::InputTextMultiline(
+                    "##ScriptParams",
+                    paramsBuf,
+                    IM_ARRAYSIZE(paramsBuf),
+                    ImVec2(-1, 120),
+                    ImGuiInputTextFlags_AllowTabInput))
+                {
+                    // Try parse back into JSON whenever text changes
+                    try {
+                        sc.Params = nlohmann::json::parse(paramsBuf);
+                    }
+                    catch (...) {
+                        ImGui::SameLine();
+                        ImGui::TextColored(ImVec4(1, 0.3f, 0.3f, 1), "Invalid JSON");
+                    }
+                }
+
+                // ----- Runtime info -----
+                ImGui::Separator();
+                ImGui::TextDisabled("Runtime Info");
+                ImGui::Text("Instance ID: %llu", (unsigned long long)sc.InstanceId);
+
+                // Show if script is actually running
+                if (sc.InstanceId != 0 && sc.Enabled) {
+                    ImGui::TextColored(ImVec4(0, 1, 0, 1), "Active");
+                }
+                else if (sc.InstanceId == 0 && sc.Enabled) {
+                    ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "Waiting for creation");
+                }
+                else {
+                    ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1), "Disabled");
+                }
+
+                // ----- Reload buttons -----
+                ImGui::Spacing();
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                if (ImGui::Button("Reload This Script", ImVec2(-1, 0))) {
+                    if (m_Owner && m_Owner->GetContext()) {
+                        auto* appCtx = m_Owner->GetContext();
+                        if (appCtx->scriptingSystem) {
+                            appCtx->scriptingSystem->RecreateForEntity(currentEntity, sc);
+                            BOOM_INFO("[Inspector] Manually reloaded script instance");
+                        }
+                    }
+                }
+
+                if (ImGui::Button("Hot Reload All Scripts (DLL)", ImVec2(-1, 0))) {
+                    if (m_Owner && m_Owner->GetContext()) {
+                        auto* appCtx = m_Owner->GetContext();
+                        if (appCtx->scriptingSystem) {
+                            appCtx->scriptingSystem->ReloadScripts();
+                            BOOM_INFO("[Inspector] Hot reloaded all scripts from DLL!");
+                        }
+                    }
+                }
+
+                ImGui::Unindent(12.0f);
+            }
+
+            if (removed) {
+                // Destroy the script instance before removing component
+                if (m_Owner && m_Owner->GetContext()) {
+                    auto* appCtx = m_Owner->GetContext();
+                    if (appCtx->scriptingSystem) {
+                        appCtx->scriptingSystem->DestroyForEntity(m_App->SelectedEntity(), sc);
+                    }
+                }
+                ctx->scene.remove<Boom::ScriptComponent>(m_App->SelectedEntity());
+                return;
+            }
+            ImGui::Spacing();
         }
 
         // ===== Add Component =====
@@ -1205,7 +1281,7 @@ namespace EditorUI {
                         ImGui::CloseCurrentPopup();
                     }
 
-                    ImGui::PopID();
+                    
                 }
             }
         }
@@ -1250,12 +1326,11 @@ namespace EditorUI {
                     UpdateComponent<Boom::DirectLightComponent>(Boom::ComponentID::DIRECT_LIGHT, selected);
                     UpdateComponent<Boom::PointLightComponent>(Boom::ComponentID::POINT_LIGHT, selected);
                     UpdateComponent<Boom::SpotLightComponent>(Boom::ComponentID::SPOT_LIGHT, selected);
-                    //UpdateComponent<Boom::SoundComponent>(Boom::ComponentID::SOUND, selected);
-                    //UpdateComponent<Boom::ScriptComponent>(Boom::ComponentID::SCRIPT, selected);
+                    UpdateComponent<Boom::SoundComponent>(Boom::ComponentID::SOUND, selected);
+                    UpdateComponent<Boom::ScriptComponent>(Boom::ComponentID::SCRIPT, selected);
                     UpdateComponent<Boom::NavAgentComponent>(Boom::ComponentID::NAV_AGENT_COMPONENT, selected);
                     UpdateComponent<Boom::AIComponent>(Boom::ComponentID::AI_COMPONENT, selected);
                     UpdateComponent<Boom::ThirdPersonCameraComponent>(Boom::ComponentID::THIRD_PERSON_CAMERA, selected);
-					UpdateComponent<Boom::SpriteComponent>(Boom::ComponentID::SPRITE, selected);
                     ImGui::EndTable();
                 }
             }

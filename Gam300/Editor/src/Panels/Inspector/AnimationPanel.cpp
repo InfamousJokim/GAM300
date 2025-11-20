@@ -83,14 +83,7 @@ namespace EditorUI {
                     if (!clip) continue;
 
                     ImGui::PushID(static_cast<int>(i));
-
-                    // Clip header with events badge
                     ImGui::BulletText("%s (%.2fs)", clip->name.c_str(), clip->duration);
-                    if (!clip->events.empty()) {
-                        ImGui::SameLine();
-                        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "[%zu events]", clip->events.size());
-                    }
-
                     ImGui::SameLine();
                     if (ImGui::SmallButton("Remove")) {
                         clipsToRemove.push_back(i);
@@ -99,90 +92,6 @@ namespace EditorUI {
                         ImGui::SameLine();
                         ImGui::TextDisabled("- %s", clip->filePath.c_str());
                     }
-
-                    // Show events for this clip (Interactive UI)
-                    if (!clip->events.empty()) {
-                        ImGui::Indent(20.0f);
-                        std::vector<size_t> eventsToDelete;
-
-                        for (size_t e = 0; e < clip->events.size(); ++e) {
-                            const auto& evt = clip->events[e];
-                            ImGui::PushID(static_cast<int>(e));
-
-                            // Event row with time and function name
-                            ImGui::Text("%.2fs:", evt.time);
-                            ImGui::SameLine();
-                            ImGui::TextColored(ImVec4(0.7f, 1.0f, 0.7f, 1.0f), "%s", evt.functionName.c_str());
-
-                            // Show parameters if present
-                            bool hasParams = false;
-                            if (!evt.stringParameter.empty()) {
-                                ImGui::SameLine();
-                                ImGui::TextDisabled("str=\"%s\"", evt.stringParameter.c_str());
-                                hasParams = true;
-                            }
-                            if (evt.floatParameter != 0.0f) {
-                                ImGui::SameLine();
-                                ImGui::TextDisabled("float=%.2f", evt.floatParameter);
-                                hasParams = true;
-                            }
-                            if (evt.intParameter != 0) {
-                                ImGui::SameLine();
-                                ImGui::TextDisabled("int=%d", evt.intParameter);
-                                hasParams = true;
-                            }
-
-                            // Action buttons
-                            ImGui::SameLine();
-                            if (ImGui::SmallButton("Test")) {
-                                BOOM_INFO("[TEST] Event: '{}' at {:.2f}s", evt.functionName, evt.time);
-                                animator->TestFireEvent(evt);
-                            }
-                            if (ImGui::IsItemHovered()) {
-                                ImGui::SetTooltip("Fire this event now (check console)");
-                            }
-
-                            ImGui::SameLine();
-                            if (ImGui::SmallButton("Edit")) {
-                                m_EditingClipIndex = static_cast<int>(i);
-                                m_EditingEventIndex = static_cast<int>(e);
-                                m_TempEvent = evt;
-                                strncpy_s(m_EventFunctionNameBuffer, evt.functionName.c_str(), sizeof(m_EventFunctionNameBuffer) - 1);
-                                m_EventFunctionNameBuffer[sizeof(m_EventFunctionNameBuffer) - 1] = '\0';
-                                m_OpenEditEventPopup = true;
-                            }
-
-                            ImGui::SameLine();
-                            if (ImGui::SmallButton("Delete")) {
-                                eventsToDelete.push_back(e);
-                            }
-
-                            ImGui::PopID();
-                        }
-
-                        // Delete events (reverse order)
-                        for (auto it = eventsToDelete.rbegin(); it != eventsToDelete.rend(); ++it) {
-                            const_cast<Boom::AnimationClip*>(clip)->events.erase(
-                                const_cast<Boom::AnimationClip*>(clip)->events.begin() + *it
-                            );
-                            BOOM_INFO("Deleted event at index {}", *it);
-                        }
-
-                        ImGui::Unindent(20.0f);
-                    }
-
-                    // Add Event button
-                    ImGui::Indent(20.0f);
-                    if (ImGui::SmallButton("+ Add Event")) {
-                        m_EditingClipIndex = static_cast<int>(i);
-                        m_EditingEventIndex = -1;  // -1 = new event
-                        m_TempEvent = Boom::AnimationEvent();
-                        m_TempEvent.time = 0.0f;
-                        m_EventFunctionNameBuffer[0] = '\0';
-                        m_OpenEditEventPopup = true;
-                    }
-                    ImGui::Unindent(20.0f);
-
                     ImGui::PopID();
                 }
 
@@ -225,8 +134,8 @@ namespace EditorUI {
                         BOOM_INFO("Loaded animation clip from file: {}", filePath);
                     }
                     // Also accept model asset (from resource panel)
-                    else if (const ImGuiPayload* pd = ImGui::AcceptDragDropPayload(CONSTANTS::DND_PAYLOAD_MODEL.data())) {
-                        Boom::AssetID assetID = *(Boom::AssetID*)pd->Data;
+                    else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(CONSTANTS::DND_PAYLOAD_MODEL.data())) {
+                        Boom::AssetID assetID = *(Boom::AssetID*)payload->Data;
                         auto& assetReg = m_App->GetAssetRegistry();
                         auto* modelAsset = assetReg.TryGet<Boom::ModelAsset>(assetID);
                         if (modelAsset && modelAsset->uid != EMPTY_ASSET) {
@@ -733,125 +642,6 @@ namespace EditorUI {
                             ImGui::CloseCurrentPopup();
                         }
                     }
-                }
-
-                ImGui::EndPopup();
-            }
-        }
-
-        // === Event Edit Popup ===
-        if (selected.Has<Boom::AnimatorComponent>()) {
-            auto& animComp = selected.Get<Boom::AnimatorComponent>();
-            auto& animator = animComp.animator;
-
-            if (m_OpenEditEventPopup) {
-                ImGui::OpenPopup("EditEventPopup");
-                m_OpenEditEventPopup = false;
-            }
-
-            if (animator && ImGui::BeginPopupModal("EditEventPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-                bool isNewEvent = (m_EditingEventIndex == -1);
-
-                if (isNewEvent) {
-                    ImGui::Text("Add Animation Event");
-                } else {
-                    ImGui::Text("Edit Animation Event");
-                }
-
-                ImGui::Separator();
-                ImGui::Spacing();
-
-                // Function Name
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Function Name");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(250);
-                if (ImGui::InputText("##FunctionName", m_EventFunctionNameBuffer, sizeof(m_EventFunctionNameBuffer))) {
-                    m_TempEvent.functionName = std::string(m_EventFunctionNameBuffer);
-                }
-                if (ImGui::IsItemHovered()) {
-                    ImGui::SetTooltip("Name of the event (e.g., OnFootstep, OnAttackHit)");
-                }
-
-                // Time
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Time (seconds)");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(250);
-                float clipDuration = 10.0f;  // Default max
-                if (m_EditingClipIndex >= 0 && m_EditingClipIndex < static_cast<int>(animator->GetClipCount())) {
-                    const auto* clip = animator->GetClip(m_EditingClipIndex);
-                    if (clip) clipDuration = clip->duration;
-                }
-                ImGui::DragFloat("##Time", &m_TempEvent.time, 0.01f, 0.0f, clipDuration);
-                if (ImGui::IsItemHovered()) {
-                    ImGui::SetTooltip("When the event fires during animation playback");
-                }
-
-                ImGui::Spacing();
-                ImGui::Separator();
-                ImGui::Text("Optional Parameters");
-                ImGui::Separator();
-                ImGui::Spacing();
-
-                // String Parameter
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("String");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(250);
-                char stringParamBuffer[256];
-                strncpy_s(stringParamBuffer, m_TempEvent.stringParameter.c_str(), sizeof(stringParamBuffer) - 1);
-                stringParamBuffer[sizeof(stringParamBuffer) - 1] = '\0';
-                if (ImGui::InputText("##StringParam", stringParamBuffer, sizeof(stringParamBuffer))) {
-                    m_TempEvent.stringParameter = std::string(stringParamBuffer);
-                }
-
-                // Float Parameter
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Float");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(250);
-                ImGui::DragFloat("##FloatParam", &m_TempEvent.floatParameter, 0.1f);
-
-                // Int Parameter
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text("Int");
-                ImGui::SameLine(150);
-                ImGui::SetNextItemWidth(250);
-                ImGui::DragInt("##IntParam", &m_TempEvent.intParameter);
-
-                ImGui::Spacing();
-                ImGui::Separator();
-                ImGui::Spacing();
-
-                // Buttons
-                if (ImGui::Button("Save", ImVec2(120, 0))) {
-                    if (m_EditingClipIndex >= 0 && m_EditingClipIndex < static_cast<int>(animator->GetClipCount())) {
-                        auto* clip = const_cast<Boom::AnimationClip*>(animator->GetClip(m_EditingClipIndex));
-                        if (clip) {
-                            if (isNewEvent) {
-                                clip->events.push_back(m_TempEvent);
-                                clip->SortEvents();
-                                BOOM_INFO("Added event '{}' at {:.2f}s to clip '{}'",
-                                    m_TempEvent.functionName, m_TempEvent.time, clip->name);
-                            } else {
-                                clip->events[m_EditingEventIndex] = m_TempEvent;
-                                clip->SortEvents();
-                                BOOM_INFO("Updated event '{}' at {:.2f}s",
-                                    m_TempEvent.functionName, m_TempEvent.time);
-                            }
-                        }
-                    }
-                    m_EditingClipIndex = -1;
-                    m_EditingEventIndex = -1;
-                    ImGui::CloseCurrentPopup();
-                }
-
-                ImGui::SameLine();
-                if (ImGui::Button("Cancel", ImVec2(120, 0))) {
-                    m_EditingClipIndex = -1;
-                    m_EditingEventIndex = -1;
-                    ImGui::CloseCurrentPopup();
                 }
 
                 ImGui::EndPopup();

@@ -1,11 +1,9 @@
 #pragma once
-#include "common/Core.h"
 #include "Callback.h"
 #include "Utilities.h"
 #include "Auxiliaries/Assets.h"
 #include <iostream>
 #include "PxPhysicsAPI.h"
-#include <foundation/PxMath.h>
 
 namespace Boom {
     struct PhysicsContext {
@@ -439,27 +437,23 @@ namespace Boom {
                 }
 
                 // create actor instanace
-                // create actor instanace
-                if (body.type == RigidBody3D::DYNAMIC || body.type == RigidBody3D::KINEMATIC)
+                if (body.type == RigidBody3D::DYNAMIC)
                 {
                     body.actor = PxCreateDynamic(*m_Physics, pose, *collider.Shape, body.density);
 
-                    // Recalculate the mass and inertia tensor.
+                    // --- SOLUTION: Add this line ---
+                    // Recalculate the mass and inertia tensor based on the final, rotated capsule shape.
                     PxRigidBodyExt::updateMassAndInertia(*static_cast<PxRigidBody*>(body.actor), body.density);
+
                     body.actor->setActorFlag(PxActorFlag::eSEND_SLEEP_NOTIFIES, true);
 
                     PxRigidDynamic* dyn = static_cast<PxRigidDynamic*>(body.actor);
                     if (dyn) {
+                        // You can remove dyn->setMass(body.mass); as updateMassAndInertIA handles it.
                         dyn->setLinearVelocity(PxVec3(body.initialVelocity.x, body.initialVelocity.y, body.initialVelocity.z));
-
-                        // --- THIS IS THE NEW PART ---
-                        // If it's KINEMATIC, set the PhysX flag
-                        if (body.type == RigidBody3D::KINEMATIC) {
-                            dyn->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-                        }
                     }
                 }
-                else // STATIC
+                else if (body.type == RigidBody3D::STATIC)
                 {
                     body.actor
                         = PxCreateStatic(*m_Physics,
@@ -527,15 +521,8 @@ namespace Boom {
             if (newType == RigidBody3D::DYNAMIC)
             {
                 PxRigidDynamic* dyn = m_Physics->createRigidDynamic(transform);
+                // CRITICAL: Update mass and inertia for the new dynamic body
                 PxRigidBodyExt::updateMassAndInertia(*dyn, body.density);
-                dyn->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Ensure it's not kinematic
-                newActor = dyn;
-            }
-            else if (newType == RigidBody3D::KINEMATIC) // --- NEW BLOCK ---
-            {
-                PxRigidDynamic* dyn = m_Physics->createRigidDynamic(transform);
-                PxRigidBodyExt::updateMassAndInertia(*dyn, body.density);
-                dyn->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true); // Set it to kinematic
                 newActor = dyn;
             }
             else // newType is STATIC
@@ -570,41 +557,8 @@ namespace Boom {
             UpdateColliderShape(entity, assetRegistry);
         }
 
-		//raycast functions
-        BOOM_INLINE glm::vec3 ResolveThirdPersonCameraPosition(glm::vec3 const& playerEye, glm::vec3 const& idealCamPosition, float minDist = 0.5f)
-        {
-            PxVec3 targetPos{ ToPxVec3(playerEye) };
-			PxVec3 idealCamPos{ ToPxVec3(idealCamPosition) };
-            PxVec3 dir = (idealCamPos - targetPos).getNormalized();
-            PxReal maxDist = (idealCamPos - targetPos).magnitude();
 
-            PxRaycastBuffer hit;
-            if (m_Scene->raycast(targetPos, dir, maxDist, hit))
-                return ToGLMVec3(targetPos + dir * PxMax(hit.block.distance - 0.05f, minDist));
 
-            return ToGLMVec3(idealCamPos);
-        }
-	BOOM_INLINE void SetRotationLock(Boom::Entity entity, bool lockX, bool lockY, bool lockZ)
-        {
-            {
-                if (!entity.Has<Boom::RigidBodyComponent>())
-                    return;
-
-                auto& rc = entity.Get<Boom::RigidBodyComponent>();
-                if (!rc.RigidBody.actor)
-                    return;
-
-                // Get the dynamic actor (constraints only apply to dynamic bodies)
-                physx::PxRigidDynamic* dynActor = rc.RigidBody.actor->is<physx::PxRigidDynamic>();
-                if (dynActor)
-                {
-                    // Set each angular lock flag individually
-                    dynActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, lockX);
-                    dynActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, lockY);
-                    dynActor->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, lockZ);
-                }
-            }
-        }
         // Mesh Colliders
         BOOM_INLINE PxConvexMeshGeometry CookMesh(const MeshData<ShadedVert>& data) {
             // px vertex container
