@@ -47,14 +47,14 @@ namespace Boom {
 	struct Transform2D {
 		BOOM_INLINE Transform2D() : translate{}, rotate{}, scale{ 1.f } {}
 		BOOM_INLINE Transform2D(Transform2D const& t) = default;
-		BOOM_INLINE Transform2D(glm::vec3 t, float r, glm::vec2 s)
+		BOOM_INLINE Transform2D(glm::vec2 t, float r, glm::vec2 s)
 			: translate{ t }
 			, rotate{ r }
 			, scale{ s }
 		{
 		}
 		BOOM_INLINE Transform2D(Transform3D const& t)
-			: translate{ t.translate.x,  t.translate.y, t.translate.z }
+			: translate{ t.translate.x,  t.translate.y }
 			, rotate{ t.rotate.z }
 			, scale{ t.scale.x, t.scale.y }
 		{
@@ -66,7 +66,7 @@ namespace Boom {
 					  translate.x,		    translate.y,		 1.f };
 		}
 
-		glm::vec3 translate; //needs to be vec3 due to z-rendering order
+		glm::vec2 translate;
 		float rotate;
 		glm::vec2 scale;
 
