@@ -252,7 +252,9 @@
     <ClCompile Include="includes\AI\DetourNavSystem.cpp" />
     <ClCompile Include="includes\AI\NavAgent.cpp" />
     <ClCompile Include="includes\Audio\Audio.cpp" />
-    <ClCompile Include="includes\Scripting\FileWatcher.h" />
+    <ClCompile Include="includes\Scripting\FileWatcher.h">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Application\Application.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>

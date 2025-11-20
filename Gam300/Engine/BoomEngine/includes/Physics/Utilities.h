@@ -20,9 +20,13 @@ namespace Boom {
         enum Type {
             DYNAMIC = 0,
             STATIC,
+            KINEMATIC,
         } type;
 
         bool isColliding = false;
+        bool freezeRotationX = false;
+        bool freezeRotationY = false;
+        bool freezeRotationZ = false;
 
         // RigidBody3D
         XPROPERTY_DEF(
@@ -31,9 +35,13 @@ namespace Boom {
             obj_member<"Mass", &Boom::RigidBody3D::mass>,
             obj_member<"InitialVelocity", &Boom::RigidBody3D::initialVelocity>,
             obj_member<"Previous Scale", &Boom::RigidBody3D::previousScale>,
+            obj_member<"FreezeRotationX", &Boom::RigidBody3D::freezeRotationX>,
+            obj_member<"FreezeRotationY", &Boom::RigidBody3D::freezeRotationY>,
+            obj_member<"FreezeRotationZ", &Boom::RigidBody3D::freezeRotationZ>,
             obj_member<"Type", &Boom::RigidBody3D::type,
             member_enum_value<"DYNAMIC", Boom::RigidBody3D::Type::DYNAMIC>,
-            member_enum_value<"STATIC", Boom::RigidBody3D::Type::STATIC>
+            member_enum_value<"STATIC", Boom::RigidBody3D::Type::STATIC>,
+            member_enum_value<"KINEMATIC", Boom::RigidBody3D::Type::KINEMATIC>
             >
         )
     };

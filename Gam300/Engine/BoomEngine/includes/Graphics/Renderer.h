@@ -8,7 +8,7 @@
 #include "Shaders/Bloom.h"
 #include "Shaders/Shadow.h"
 #include "GlobalConstants.h"
-
+#include "Shaders/Color.h"
 #include <memory>
 #include <string>
 #include <utility>
@@ -52,7 +52,8 @@ namespace Boom {
             pbrShader = std::make_unique<PBRShader>("pbr.glsl");
             bloom = std::make_unique<BloomShader>("bloom.glsl", w, h);
             shadowShader = std::make_unique<ShadowShader>("shadow.glsl");
-
+			color3DShader = std::make_unique<Color3DShader>("color3D.glsl", glm::vec4{ 1.f });
+			colorShader = std::make_unique<ColorShader>("color2D.glsl", glm::vec4{ 1.f });
             // --- Framebuffers ---
             frame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/false);
             lowPolyFrame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/true);
@@ -142,7 +143,14 @@ namespace Boom {
                 pbrShader->Draw(model, transform, material, showNormalTexture);
             }
         }
-
+        BOOM_INLINE void DrawQuad(Texture const& tex, Transform3D const& transform, glm::vec4 col = glm::vec4{ 1.f }) {
+            color3DShader->ChangeColor(col);
+            color3DShader->Show(*tex.get(), transform);
+        }
+        BOOM_INLINE void DrawQuad(Texture const& tex, Transform2D const& transform, glm::vec4 col = glm::vec4{ 1.f }) {
+            colorShader->ChangeColor(col);
+            colorShader->Show(*tex.get(), transform);
+        }
         BOOM_INLINE float Aspect() const { return frame->Ratio(); } // kept for backward compatibility
 
     public: // ---------------------- Frame lifecycle ----------------------
@@ -273,7 +281,10 @@ namespace Boom {
         std::unique_ptr<FrameBuffer>   frame;
         std::unique_ptr<FrameBuffer>   lowPolyFrame;
         std::unique_ptr<BloomShader>   bloom;
+        std::unique_ptr<Color3DShader> color3DShader;
+        std::unique_ptr<ColorShader> colorShader;
         SkyboxMesh                     skyboxMesh;
+        
 
     private: // ---------------------- Internal state -----------------------
         int32_t m_Width{};

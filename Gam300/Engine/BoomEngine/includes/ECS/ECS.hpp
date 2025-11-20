@@ -22,6 +22,7 @@ namespace Boom {
         THIRD_PERSON_CAMERA,
         NAV_AGENT_COMPONENT,
         AI_COMPONENT,
+        SPRITE,
         COUNT
     };
     constexpr std::string_view COMPONENT_NAMES[]{
@@ -39,7 +40,8 @@ namespace Boom {
         "Script",               //11
         "Third Person Camera" ,  //12
         "Nav Agent Component",
-        "AI Component"
+        "AI Component",
+        "Sprite"
 
     };
 
@@ -314,6 +316,7 @@ namespace Boom {
         bool  active = true;
         bool  dirty = false; // set true when target changes
         std::string followName;
+        glm::vec3 velocity = glm::vec3(0.f);
         entt::entity follow = entt::null; //this is player entity to follow
         float repathCooldown = 0.25f;     // seconds between path rebuilds
         float retargetDist = 0.5f;      // re-path if player moved this far
@@ -323,6 +326,7 @@ namespace Boom {
             , obj_member<"Target", &NavAgentComponent::target>
             , obj_member<"Speed", &NavAgentComponent::speed>
             , obj_member<"ArriveRadius", &NavAgentComponent::arrive>
+			, obj_member<"Velocity", &NavAgentComponent::velocity>
             , obj_member<"Active", &NavAgentComponent::active>
             , obj_member<"RepathCooldown", &NavAgentComponent::repathCooldown>
             , obj_member<"RetargetDistance", &NavAgentComponent::retargetDist>
@@ -355,6 +359,18 @@ namespace Boom {
             , obj_member<"PlayerName", &AIComponent::playerName>
            
             , obj_member<"PatrolIndex", &AIComponent::patrolIndex>
+        )
+    };
+    struct SpriteComponent {
+        AssetID textureID{ EMPTY_ASSET };
+        glm::vec4 color{ 1.0f };
+        bool uiOverlay{ true };
+
+        XPROPERTY_DEF(
+            "SpriteComponent", SpriteComponent,
+            obj_member<"textureID", &SpriteComponent::textureID>,
+            obj_member<"color", &SpriteComponent::color>,
+            obj_member<"uiOverlay", &SpriteComponent::uiOverlay>
         )
     };
     struct Entity

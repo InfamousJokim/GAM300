@@ -31,7 +31,11 @@ namespace EditorUI {
         void SetFullscreen(bool fullscreen) { m_IsFullscreen = fullscreen; }
         bool IsFullscreen() const { return m_IsFullscreen; }
         void ToggleFullscreen() { m_IsFullscreen = !m_IsFullscreen; }
-
+        void DrawGuizmo2D(ImVec2 const& itemMin, ImVec2 const& rectSz, bool& gizmoWantsInput);
+        void DrawGuizmo3D(
+            ImVec2 const& itemMin, ImVec2 const& rectSz,
+            glm::mat4 const& view, glm::mat4 const& proj,
+            bool& gizmoWantsInput);
     private:
         // helpers
         std::uint32_t QuerySceneFrame() const;   // prefers AppInterface::GetSceneFrame()

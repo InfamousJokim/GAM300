@@ -1,5 +1,6 @@
 ﻿// ViewportPanel.cpp - WITH RAY CASTING
-#include "Panels/ViewportPanel.h"
+#include "Core.h"
+#include "../src/Panels/ViewportPanel.h"
 #include "Editor.h"
 #include "Context/Context.h"
 #include "Context/DebugHelpers.h"

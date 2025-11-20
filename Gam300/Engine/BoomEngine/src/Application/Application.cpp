@@ -27,34 +27,7 @@ namespace Boom
         const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Release").string();
 #endif
 
-        if (!InitMonoRuntime(monoBase, asmDir, "BoomDomain"))
-        {
-#ifdef _DEBUG
-            BOOM_ERROR("[Scripting] Failed to initialize Mono runtime!");
-#endif // DEBUG
-        }
-
-        else
-        {
-            RegisterScriptInternalCalls(m_Context);
-            if (!LoadGameAssembly("GameScripts.dll"))
-            {
-#ifdef _DEBUG
-                BOOM_ERROR("[Scripting] Failed to load GameScripts.dll");
-
-#endif // DEBUG
-
-            }
-            else
-            {
-
-                InvokeStaticVoid("GameScripts", "Entry", "Start", nullptr);
-#ifdef _DEBUG
-                BOOM_INFO("[Scripting] GameScripts entry invoked.");
-#endif // DEBUG
-
-            }
-        }
+  
         // --- END MONO INITIALIZE ---
 
         InitNavRuntime();
@@ -139,7 +112,7 @@ namespace Boom
 
             // Only run scripts and AI in play mode when RUNNING
             if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
-                InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
+              
                 m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
                 if (m_Nav) {
                     m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);

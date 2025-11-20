@@ -1,8 +1,8 @@
 ﻿// BoomEngine.cpp : Defines the functions for the static library.
 //
 //Build BoomEngine before running debuger or building Gam300
-#include "BoomEngine.h"
 #include "Core.h"
+#include "BoomEngine.h"
 #include "framework.h"
 #include "common/Events.h"
 
@@ -19,65 +19,65 @@ using namespace Boom;
 
 void MyEngineClass::whatup() {
 
-	// Example of using the logger
-    #ifdef BOOM_ENABLE_LOG
-        BOOM_INFO("Logger is active!");
-        BOOM_DEBUG("DEBUG TEST");
-        BOOM_WARN("WARNING TEST");
-    #else
-        std::cout << "BOOM_ENABLE_LOG not defined." << std::endl;
-    #endif
-        static EventDispatcher dispatcher;          // one per library instance
+    // Example of using the logger
+#ifdef BOOM_ENABLE_LOG
+    BOOM_INFO("Logger is active!");
+    BOOM_DEBUG("DEBUG TEST");
+    BOOM_WARN("WARNING TEST");
+#else
+    std::cout << "BOOM_ENABLE_LOG not defined." << std::endl;
+#endif
+    static EventDispatcher dispatcher;          // one per library instance
 
-     
-        struct WindowResizeEvent
-        {
-            int w, h;
-           
-            WindowResizeEvent(int width, int height) : w(width), h(height) {}
-        };
-        struct QuitEvent {};
 
-        uint32_t resizeID = 42;
-        dispatcher.AttachCallback<WindowResizeEvent>(
-            [](const WindowResizeEvent& e)
-            { LOG_EVENT("Resize -> " << e.w << 'x' << e.h); },
-            resizeID);
+    struct WindowResizeEvent
+    {
+        int w, h;
 
-        dispatcher.AttachCallback<QuitEvent>(
-            [](const QuitEvent&) { LOG_EVENT("Quit requested"); },
-            /*listenerID=*/7);
+        WindowResizeEvent(int width, int height) : w(width), h(height) {}
+    };
+    struct QuitEvent {};
 
-      
-        dispatcher.PostEvent<WindowResizeEvent>(1280, 720);
-        dispatcher.PostEvent<QuitEvent>();
-        dispatcher.PostTask([] { LOG_EVENT("Frame task ran"); });
+    uint32_t resizeID = 42;
+    dispatcher.AttachCallback<WindowResizeEvent>(
+        [](const WindowResizeEvent& e)
+        { LOG_EVENT("Resize -> " << e.w << 'x' << e.h); },
+        resizeID);
 
-    
-        dispatcher.PollEvents();
+    dispatcher.AttachCallback<QuitEvent>(
+        [](const QuitEvent&) { LOG_EVENT("Quit requested"); },
+        /*listenerID=*/7);
 
-        
-        dispatcher.DetachCallback<WindowResizeEvent>(resizeID);
-        dispatcher.PostEvent<WindowResizeEvent>(1920, 1080);
-        dispatcher.PollEvents();
 
-        std::cout << "Dispatcher smoketest finished inside MyEngineClass::whatup().\n";
+    dispatcher.PostEvent<WindowResizeEvent>(1280, 720);
+    dispatcher.PostEvent<QuitEvent>();
+    dispatcher.PostTask([] { LOG_EVENT("Frame task ran"); });
 
-        {
-            auto& se = SoundEngine::Instance();
-            if (se.Init()) {
-                //se.PlaySound("startup", "Resources/Audio/vboom.wav", false);
 
-                // Simple loop to update FMOD for 2 seconds
-                auto start = std::chrono::high_resolution_clock::now();
-                while (std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - start).count() < 2.0f) {
-                    se.Update();
-                    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-                }
+    dispatcher.PollEvents();
+
+
+    dispatcher.DetachCallback<WindowResizeEvent>(resizeID);
+    dispatcher.PostEvent<WindowResizeEvent>(1920, 1080);
+    dispatcher.PollEvents();
+
+    std::cout << "Dispatcher smoketest finished inside MyEngineClass::whatup().\n";
+
+    {
+        auto& se = SoundEngine::Instance();
+        if (se.Init()) {
+            //se.PlaySound("startup", "Resources/Audio/vboom.wav", false);
+
+            // Simple loop to update FMOD for 2 seconds
+            auto start = std::chrono::high_resolution_clock::now();
+            while (std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - start).count() < 2.0f) {
+                se.Update();
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
-
-            SoundEngine::Instance().Shutdown();
         }
+
+        SoundEngine::Instance().Shutdown();
+    }
 }
 
 std::unique_ptr<Application>MyEngineClass::CreateApp() {
