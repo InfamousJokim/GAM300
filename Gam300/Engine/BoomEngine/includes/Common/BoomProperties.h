@@ -78,9 +78,10 @@ namespace xproperty::settings
 // ADDING THE ACTUAL LIBRARY
 // ------------------------------------------------------------------------------
 
+#pragma warning(push, 0)
 #include "xproperty.h"
 #include "sprop\property_sprop_container.h"
-
+#pragma warning(pop)
 // ------------------------------------------------------------------------------
 // POST-MEMORY-CONFIGURATION
 // ------------------------------------------------------------------------------

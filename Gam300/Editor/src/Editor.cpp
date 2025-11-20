@@ -185,6 +185,9 @@ namespace EditorUI {
         // --- Start frame ---
         BeginImguiFrame(m_ImGuiContext);
 
+        // --- Global keyboard shortcuts (processed before panels) ---
+        HandleGlobalShortcuts();
+
         // --- Layout root dockspace ---
         CreateMainDockSpace();
 		
@@ -206,6 +209,102 @@ namespace EditorUI {
         // --- End frame / draw ---
         EndImguiFrame();
     }
+
+    void Editor::HandleGlobalShortcuts()
+    {
+        if (!m_App) return;
+
+        ImGuiIO& io = ImGui::GetIO();
+        bool ctrl = io.KeyCtrl;
+        bool shift = io.KeyShift;
+        bool alt = io.KeyAlt;
+
+        // ===== File Menu Shortcuts =====
+
+        // Ctrl+N: New Scene
+        if (ctrl && !shift && ImGui::IsKeyPressed(ImGuiKey_N, false))
+        {
+            m_App->NewScene("UntitledScene");
+            RefreshSceneList(true);
+            BOOM_INFO("[Shortcut] Created new scene (Ctrl+N)");
+        }
+
+        // Ctrl+S: Save Scene
+        if (ctrl && !shift && ImGui::IsKeyPressed(ImGuiKey_S, false))
+        {
+            m_ShowSaveDialog = true;
+            if (m_App->IsSceneLoaded()) {
+                RefreshSceneList(true);
+                // Prefill current scene name
+                std::string currentPath = m_App->GetCurrentScenePath();
+                if (!currentPath.empty()) {
+                    size_t lastSlash = currentPath.find_last_of("/\\");
+                    size_t lastDot = currentPath.find_last_of(".");
+                    if (lastSlash != std::string::npos && lastDot != std::string::npos && lastDot > lastSlash) {
+                        std::string sceneName = currentPath.substr(lastSlash + 1, lastDot - lastSlash - 1);
+                        strncpy_s(m_SceneNameBuffer, sizeof(m_SceneNameBuffer), sceneName.c_str(), _TRUNCATE);
+                    }
+                }
+            }
+            BOOM_INFO("[Shortcut] Save scene dialog (Ctrl+S)");
+        }
+
+        // Ctrl+Shift+S: Save Scene As (conflicts with Stop play mode, so check if NOT playing)
+        if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_S, false))
+        {
+            if (!m_App->IsPlaying()) {
+                m_ShowSaveDialog = true;
+                m_SceneNameBuffer[0] = '\0'; // Clear for fresh name
+                BOOM_INFO("[Shortcut] Save scene as dialog (Ctrl+Shift+S)");
+            } else {
+                // In play mode, Ctrl+Shift+S stops play mode (handled below)
+                m_App->Stop();
+                BOOM_INFO("[Shortcut] Stopped play mode (Ctrl+Shift+S)");
+            }
+        }
+
+        // Ctrl+O: Load Scene
+        if (ctrl && !shift && ImGui::IsKeyPressed(ImGuiKey_O, false))
+        {
+            m_ShowLoadDialog = true;
+            RefreshSceneList(false);
+            BOOM_INFO("[Shortcut] Load scene dialog (Ctrl+O)");
+        }
+
+        // Alt+F4: Exit Application
+        if (alt && ImGui::IsKeyPressed(ImGuiKey_F4, false))
+        {
+            m_App->Exit();
+            BOOM_INFO("[Shortcut] Exiting application (Alt+F4)");
+        }
+
+        // ===== Playback Control Shortcuts =====
+
+        // Ctrl+P: Play/Resume
+        if (ctrl && !shift && ImGui::IsKeyPressed(ImGuiKey_P, false))
+        {
+            if (!m_App->IsPlaying()) {
+                m_App->Play();
+                BOOM_INFO("[Shortcut] Play mode started (Ctrl+P)");
+            } else if (m_App->IsPaused()) {
+                m_App->Resume();
+                BOOM_INFO("[Shortcut] Resumed from pause (Ctrl+P)");
+            }
+        }
+
+        // Ctrl+Shift+P: Pause
+        if (ctrl && shift && ImGui::IsKeyPressed(ImGuiKey_P, false))
+        {
+            if (m_App->IsPlaying() && !m_App->IsPaused()) {
+                m_App->Pause();
+                BOOM_INFO("[Shortcut] Paused (Ctrl+Shift+P)");
+            }
+        }
+
+        // Note: Ctrl+Shift+S for Stop is handled above in the Save Section
+        // to avoid conflicts with "Save As" when not playing
+    }
+
     void Editor::RefreshSceneList(bool force) {
         namespace fs = std::filesystem;
 

@@ -22,6 +22,8 @@
     <ClCompile Include="includes\AI\DetourBuildAPI.cpp" />
     <ClCompile Include="includes\Scripting\FileWatcher.h" />
     <ClCompile Include="src\Scripting\FileWatcher.cpp" />
+    <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Core.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Application\Application.h" />

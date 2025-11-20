@@ -1,0 +1,1573 @@
+Version: 1.0
+ENTITIES:
+  - InfoComponent:
+      Parent: 0
+      Name: Prism_Outside_Hut
+      UID: 17261417048716064848
+    TransformComponent:
+      Transform:
+        Translate: [-5.93293285, 7.06382227, 27.1147251]
+        Rotate: [0, -90, 0]
+        Scale: [0.0299999993, 0.349999994, 0.189999998]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_6
+      UID: 11500368858515465967
+    TransformComponent:
+      Transform:
+        Translate: [-3.92400002, 8.32800007, 27.8326893]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_5
+      UID: 8978989599714003870
+    TransformComponent:
+      Transform:
+        Translate: [-3.92400002, 8.32800007, 20.2729282]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Outside_Hut_2
+      UID: 7787992081072199843
+    TransformComponent:
+      Transform:
+        Translate: [-4.43599987, 6.671, 18.2755013]
+        Rotate: [-90, -90, 0]
+        Scale: [1.71000004, 1, 0.74000001]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_4
+      UID: 4028690314670065481
+    TransformComponent:
+      Transform:
+        Translate: [-3.9240365, 8.3279171, 15.7997236]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Outside_Hut_1
+      UID: 11709975980184754523
+    TransformComponent:
+      Transform:
+        Translate: [-4.43575573, 6.67131472, 12.6486578]
+        Rotate: [90, -90, 0]
+        Scale: [1.71000004, 1, 0.74000001]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_3
+      UID: 9657880931208710085
+    TransformComponent:
+      Transform:
+        Translate: [6.00529718, 8.51433277, 10.1490002]
+        Rotate: [-90, -180, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Standing_Lantern_Outside_Hut
+      UID: 6757287925914476890
+    TransformComponent:
+      Transform:
+        Translate: [9.66293144, 5.40338898, 10.2786779]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17971063540041505471
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_2
+      UID: 685986689009478695
+    TransformComponent:
+      Transform:
+        Translate: [9.50593281, 8.41600037, 8.86550426]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Outside_Hut_1
+      UID: 5352366284023826398
+    TransformComponent:
+      Transform:
+        Translate: [8.16831017, 8.41599655, 10.1492701]
+        Rotate: [-90, 180, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Floor_Of_Level_2_Back
+      UID: 5980189267885289823
+    TransformComponent:
+      Transform:
+        Translate: [-6.92690706, 1.28178191, 19.4394035]
+        Rotate: [0, 0, 0]
+        Scale: [0.209999993, 0.829999983, 1.73000002]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Prism_Inside_Back_Of_Hut
+      UID: 6129246695125078299
+    TransformComponent:
+      Transform:
+        Translate: [1.37384689, 8.20676899, 26.2187805]
+        Rotate: [0, 0, 0]
+        Scale: [0.0500000007, 0.100000001, 0.0399999991]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_4_Second_Floor
+      UID: 3820564189371600480
+    TransformComponent:
+      Transform:
+        Translate: [2.18723488, 7.07267046, 23.5372181]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_3_Second_Floor
+      UID: 8415643198172161472
+    TransformComponent:
+      Transform:
+        Translate: [0.124401093, 6.93855667, 25.5353737]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_2_Second_Floor
+      UID: 1861805954047498574
+    TransformComponent:
+      Transform:
+        Translate: [0.204311401, 6.92272282, 21.923996]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_1_Second_Floor
+      UID: 2249271849963366371
+    TransformComponent:
+      Transform:
+        Translate: [-1.81015885, 6.94593334, 23.2560787]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Table_Second_Floor
+      UID: 16020692895328883736
+    TransformComponent:
+      Transform:
+        Translate: [0.312098205, 6.9697957, 23.5159836]
+        Rotate: [-90, 0, 0]
+        Scale: [0.75, 0.75, 0.75]
+    ModelComponent:
+      ModelID: 5838446488854438722
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Exit_Of_Hut
+      UID: 13237089712335802159
+    TransformComponent:
+      Transform:
+        Translate: [-3.15832329, 8.98900032, 20.0626869]
+        Rotate: [-90, 90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Back_Wall_Of_Hut
+      UID: 1153291360730907286
+    TransformComponent:
+      Transform:
+        Translate: [-0.164256454, 7.69880104, 27.7867355]
+        Rotate: [0, 0, 0]
+        Scale: [0.25, 0.600000024, 0.100000001]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Back_Of_Hut
+      UID: 3598504729430996576
+    TransformComponent:
+      Transform:
+        Translate: [2.55417776, 8.98913956, 24.5170364]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Prism_Inside_Hut
+      UID: 13695423098878404332
+    TransformComponent:
+      Transform:
+        Translate: [-2.05211997, 7.74855328, 16.4219799]
+        Rotate: [0, 0, 0]
+        Scale: [0.0199999996, 0.159999996, 0.0500000007]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Interior_Sliding_Door_Left
+      UID: 2081698451890565235
+    TransformComponent:
+      Transform:
+        Translate: [-2.35043693, 8.22786045, 19.0880756]
+        Rotate: [-90, 0, -90]
+        Scale: [0.400000006, 1, 0.400000006]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Interior_Sliding_Door_Right
+      UID: 3543104788695067941
+    TransformComponent:
+      Transform:
+        Translate: [1.76196325, 8.39826775, 18.9760723]
+        Rotate: [-90, 0, 0]
+        Scale: [0.280000001, 1, 0.819999993]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Door_Divider_For_Hut
+      UID: 10698932820107530939
+    TransformComponent:
+      Transform:
+        Translate: [-0.128716052, 9.76780701, 19.1329632]
+        Rotate: [-90, 0, 0]
+        Scale: [0.560000002, 0.00999999978, 0.860000014]
+    ModelComponent:
+      ModelID: 12206031679676868600
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hanging_Lantern_Front_Of_Hut
+      UID: 15969626093444568412
+    TransformComponent:
+      Transform:
+        Translate: [2.35679793, 8.31258202, 11.0734425]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Interior_Decor_RIght_Of_Hut
+      UID: 13900569791274339863
+    TransformComponent:
+      Transform:
+        Translate: [-3.59384489, 9.08797836, 13.8118]
+        Rotate: [-90, -90, 0]
+        Scale: [0.49000001, 1, 0.430000007]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Interior_Decor_RIght_Of_Hut
+      UID: 8732369213151081285
+    TransformComponent:
+      Transform:
+        Translate: [2.72148895, 8.0676527, 12.8961515]
+        Rotate: [-90, -90, 0]
+        Scale: [0.49000001, 1, 0.430000007]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Left_Wall_Of_Hut_Top
+      UID: 13337176872369800048
+    TransformComponent:
+      Transform:
+        Translate: [-3.66751552, 8.86410904, 16.3406048]
+        Rotate: [0, -90, 0]
+        Scale: [0.319999993, 0.389999986, 0.00999999978]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Front_Pillar_Left_Of_Hut
+      UID: 4636965599594259602
+    TransformComponent:
+      Transform:
+        Translate: [-3.26874661, 8.86853123, 11.1978216]
+        Rotate: [0, -90, 0]
+        Scale: [0.0299999993, 0.379999995, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Left_Wall_Of_Hut_Bottom
+      UID: 8618011661999532453
+    TransformComponent:
+      Transform:
+        Translate: [-3.26699996, 4.69700003, 19.2793369]
+        Rotate: [0, -90, 0]
+        Scale: [0.579999983, 0.460000008, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Texture_Front_Of_Hut
+      UID: 5123991758905279357
+    TransformComponent:
+      Transform:
+        Translate: [-0.0916185081, 6.04893637, 10.7932482]
+        Rotate: [0, 0, 0]
+        Scale: [0.189999998, 0.180000007, 0.00999999978]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Right_Wall_Of_Hut
+      UID: 468644347822796871
+    TransformComponent:
+      Transform:
+        Translate: [3.26690149, 6.1747036, 19.2622204]
+        Rotate: [0, -90, 0]
+        Scale: [0.579999983, 0.930000007, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hut_Roof
+      UID: 16133961965073669139
+    TransformComponent:
+      Transform:
+        Translate: [0.0952050686, 12.8137045, 19.0912914]
+        Rotate: [-90, 0, 0]
+        Scale: [0.400000006, 0.5, 0.400000006]
+    ModelComponent:
+      ModelID: 8039408713556627694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Hut_Base
+      UID: 2136373434774079840
+    TransformComponent:
+      Transform:
+        Translate: [-0.0612011552, 6.06108761, 19.4486046]
+        Rotate: [0, 0, 0]
+        Scale: [0.189999998, 0.180000007, 1.70000005]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Wall_Middle_Floor_2
+      UID: 6365037268832649934
+    TransformComponent:
+      Transform:
+        Translate: [7.2042923, 4.84000015, 11.2019997]
+        Rotate: [0, 0, 0]
+        Scale: [0.239999995, 1, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Before_Hut_Left
+      UID: 16900605180980820779
+    TransformComponent:
+      Transform:
+        Translate: [-4.3499999, 6.34499979, 7.78900003]
+        Rotate: [-90, 0, 0]
+        Scale: [0.860000014, 0.800000012, 0.560000002]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Before_Hut_Right
+      UID: 11469306329295438326
+    TransformComponent:
+      Transform:
+        Translate: [4.3500762, 6.34499979, 7.7891655]
+        Rotate: [-90, 0, 0]
+        Scale: [0.860000014, 0.800000012, 0.560000002]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Lion_Statue_Middle_Left_Floor_2
+      UID: 963547750710080490
+    TransformComponent:
+      Transform:
+        Translate: [-2.94899988, 5.90145254, 1.40525389]
+        Rotate: [0, -90, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 6829728261434427183
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Fruit_Tree_Middle_Floor_2
+      UID: 13972879706102874778
+    TransformComponent:
+      Transform:
+        Translate: [0.0452557206, 5.46009874, 0.800237417]
+        Rotate: [-90, 0, 0]
+        Scale: [0.699999988, 0.699999988, 0.699999988]
+    ModelComponent:
+      ModelID: 5156670162497623977
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Stone_Statue_Middle_Floor_2
+      UID: 17346385537782786279
+    TransformComponent:
+      Transform:
+        Translate: [0.0326473713, 6.7774725, -2.09365273]
+        Rotate: [-90, 0, 0]
+        Scale: [1.66999996, 0.699999988, 0.699999988]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Lion_Statue_Middle_Right_Floor_2
+      UID: 12279501084326585378
+    TransformComponent:
+      Transform:
+        Translate: [3.09216499, 5.93260193, 1.35184038]
+        Rotate: [0, -90, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 6829728261434427183
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Block_Floor_2_Left
+      UID: 6831113887765089259
+    TransformComponent:
+      Transform:
+        Translate: [-9.05099964, 2.85599995, -0.797999978]
+        Rotate: [0, 0, 0]
+        Scale: [0.0299999993, 0.959999979, 0.189999998]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Block_Floor_2_Right
+      UID: 13394401403227967988
+    TransformComponent:
+      Transform:
+        Translate: [9.05116749, 2.85573363, -0.797999978]
+        Rotate: [0, 0, 0]
+        Scale: [0.0299999993, 0.959999979, 0.189999998]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Hanging_Lamp_Left
+      UID: 14749266138962598626
+    TransformComponent:
+      Transform:
+        Translate: [-9.45699978, 7.52199984, -2.42499995]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Hanging_Lamp_Right
+      UID: 717955065497441822
+    TransformComponent:
+      Transform:
+        Translate: [9.45704746, 7.52171564, -2.42534971]
+        Rotate: [-90, -90, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Lantern_Floor_2_Right
+      UID: 2218775839040934482
+    TransformComponent:
+      Transform:
+        Translate: [3.06999993, 5.42199993, -5.57200003]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17971063540041505471
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Lantern_Floor_2_Left
+      UID: 2870292450877532431
+    TransformComponent:
+      Transform:
+        Translate: [-3.0777154, 5.4523015, -5.57244444]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17971063540041505471
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Right
+      UID: 14909493107942851076
+    TransformComponent:
+      Transform:
+        Translate: [4.69099998, 6.3447547, -5.58300018]
+        Rotate: [90, 0, 0]
+        Scale: [0.860000014, 0.800000012, 0.560000002]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Statue_Left
+      UID: 9585209574695702259
+    TransformComponent:
+      Transform:
+        Translate: [-4.69100332, 6.33327866, -5.58261061]
+        Rotate: [90, 0, 0]
+        Scale: [0.860000014, 0.800000012, 0.560000002]
+    ModelComponent:
+      ModelID: 4826384296126717694
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Lion_Statue_Right
+      UID: 7838097312144507883
+    TransformComponent:
+      Transform:
+        Translate: [6.93100023, 6.00600004, -5.59499979]
+        Rotate: [0, -270, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 6829728261434427183
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Lion_Statue_Left
+      UID: 9981075119489624857
+    TransformComponent:
+      Transform:
+        Translate: [-6.93069267, 6.00632, -5.59486437]
+        Rotate: [0, -270, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 6829728261434427183
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Walls_Right_Floor_2
+      UID: 9853635101962824744
+    TransformComponent:
+      Transform:
+        Translate: [10.4253016, 4.84000015, 1.100703]
+        Rotate: [0, -90, 0]
+        Scale: [0.629999995, 1, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Walls_Left_Floor_2
+      UID: 13596785614986856921
+    TransformComponent:
+      Transform:
+        Translate: [-10.4250002, 4.84008408, 1.10099995]
+        Rotate: [0, -90, 0]
+        Scale: [0.629999995, 1, 0.0900000036]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Fence_Level_2
+      UID: 360363283426413035
+    TransformComponent:
+      Transform:
+        Translate: [-0.0700000003, 5.34700012, -6.2579999]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.0900000036, 0.00999999978]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Turn_Point_Right
+      UID: 4738938337717066563
+    TransformComponent:
+      Transform:
+        Translate: [7.52178001, 5.66800022, -6.38551712]
+        Rotate: [0, 0, 0]
+        Scale: [0.25, 0.25, 0.129999995]
+    ModelComponent:
+      ModelID: 3620272457406166050
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Turn_Point_Left
+      UID: 12662354917274233329
+    TransformComponent:
+      Transform:
+        Translate: [-7.48526812, 5.44336605, -6.33193684]
+        Rotate: [-90, 0, 0]
+        Scale: [0.25, 0.219999999, 0.25]
+    ModelComponent:
+      ModelID: 3620272457406166050
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Wall_Front_Floor_1
+      UID: 10276433539658323172
+    TransformComponent:
+      Transform:
+        Translate: [-0.420805216, 4.09516048, -8.11089039]
+        Rotate: [0, 0, 0]
+        Scale: [0.720000029, 0.769999981, 0.00999999978]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Stone_Lantern_Left
+      UID: 1410473377364073382
+    TransformComponent:
+      Transform:
+        Translate: [-3.28999996, 0.504999995, -5.89099979]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17971063540041505471
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Outdoor_Stone_Lantern_Right
+      UID: 18246797781755518409
+    TransformComponent:
+      Transform:
+        Translate: [3.29032755, 0.505058229, -5.89107418]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17971063540041505471
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Indoor_Hanging_Lanturn_Front_Left
+      UID: 15777117760288992777
+    TransformComponent:
+      Transform:
+        Translate: [-5.05200005, 2.02099991, -5.83400011]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Indoor_Hanging_Lanturn_Front_Right
+      UID: 7163372545072077516
+    TransformComponent:
+      Transform:
+        Translate: [5.05190849, 2.02082253, -5.83411884]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Ceiling_Floor_1
+      UID: 13500012620144209348
+    TransformComponent:
+      Transform:
+        Translate: [-0.111000001, 5.30469227, 2.29807973]
+        Rotate: [0, 0, 0]
+        Scale: [0.519999981, 0.00999999978, 1.69000006]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Plank_Wall_Floor_1
+      UID: 7415020258449908952
+    TransformComponent:
+      Transform:
+        Translate: [-6.91149378, 3.60819101, 4.14313507]
+        Rotate: [0, 0, 0]
+        Scale: [0.0299999993, 0.0500000007, 0.680000007]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Floor_Left_Floor_2
+      UID: 16568992521348852646
+    TransformComponent:
+      Transform:
+        Translate: [-8.75599957, 2.66317177, 1.40950298]
+        Rotate: [0, 0, 0]
+        Scale: [0.0799999982, 0.550000012, 1.87]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Floor_Right_Floor_2
+      UID: 11914392841982844469
+    TransformComponent:
+      Transform:
+        Translate: [8.75599957, 2.65515637, 1.43616533]
+        Rotate: [0, 0, 0]
+        Scale: [0.0799999982, 0.550000012, 1.87]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Wall_Divider_Floor_1
+      UID: 15313398657113075594
+    TransformComponent:
+      Transform:
+        Translate: [-0.167802811, 4.31562233, 0.883240342]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.170000002, 0.129999995]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Indoor_Hanging_Lanturn_Back_3
+      UID: 6145440951459576746
+    TransformComponent:
+      Transform:
+        Translate: [-2.54699993, 2.11899996, 7.02199984]
+        Rotate: [270, 180, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Indoor_Hanging_Lanturn_Back_2
+      UID: 10544585563166090371
+    TransformComponent:
+      Transform:
+        Translate: [0, 2.11899996, 7.02199984]
+        Rotate: [-90, 180, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Sliding_Door_2
+      UID: 9465372809338157749
+    TransformComponent:
+      Transform:
+        Translate: [4.36788893, 2, 0.699999988]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Sliding_Door_1
+      UID: 3774918408726337557
+    TransformComponent:
+      Transform:
+        Translate: [-4.36929417, 2, 0.699999988]
+        Rotate: [-90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 5963078964798272625
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_8
+      UID: 17302200089018243406
+    TransformComponent:
+      Transform:
+        Translate: [-2.45228195, 0.598316491, 4.07493305]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_7
+      UID: 13043223207672938563
+    TransformComponent:
+      Transform:
+        Translate: [-4.5120883, 0.647244036, 6.21350145]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_6
+      UID: 10400619248710891178
+    TransformComponent:
+      Transform:
+        Translate: [-6.4369998, 0.922999978, 4.05907249]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_5
+      UID: 10308551160317092666
+    TransformComponent:
+      Transform:
+        Translate: [-4.5131979, 0.668016315, 2.09022999]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Table_2
+      UID: 5913887949040983159
+    TransformComponent:
+      Transform:
+        Translate: [-4.49300003, 0.495000005, 4.13000011]
+        Rotate: [-90, 0, 0]
+        Scale: [0.75, 0.75, 0.5]
+    ModelComponent:
+      ModelID: 5838446488854438722
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_3
+      UID: 7363969942927904993
+    TransformComponent:
+      Transform:
+        Translate: [6.51026154, 0.6516186, 4.07478905]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0
+        Restitution: 0.100000001
+        PhysicsMesh: 0
+        Type: BOX
+    InfoComponent:
+      Parent: 0
+      Name: NavAgent
+      UID: 1992698266524408743
+    TransformComponent:
+      Transform:
+        Translate: [2, 1, 2]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.5]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 1
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [0.5, 0.5, 0.5]
+        Type: STATIC
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0.5
+        Restitution: 0
+        PhysicsMesh: 0
+        Type: BOX
+    InfoComponent:
+      Parent: 0
+      Name: nig
+      UID: 10000000000000000002
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, -90, 0]
+        Scale: [16, 0.959999979, 15]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 0
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [16, 0.959999979, 15]
+        Type: STATIC
+    ModelComponent:
+      ModelID: 7633162898494281895
+      MaterialID: 11573253777835523025
+      ModelName: Cube
+      MaterialName: ""
+      ModelSource: Resources/Models/Cube.fbx
+      MaterialSource: Marble
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Skybox
+      UID: 3009173759421305309
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SkyboxComponent:
+      SkyboxID: 10427935764841817814
+  - InfoComponent:
+      Parent: 0
+      Name: Camera
+      UID: 9201024860084647067
+    TransformComponent:
+      Transform:
+        Translate: [-18.5559368, 14.7794237, 27.6615391]
+        Rotate: [-28.4375, -19490.1875, 0]
+        Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        NearPlane: 0.300000012
+        FarPlane: 1000
+        FOV: 86
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Point Light
+      UID: 5315588240363654174
+    TransformComponent:
+      Transform:
+        Translate: [0, 0.5, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    PointLightComponent:
+      Light:
+        Radiance: [1, 0.899999976, 0.699999988]
+        Intensity: 10
+  - InfoComponent:
+      Parent: 0
+      Name: Directional Light
+      UID: 16395980114807373968
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, -1, 0]
+        Scale: [1, 1, 1]
+    DirectLightComponent:
+      Light:
+        Radiance: [1, 1, 0.899999976]
+        Intensity: 0.879999995
+  - InfoComponent:
+      Parent: 0
+      Name: Spot Light
+      UID: 12363776012929465708
+    TransformComponent:
+      Transform:
+        Translate: [2, 2, 2]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SpotLightComponent:
+      Light:
+        Radiance: [0.699999988, 0.800000012, 1]
+        Intensity: 15
+        FallOff: 1.05592418
+        CutOff: 0.34906584
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Ninja
+      UID: 12784200605494588253
+    TransformComponent:
+      Transform:
+        Translate: [-1.16412485, -1.14540207, -0.968141139]
+        Rotate: [0, -0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 15771049607565255665
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Samurai
+      UID: 16439367912350421013
+    TransformComponent:
+      Transform:
+        Translate: [0.321215421, 0.545895696, 5.90508461]
+        Rotate: [0, -0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 9858498430227169258
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Stairs_Handle_Right
+      UID: 14423942184205972563
+    TransformComponent:
+      Transform:
+        Translate: [5.44700003, 0.765302062, -6.33206367]
+        Rotate: [0, 90, 0]
+        Scale: [0.200000003, 0.5, 0.5]
+    ModelComponent:
+      ModelID: 14419591904238952119
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Stairs_Handle_Left
+      UID: 43420598284529509
+    TransformComponent:
+      Transform:
+        Translate: [-5.38700008, 0.764999866, -6.40092468]
+        Rotate: [0, -90, 0]
+        Scale: [0.230000004, 0.5, 0.5]
+    ModelComponent:
+      ModelID: 14419591904238952119
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Stairs_Right
+      UID: 1078971789643419703
+    TransformComponent:
+      Transform:
+        Translate: [4.94170618, 1.49225128, -6.95350695]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.400000006]
+    ModelComponent:
+      ModelID: 17773246069672836568
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Stairs_Left
+      UID: 14807325083218498713
+    TransformComponent:
+      Transform:
+        Translate: [-4.82700014, 1.5408051, -7.46138382]
+        Rotate: [0, -180, 0]
+        Scale: [0.5, 0.5, 0.400000006]
+    ModelComponent:
+      ModelID: 17773246069672836568
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_4
+      UID: 17309648256235657590
+    TransformComponent:
+      Transform:
+        Translate: [4.44657707, 0.593032777, 5.98622751]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_2
+      UID: 13247074783709319581
+    TransformComponent:
+      Transform:
+        Translate: [2.49039984, 0.673674226, 4.09162426]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Table_1
+      UID: 3918560396689782353
+    TransformComponent:
+      Transform:
+        Translate: [4.49292707, 0.494542837, 4.12997246]
+        Rotate: [-90, 0, 0]
+        Scale: [0.75, 0.75, 0.75]
+    ModelComponent:
+      ModelID: 5838446488854438722
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Cushion_1
+      UID: 11643618183334345394
+    TransformComponent:
+      Transform:
+        Translate: [4.46447659, 0.654805005, 1.98579729]
+        Rotate: [90, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 618926925563278836
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Wall_Back_Floor_1
+      UID: 14120173863723679001
+    TransformComponent:
+      Transform:
+        Translate: [-0.170380652, 2.75797558, 8.14420033]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.129999995]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Wall_Back2_Floor_1
+      UID: 2848513897976485529
+    TransformComponent:
+      Transform:
+        Translate: [0, 2.25708127, 7.51626062]
+        Rotate: [0, 0, 0]
+        Scale: [0.25, 0.349999994, 0.00999999978]
+    ModelComponent:
+      ModelID: 1441742420851203854
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Indoor_Hanging_Lanturn_Back_1
+      UID: 8397657597773060979
+    TransformComponent:
+      Transform:
+        Translate: [2.54740143, 2.11938071, 7.02198458]
+        Rotate: [-90, -180, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 17862911105458314379
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
