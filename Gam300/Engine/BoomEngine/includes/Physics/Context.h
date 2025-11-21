@@ -570,11 +570,11 @@ namespace Boom {
             UpdateColliderShape(entity, assetRegistry);
         }
 
-		//raycast functions
+        //raycast functions
         BOOM_INLINE glm::vec3 ResolveThirdPersonCameraPosition(glm::vec3 const& playerEye, glm::vec3 const& idealCamPosition, float minDist = 0.5f)
         {
             PxVec3 targetPos{ ToPxVec3(playerEye) };
-			PxVec3 idealCamPos{ ToPxVec3(idealCamPosition) };
+            PxVec3 idealCamPos{ ToPxVec3(idealCamPosition) };
             PxVec3 dir = (idealCamPos - targetPos).getNormalized();
             PxReal maxDist = (idealCamPos - targetPos).magnitude();
 
@@ -584,7 +584,7 @@ namespace Boom {
 
             return ToGLMVec3(idealCamPos);
         }
-	BOOM_INLINE void SetRotationLock(Boom::Entity entity, bool lockX, bool lockY, bool lockZ)
+        BOOM_INLINE void SetRotationLock(Boom::Entity entity, bool lockX, bool lockY, bool lockZ)
         {
             {
                 if (!entity.Has<Boom::RigidBodyComponent>())
@@ -844,8 +844,8 @@ namespace Boom {
             // generate contacts and triggers for actors
             pairFlags |= PxPairFlag::eCONTACT_DEFAULT |
                 PxPairFlag::eTRIGGER_DEFAULT |
-                PxPairFlag::eNOTIFY_TOUCH_FOUND |   
-                PxPairFlag::eNOTIFY_TOUCH_PERSISTS; 
+                PxPairFlag::eNOTIFY_TOUCH_FOUND |
+                PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
 
             return PxFilterFlag::eDEFAULT;
         }

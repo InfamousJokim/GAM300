@@ -1,304 +1,13 @@
 Version: 1.0
 ENTITIES:
   - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Samurai
-      UID: 18311915363071255439
-    TransformComponent:
-      Transform:
-        Translate: [2.17788649, -0.994032919, 1.17608488]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    ModelComponent:
-      ModelID: 7033540437426745380
-      MaterialID: 0
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-    AnimatorComponent:
-      Clips:
-        - name: mixamo.com
-          filePath: ""
-          events:
-            []
-        - name: Samurai Hurt (1)
-          filePath: Resources/Models/Player/PlayerAnimations/Samurai Hurt (1).fbx
-          events:
-            []
-        - name: Jumping
-          filePath: Resources/Models/PlayerAnimations/Jumping.fbx
-          events:
-            []
-        - name: run
-          filePath: Resources/Models/run.fbx
-          events:
-            []
-      States:
-        - name: Idle
-          clipIndex: 3
-          speed: 1
-          loop: true
-          transitions:
-            - targetStateIndex: 1
-              conditionType: 3
-              parameterName: run
-              floatValue: 0
-              boolValue: false
-              transitionDuration: 0.25
-              hasExitTime: false
-              exitTime: 0.899999976
-        - name: New State
-          clipIndex: 0
-          speed: 1
-          loop: true
-          transitions:
-            - targetStateIndex: 0
-              conditionType: 3
-              parameterName: run
-              floatValue: 0
-              boolValue: true
-              transitionDuration: 0.25
-              hasExitTime: false
-              exitTime: 0.899999976
-      FloatParams:
-        speed: 0.5
-      BoolParams:
-        run: true
-      CurrentStateIndex: 0
   - {}
   - {}
   - {}
   - {}
   - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Player
-      UID: 18299148976802030936
-    TransformComponent:
-      Transform:
-        Translate: [0, -0.200000003, 0]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    ModelComponent:
-      ModelID: 9625104056789884581
-      MaterialID: 11573253777835523025
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-    AnimatorComponent:
-      Clips:
-        - name: mixamo.com
-          filePath: ""
-          events:
-            []
-        - name: Idle
-          filePath: Resources/Models/idle.fbx
-          events:
-            []
-        - name: Walk
-          filePath: Resources/Models/walking.fbx
-          events:
-            []
-        - name: Run
-          filePath: Resources/Models/run.fbx
-          events:
-            []
-      States:
-        - name: State 0
-          clipIndex: 1
-          speed: 1
-          loop: true
-          transitions:
-            - targetStateIndex: 1
-              conditionType: 3
-              parameterName: Run
-              floatValue: 0
-              boolValue: true
-              transitionDuration: 0.25
-              hasExitTime: true
-              exitTime: 0.243000001
-        - name: Run
-          clipIndex: 3
-          speed: 1
-          loop: true
-          transitions:
-            - targetStateIndex: 0
-              conditionType: 3
-              parameterName: Run
-              floatValue: 0
-              boolValue: false
-              transitionDuration: 0.25999999
-              hasExitTime: true
-              exitTime: 0.5
-      FloatParams:
-        {}
-      BoolParams:
-        Run: false
-      CurrentStateIndex: 0
-  - ColliderComponent:
-      Collider:
-        LocalPosition: [0, 0, 0]
-        LocalRotation: [0, 0, 0]
-        LocalScale: [1, 1, 1]
-        DynamicFriction: 0.5
-        StaticFriction: 0.5
-        Restitution: 0.100000001
-        PhysicsMesh: 0
-        Type: CAPSULE
-    InfoComponent:
-      Parent: 18299148976802030936
-      Name: Player_PhysicsBody
-      UID: 18299148976802030937
-    TransformComponent:
-      Transform:
-        Translate: [0, -0.200000003, 0]
-        Rotate: [0, 0, 0]
-        Scale: [0.850000024, 2.36999989, 0.5]
-    RigidBodyComponent:
-      RigidBody:
-        Density: 1
-        Mass: 1
-        InitialVelocity: [0, 0, 0]
-        Previous Scale: [0.850000024, 2.36999989, 0.5]
-        Type: STATIC
   - {}
   - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Ball 2
-      UID: 6042260349840611439
-    TransformComponent:
-      Transform:
-        Translate: [1.28999996, 1, 0]
-        Rotate: [0, 0, 0]
-        Scale: [0.5, 0.5, 0.5]
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 11573253777835523025
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Skybox
-      UID: 3009173759421305309
-    TransformComponent:
-      Transform:
-        Translate: [0, 0, 0]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    SkyboxComponent:
-      SkyboxID: 10427935764841817814
-  - InfoComponent:
-      Parent: 0
-      Name: Camera
-      UID: 9201024860084647067
-    TransformComponent:
-      Transform:
-        Translate: [-0.81213522, 1.426898, 2.57992578]
-        Rotate: [-13.75, -75.6875, 0]
-        Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        NearPlane: 0.300000012
-        FarPlane: 1000
-        FOV: 58
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Point Light
-      UID: 5315588240363654174
-    TransformComponent:
-      Transform:
-        Translate: [0, 0.5, 0]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    PointLightComponent:
-      Light:
-        Radiance: [1, 0.899999976, 0.699999988]
-        Intensity: 10
-  - InfoComponent:
-      Parent: 0
-      Name: Directional Light
-      UID: 16395980114807373968
-    TransformComponent:
-      Transform:
-        Translate: [0, 0, 0]
-        Rotate: [6, 0, 0]
-        Scale: [1, 1, 1]
-    DirectLightComponent:
-      Light:
-        Radiance: [1, 1, 0.899999976]
-        Intensity: 3
-  - InfoComponent:
-      Parent: 0
-      Name: Spot Light
-      UID: 12363776012929465708
-    TransformComponent:
-      Transform:
-        Translate: [2, 2, 2]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    SpotLightComponent:
-      Light:
-        Radiance: [0.699999988, 0.800000012, 1]
-        Intensity: 15
-        FallOff: 1.05592418
-        CutOff: 0.34906584
-  - ColliderComponent:
-      Collider:
-        LocalPosition: [0, 0, 0]
-        LocalRotation: [0, 0, 0]
-        LocalScale: [1, 1, 1]
-        DynamicFriction: 0.5
-        StaticFriction: 0.5
-        Restitution: 0.600000024
-        PhysicsMesh: 0
-        Type: CAPSULE
-    InfoComponent:
-      Parent: 0
-      Name: Sphere_Physics
-      UID: 10000000000000000001
-    TransformComponent:
-      Transform:
-        Translate: [2.5, -0.19999972, 0]
-        Rotate: [0, -0, 0]
-        Scale: [1, 2, 1]
-    RigidBodyComponent:
-      RigidBody:
-        Density: 1
-        Mass: 1
-        InitialVelocity: [0, 0, 0]
-        Previous Scale: [1, 2, 1]
-        Type: DYNAMIC
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 11573253777835523025
-      ModelName: sphere
-      MaterialName: ""
-      ModelSource: Resources/Models/sphere.fbx
-      MaterialSource: Marble
-  - InfoComponent:
-      Parent: 0
-      Name: Ball 1
-      UID: 6042260349840611439
-    TransformComponent:
-      Transform:
-        Translate: [0.49000001, 1.01999998, -1.29999995]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 2930779482462285987
-      ModelName: sphere
-      MaterialName: ""
-      ModelSource: Resources/Models/walking.fbx
-      MaterialSource: Marble
   - ColliderComponent:
       Collider:
         LocalPosition: [0, 0, 0]
@@ -332,11 +41,225 @@ ENTITIES:
       MaterialName: ""
       ModelSource: Resources/Models/Cube.fbx
       MaterialSource: Marble
+  - InfoComponent:
+      Parent: 0
+      Name: Ball 1
+      UID: 6042260349840611439
+    TransformComponent:
+      Transform:
+        Translate: [0.49000001, 1.01999998, -1.29999995]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 2930779482462285987
+      ModelName: sphere
+      MaterialName: ""
+      ModelSource: Resources/Models/walking.fbx
+      MaterialSource: Marble
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0.5
+        Restitution: 0.600000024
+        PhysicsMesh: 0
+        Type: CAPSULE
+    InfoComponent:
+      Parent: 0
+      Name: Sphere_Physics
+      UID: 10000000000000000001
+    TransformComponent:
+      Transform:
+        Translate: [2.5, -0.19999975, 0]
+        Rotate: [0, -0, 0]
+        Scale: [1, 2, 1]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 1
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [1, 2, 1]
+        Type: DYNAMIC
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 11573253777835523025
+      ModelName: sphere
+      MaterialName: ""
+      ModelSource: Resources/Models/sphere.fbx
+      MaterialSource: Marble
+  - InfoComponent:
+      Parent: 0
+      Name: Spot Light
+      UID: 12363776012929465708
+    TransformComponent:
+      Transform:
+        Translate: [2, 2, 2]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SpotLightComponent:
+      Light:
+        Radiance: [0.699999988, 0.800000012, 1]
+        Intensity: 15
+        FallOff: 1.05592418
+        CutOff: 0.34906584
+  - InfoComponent:
+      Parent: 0
+      Name: Directional Light
+      UID: 16395980114807373968
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [6, 0, 0]
+        Scale: [1, 1, 1]
+    DirectLightComponent:
+      Light:
+        Radiance: [1, 1, 0.899999976]
+        Intensity: 3
+  - InfoComponent:
+      Parent: 0
+      Name: Point Light
+      UID: 5315588240363654174
+    TransformComponent:
+      Transform:
+        Translate: [0, 0.5, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    PointLightComponent:
+      Light:
+        Radiance: [1, 0.899999976, 0.699999988]
+        Intensity: 10
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Camera
+      UID: 9201024860084647067
+    TransformComponent:
+      Transform:
+        Translate: [0.442595303, 0.624262631, 2.52667642]
+        Rotate: [-15.75, 8.625, 0]
+        Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        NearPlane: 0.300000012
+        FarPlane: 1000
+        FOV: 60
+  - InfoComponent:
+      Parent: 0
+      Name: Skybox
+      UID: 3009173759421305309
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SkyboxComponent:
+      SkyboxID: 10427935764841817814
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Ball 2
+      UID: 6042260349840611439
+    TransformComponent:
+      Transform:
+        Translate: [1.28999996, 1, 0]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.5]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 11573253777835523025
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
   - {}
   - {}
-  - {}
-  - {}
-  - {}
+  - ColliderComponent:
+      Collider:
+        LocalPosition: [0, 0, 0]
+        LocalRotation: [0, 0, 0]
+        LocalScale: [1, 1, 1]
+        DynamicFriction: 0.5
+        StaticFriction: 0.5
+        Restitution: 0.100000001
+        PhysicsMesh: 0
+        Type: CAPSULE
+    InfoComponent:
+      Parent: 18299148976802030936
+      Name: Player_PhysicsBody
+      UID: 18299148976802030937
+    TransformComponent:
+      Transform:
+        Translate: [0, -0.200000003, 0]
+        Rotate: [0, 0, 0]
+        Scale: [0.850000024, 2.36999989, 0.5]
+    RigidBodyComponent:
+      RigidBody:
+        Density: 1
+        Mass: 1
+        InitialVelocity: [0, 0, 0]
+        Previous Scale: [0.850000024, 2.36999989, 0.5]
+        Type: STATIC
+  - InfoComponent:
+      Parent: 0
+      Name: Player
+      UID: 18299148976802030936
+    TransformComponent:
+      Transform:
+        Translate: [0, -0.200000003, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 9625104056789884581
+      MaterialID: 11573253777835523025
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+    AnimatorComponent:
+      Clips:
+        - name: mixamo.com
+          filePath: ""
+        - name: Idle
+          filePath: Resources/Models/idle.fbx
+        - name: Walk
+          filePath: Resources/Models/walking.fbx
+        - name: Run
+          filePath: Resources/Models/run.fbx
+      States:
+        - name: State 0
+          clipIndex: 1
+          speed: 1
+          loop: true
+          transitions:
+            - targetStateIndex: 1
+              conditionType: 3
+              parameterName: Run
+              floatValue: 0
+              boolValue: true
+              transitionDuration: 0.25
+              hasExitTime: true
+              exitTime: 0.243000001
+        - name: Run
+          clipIndex: 3
+          speed: 1
+          loop: true
+          transitions:
+            - targetStateIndex: 0
+              conditionType: 3
+              parameterName: Run
+              floatValue: 0
+              boolValue: false
+              transitionDuration: 0.25999999
+              hasExitTime: true
+              exitTime: 0.5
+      FloatParams:
+        {}
+      BoolParams:
+        Run: false
+      CurrentStateIndex: 0
   - {}
   - {}
   - {}

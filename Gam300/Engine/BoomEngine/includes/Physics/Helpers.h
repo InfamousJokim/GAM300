@@ -1,5 +1,6 @@
 #pragma once
-#include "common/Core.h"
+#include "Core.h"
+#include <glm/gtx/euler_angles.hpp>
 
 using namespace	physx;
 

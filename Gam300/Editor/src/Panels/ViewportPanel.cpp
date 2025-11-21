@@ -217,7 +217,7 @@ namespace EditorUI {
                     );
                 }
             }
-            
+
         }
         ImGui::End();
     }
@@ -264,9 +264,9 @@ namespace EditorUI {
         }
     }
     void ViewportPanel::DrawGuizmo3D(
-        ImVec2 const& itemMin, ImVec2 const& rectSz, 
+        ImVec2 const& itemMin, ImVec2 const& rectSz,
         glm::mat4 const& view, glm::mat4 const& proj,
-        bool& gizmoWantsInput) 
+        bool& gizmoWantsInput)
     {
         // ImGuizmo manipulation
         entt::entity selectedEntity = m_App->SelectedEntity();
@@ -313,7 +313,7 @@ namespace EditorUI {
                 break;
             }
         }
-        
+
     }
 
     void ViewportPanel::HandleMouseClick(const ImVec2& mousePos, const ImVec2&)

@@ -70,7 +70,7 @@ namespace Boom {
                 {
                     auto& ag = reg.get<NavAgentComponent>(e);
                     ag.follow = entt::null;
-                    
+
                     ag.dirty = true;
                     ag.repathTimer = 0.f;
                     ag.path.clear();

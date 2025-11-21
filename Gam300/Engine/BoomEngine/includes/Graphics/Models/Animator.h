@@ -106,23 +106,16 @@ namespace Boom
                     {
                         // Single clip mode
                         auto& clip = m_Clips[currentState.clipIndex];
-                        float lastTime = m_Time;
                         m_Time += clip->ticksPerSecond * currentState.speed * deltaTime;
 
-                        bool looped = false;
                         if (currentState.loop)
                         {
-                            float newTime = fmod(m_Time, clip->duration);
-                            looped = (newTime < lastTime);  // Detect wrap-around
-                            m_Time = newTime;
+                            m_Time = fmod(m_Time, clip->duration);
                         }
                         else
                         {
                             m_Time = std::min(m_Time, clip->duration);
                         }
-
-                        // Process animation events
-                        ProcessAnimationEvents(clip.get(), lastTime, m_Time, looped);
 
                         UpdateJoints(m_Root, glm::identity<glm::mat4>());
                     }
@@ -131,16 +124,8 @@ namespace Boom
             // Legacy clip-based mode (fallback)
             else if (m_CurrentClip < m_Clips.size())
             {
-                auto& clip = m_Clips[m_CurrentClip];
-                float lastTime = m_Time;
-                m_Time += clip->ticksPerSecond * deltaTime;
-                float newTime = fmod(m_Time, clip->duration);
-                bool looped = (newTime < lastTime);
-                m_Time = newTime;
-
-                // Process animation events
-                ProcessAnimationEvents(clip.get(), lastTime, m_Time, looped);
-
+                m_Time += m_Clips[m_CurrentClip]->ticksPerSecond * deltaTime;
+                m_Time = fmod(m_Time, m_Clips[m_CurrentClip]->duration);
                 UpdateJoints(m_Root, glm::identity<glm::mat4>());
             }
 
@@ -309,65 +294,6 @@ namespace Boom
             }
         }
 
-        // === ANIMATION EVENT SYSTEM ===
-
-        // Event callback signature: void(const AnimationEvent& event)
-        using EventCallback = std::function<void(const AnimationEvent&)>;
-
-        // Register a callback for a specific event function name
-        BOOM_INLINE void RegisterEventHandler(const std::string& functionName, EventCallback callback)
-        {
-            m_EventHandlers[functionName] = callback;
-        }
-
-        // Unregister an event handler
-        BOOM_INLINE void UnregisterEventHandler(const std::string& functionName)
-        {
-            m_EventHandlers.erase(functionName);
-        }
-
-        // Clear all event handlers
-        BOOM_INLINE void ClearEventHandlers()
-        {
-            m_EventHandlers.clear();
-        }
-
-        // Check if an event handler is registered
-        BOOM_INLINE bool HasEventHandler(const std::string& functionName) const
-        {
-            return m_EventHandlers.count(functionName) > 0;
-        }
-
-        // Manually fire an event (for testing)
-        BOOM_INLINE void TestFireEvent(const AnimationEvent& event)
-        {
-            BOOM_INFO("-----------------------------------------------");
-            BOOM_INFO("Animation Event Fired!");
-            BOOM_INFO("   Function: '{}'", event.functionName);
-            BOOM_INFO("   Time: {:.2f}s", event.time);
-            if (!event.stringParameter.empty()) {
-                BOOM_INFO("   String Param: \"{}\"", event.stringParameter);
-            }
-            if (event.floatParameter != 0.0f) {
-                BOOM_INFO("   Float Param: {:.3f}", event.floatParameter);
-            }
-            if (event.intParameter != 0) {
-                BOOM_INFO("   Int Param: {}", event.intParameter);
-            }
-
-            // Try to fire the event
-            auto it = m_EventHandlers.find(event.functionName);
-            if (it != m_EventHandlers.end()) {
-                BOOM_INFO(" Handler found - executing...");
-                it->second(event);
-                BOOM_INFO(" Handler completed!");
-            } else {
-                BOOM_WARN(" No handler registered for '{}'", event.functionName);
-                BOOM_INFO(" Register handlers in code or use built-in logging");
-            }
-            BOOM_INFO("-----------------------------------------------");
-        }
-
     private:
          // === STATE MACHINE HELPERS ===
 
@@ -494,25 +420,14 @@ namespace Boom
              auto& upperClip = m_Clips[upperClipIdx];
 
              // Advance time
-             float lastTime = m_Time;
              m_Time += lowerClip->ticksPerSecond * state.speed * deltaTime;
-             bool looped = false;
              if (state.loop)
              {
-                 float newTime = fmod(m_Time, lowerClip->duration);
-                 looped = (newTime < lastTime);
-                 m_Time = newTime;
+                 m_Time = fmod(m_Time, lowerClip->duration);
              }
              else
              {
                  m_Time = std::min(m_Time, lowerClip->duration);
-             }
-
-             // Process events from both blended clips
-             ProcessAnimationEvents(lowerClip.get(), lastTime, m_Time, looped);
-             if (blendWeight > 0.001f && lowerClipIdx != upperClipIdx)
-             {
-                 ProcessAnimationEvents(upperClip.get(), lastTime, m_Time, looped);
              }
 
              // Blend the two animations
@@ -546,14 +461,8 @@ namespace Boom
              // (Don't advance m_Time)
 
              // Advance "to" animation
-             float lastTargetTime = m_TargetTime;
              m_TargetTime += toClip->ticksPerSecond * toState.speed * deltaTime;
-             float newTargetTime = fmod(m_TargetTime, toClip->duration);
-             bool looped = (newTargetTime < lastTargetTime);
-             m_TargetTime = newTargetTime;
-
-             // Process events only from the target clip (since from clip is frozen)
-             ProcessAnimationEvents(toClip.get(), lastTargetTime, m_TargetTime, looped);
+             m_TargetTime = fmod(m_TargetTime, toClip->duration);
 
              BlendJoints(m_Root, glm::identity<glm::mat4>(), fromClip.get(), toClip.get(), m_BlendProgress);
          }
@@ -913,55 +822,6 @@ namespace Boom
         }
 
     private:
-        // === EVENT PROCESSING ===
-
-        BOOM_INLINE void ProcessAnimationEvents(const AnimationClip* clip, float lastTime, float currentTime, bool looped)
-        {
-            if (!clip || clip->events.empty()) return;
-
-            // Handle loop wrapping
-            if (looped && currentTime < lastTime)
-            {
-                // Fire events from lastTime to duration
-                for (const auto& event : clip->events)
-                {
-                    if (event.time >= lastTime && event.time <= clip->duration)
-                    {
-                        FireEvent(event);
-                    }
-                }
-
-                // Fire events from 0 to currentTime
-                for (const auto& event : clip->events)
-                {
-                    if (event.time >= 0.0f && event.time <= currentTime)
-                    {
-                        FireEvent(event);
-                    }
-                }
-            }
-            else
-            {
-                // Normal forward playback
-                for (const auto& event : clip->events)
-                {
-                    if (event.time > lastTime && event.time <= currentTime)
-                    {
-                        FireEvent(event);
-                    }
-                }
-            }
-        }
-
-        BOOM_INLINE void FireEvent(const AnimationEvent& event)
-        {
-            auto it = m_EventHandlers.find(event.functionName);
-            if (it != m_EventHandlers.end())
-            {
-                it->second(event);  // Call the registered callback
-            }
-        }
-
         // === STATE MACHINE DATA ===
         std::vector<State> m_States;
         size_t m_CurrentStateIndex = 0;
@@ -984,10 +844,6 @@ namespace Boom
         Joint m_Root;
         size_t m_CurrentClip = 0;
         float m_Time = 0.0f;
-
-        // Animation event system
-        std::unordered_map<std::string, EventCallback> m_EventHandlers;
-        float m_LastTime = 0.0f;  // For detecting event crossings
 
         friend struct SkeletalModel;
     };

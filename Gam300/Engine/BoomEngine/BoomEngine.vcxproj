@@ -245,6 +245,10 @@
     <ClInclude Include="includes\Scripting\MonoRuntime.h" />
     <ClInclude Include="includes\Scripting\ScriptBinding.h" />
     <ClInclude Include="includes\Scripting\ScriptingSystem.h" />
+    <ClCompile Include="includes\Scripting\FileWatcher.h">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClInclude Include="includes\Window\InputSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +313,10 @@
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\FileWatcher.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>

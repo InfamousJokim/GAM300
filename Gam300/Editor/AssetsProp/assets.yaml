@@ -5029,7 +5029,7 @@ ASSETS:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
-          Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+          Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
     UID: 5857660347989881526
@@ -5194,7 +5194,7 @@ ASSETS:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
-          Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+          Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
     UID: 15734322141743840447

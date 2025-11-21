@@ -210,7 +210,7 @@ if exist "$(glew_BIN_DIRS)" xcopy /y /i "$(glew_BIN_DIRS)\*.dll" "$(TargetDir)"<
     <ClCompile Include="src\Context\Profiler.hpp" />
     <ClCompile Include="src\Editor.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Panels\Inspector\AnimatorGraphPanel.cpp" />
+    <ClCompile Include="src\Panels\AnimatorGraphPanel.cpp" />
     <ClCompile Include="src\Panels\AudioPanel.cpp" />
     <ClCompile Include="src\Panels\ConsolePanel.cpp" />
     <ClCompile Include="src\Panels\DirectoryPanel.cpp" />
@@ -257,7 +257,7 @@ if exist "$(glew_BIN_DIRS)" xcopy /y /i "$(glew_BIN_DIRS)\*.dll" "$(TargetDir)"<
     <ClInclude Include="src\Context\Widgets.h" />
     <ClInclude Include="src\Editor.h" />
     <ClInclude Include="src\EditorPCH.h" />
-    <ClInclude Include="src\Panels\Inspector\AnimatorGraphPanel.h" />
+    <ClInclude Include="src\Panels\AnimatorGraphPanel.h" />
     <ClInclude Include="src\Panels\AudioPanel.h" />
     <ClInclude Include="src\Panels\ConsolePanel.h" />
     <ClInclude Include="src\Panels\DirectoryPanel.h" />

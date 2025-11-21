@@ -27,32 +27,45 @@ namespace Boom
         const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Release").string();
 #endif
 
-        if (!InitMonoRuntime(monoBase, asmDir, "BoomDomain"))
-        {
-#ifdef _DEBUG
-            BOOM_ERROR("[Scripting] Failed to initialize Mono runtime!");
-#endif // DEBUG
-        }
 
+        if (!m_Context->scriptingSystem->Init(asmDir, m_Context))
+        {
+            BOOM_ERROR("[Scripting] Failed to initialize scripting system!");
+        }
         else
         {
-            RegisterScriptInternalCalls(m_Context);
-            if (!LoadGameAssembly("GameScripts.dll"))
+
+            std::string dllPath = (std::filesystem::path(asmDir) / "GameScripts.dll").string();
+
+            if (!m_Context->scriptingSystem->LoadScriptsDll(dllPath))
             {
-#ifdef _DEBUG
                 BOOM_ERROR("[Scripting] Failed to load GameScripts.dll");
-
-#endif // DEBUG
-
             }
             else
             {
 
-                InvokeStaticVoid("GameScripts", "Entry", "Start", nullptr);
-#ifdef _DEBUG
-                BOOM_INFO("[Scripting] GameScripts entry invoked.");
-#endif // DEBUG
+                // Auto enabling of hot reload
+                m_Context->scriptingSystem->EnableAutoHotReload(true);
 
+                if (!m_Context->scriptingSystem->CallStart())
+                    BOOM_ERROR("[Scripting] GameScripts.Entry:Start() failed");
+                else
+                    BOOM_INFO("[Scripting] GameScripts entry invoked.");
+
+                int scriptsCreated = 0;
+                auto& registry = m_Context->scene;
+                auto scriptView = registry.view<Boom::ScriptComponent>();
+                for (auto entity : scriptView) {
+                    auto& sc = scriptView.get<Boom::ScriptComponent>(entity);
+                    if (m_Context->scriptingSystem->RecreateForEntity(entity, sc)) {
+                        scriptsCreated++;
+                        BOOM_INFO("[Scripting] Created instance for entity {} (type: {})",
+                            static_cast<uint32_t>(entity), sc.TypeName);
+                    }
+                }
+                if (scriptsCreated > 0) {
+                    BOOM_INFO("[Scripting] Created {} script instances after scene load", scriptsCreated);
+                }
             }
         }
         // --- END MONO INITIALIZE ---
@@ -136,14 +149,22 @@ namespace Boom
 
             // Always update delta time, but adjust for pause state
             ComputeFrameDeltaTime();
-
-            // Only run scripts and AI in play mode when RUNNING
             if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
-                InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
+               // InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
                 m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
                 if (m_Nav) {
                     m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
                 }
+            }
+            float dt = static_cast<float>(m_Context->DeltaTime);
+            m_Context->scriptingSystem->UpdateFileWatcher();
+            m_Context->scriptingSystem->CallUpdate(dt);
+            
+            auto& registry = m_Context->scene;
+            auto scriptView = registry.view<Boom::ScriptComponent>();
+            for (auto entity : scriptView) {
+                auto& sc = scriptView.get<Boom::ScriptComponent>(entity);
+                m_Context->scriptingSystem->TickEntity(entity, sc, dt);
             }
 
             //compute camera position to colliders

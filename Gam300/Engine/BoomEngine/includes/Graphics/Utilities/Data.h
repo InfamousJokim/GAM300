@@ -12,7 +12,9 @@ namespace Boom {
 }
 
 namespace Boom {
-		struct Transform3D {
+
+
+	struct Transform3D {
 		BOOM_INLINE Transform3D() : translate{}, rotate{}, scale{ 1.f } {}
 		BOOM_INLINE Transform3D(Transform3D const& t) = default;
 		BOOM_INLINE Transform3D(glm::vec3 t, glm::vec3 r, glm::vec3 s)
@@ -117,7 +119,7 @@ namespace Boom {
 			enum CameraType {
 			Main,
 			Sub
-		}cameraType{};
+		}cameraType;
 	};
 
 	struct PbrMaterial {
@@ -175,7 +177,6 @@ namespace Boom {
 
 		glm::vec3 radiance;
 		float intensity;
-		float distance;
 		float range;
 		// ===== PointLight =====
 		XPROPERTY_DEF(

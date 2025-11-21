@@ -225,7 +225,7 @@ namespace EditorUI {
     }
 
     // Add this new helper method for skeletal models (if needed)
-    bool RayCast::CalculateSkeletalMeshBounds(std::shared_ptr<Boom::SkeletalModel> /*model*/, glm::vec3& /*min*/, glm::vec3& /*max*/) {
+    bool RayCast::CalculateSkeletalMeshBounds(std::shared_ptr<Boom::SkeletalModel> model, glm::vec3& min, glm::vec3& max) {
         // For skeletal models, you might need to access the mesh data differently
         // This is a placeholder - you'll need to adapt based on your SkeletalModel implementation
 

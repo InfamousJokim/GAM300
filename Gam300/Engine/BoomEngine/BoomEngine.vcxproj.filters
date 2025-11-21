@@ -16,6 +16,7 @@
     <ClCompile Include="src\Scripting\MonoRuntime.cpp" />
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
     <ClCompile Include="src\Scripting\ScriptBinding.cpp" />
+    <ClCompile Include="src\Scripting\FileWatcher.cpp" />
     <ClCompile Include="src\SoundSystem.cpp" />
     <ClCompile Include="includes\AI\DetourNavSystem.cpp" />
     <ClCompile Include="includes\AI\NavAgent.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="includes\Scripting\MonoRuntime.h" />
     <ClInclude Include="includes\Scripting\ScriptBinding.h" />
     <ClInclude Include="includes\Scripting\ScriptingSystem.h" />
+    <ClCompile Include="includes\Scripting\FileWatcher.h" />
     <ClInclude Include="includes\AI\BehaviourTree.h" />
     <ClInclude Include="includes\AI\AIComponent.h" />
     <ClInclude Include="includes\AI\Actions.h" />

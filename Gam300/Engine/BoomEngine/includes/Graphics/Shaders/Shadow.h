@@ -96,7 +96,7 @@ namespace Boom {
         uint32_t m_DepthMap = 0u;
         int32_t MapSize = 1024;
 
-        int32_t jointsLoc{};
+        int32_t jointsLoc;
         uint32_t u_LightSpace = 0u;
         uint32_t u_Model = 0u;
     };

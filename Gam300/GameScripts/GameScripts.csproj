@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Entry.cs" />
-    <Compile Include="Native.cs" />
+    <Compile Include="PlayerMovement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

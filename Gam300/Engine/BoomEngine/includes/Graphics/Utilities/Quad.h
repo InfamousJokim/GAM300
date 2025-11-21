@@ -43,10 +43,10 @@ namespace Boom {
 
 		ShadedVert v0, v1, v2, v3;
 		//anti-clockwise
-		v0.pos = { -1.f, -1.f, 0.f };
-		v1.pos = { 1.f, -1.f, 0.f };
-		v2.pos = { 1.f, 1.f, 0.f };
-		v3.pos = { -1.f, 1.f, 0.f };
+		v0.pos = { -0.5f, -0.5f, 0.f };
+		v1.pos = { 0.5f, -0.5f, 0.f };
+		v2.pos = { 0.5f, 0.5f, 0.f };
+		v3.pos = { -0.5f, 0.5f, 0.f };
 
 		//all norm similar
 		v3.norm = v2.norm = v1.norm = v0.norm = { 0.f, 0.f, 1.f };

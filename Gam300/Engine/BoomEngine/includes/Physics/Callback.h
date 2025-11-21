@@ -47,7 +47,7 @@ namespace Boom {
 				m_Callback(event);
 			}
 
-			BOOM_DEBUG("onContact Event!");
+			//BOOM_DEBUG("onContact Event!");
 		}
 
 		// override the onTrigger callback
