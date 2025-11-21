@@ -21,7 +21,7 @@ out vec4 FragColor;
 uniform vec4 color;
 uniform sampler2D texMap;
 void main() {
-    vec3 result = texture(texMap, uvs).rgb;
-    FragColor = color * vec4(result, 1.0);
+    vec4 result = texture(texMap, uvs).rgba;
+    FragColor = color * result;
 }
 ==FRAGMENT==
