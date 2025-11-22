@@ -377,9 +377,9 @@ namespace Boom {
     // NEW: Update file watcher (call every frame)
     void ScriptingSystem::UpdateFileWatcher()
     {
-        if (m_AutoHotReload && m_Alive && !m_Reloading) {
+        /*if (m_AutoHotReload && m_Alive && !m_Reloading) {
             m_FileWatcher.Update();
-        }
+        }*/
     }
 
 } // namespace Boom
