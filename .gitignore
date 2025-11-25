@@ -110,10 +110,10 @@ Gam300/conanbuild/opengl_systemTargets.cmake
 *.cmake
 Gam300/Gam300.slnLaunch.user
 ~$Rubrics_Milestone01.xlsx
-Gam300/Editor/AssetsTest.yaml
-Gam300/Editor/SceneTest.yaml
-Gam300/Editor/AssetsTest.yaml
-Gam300/Editor/SceneTest.yaml
+!Gam300/Editor/AssetsTest.yaml
+!Gam300/Editor/SceneTest.yaml
+!Gam300/Editor/AssetsTest.yaml
+!Gam300/Editor/SceneTest.yaml
 
 
 # --- Allow Mono & managed DLLs to be versioned ---
@@ -127,4 +127,5 @@ Gam300/Editor/SceneTest.yaml
 !GAM300/mono/include/**
 
 # --- Allow GameScripts.dll to be tracked ---
-!GAM300/Editor/GameScripts.dll
+!GAM300/GameScripts/bin/x64/Debug/GameScripts.dll
+!GAM300/GameScripts/bin/x64/Release/GameScripts.dll
