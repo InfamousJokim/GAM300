@@ -43,7 +43,7 @@ namespace EditorUI {
         auto& registry = m_Context->scene;
 
         // Iterate through all entities with TransformComponent and ModelComponent (renderable)
-        auto view = registry.view<Boom::TransformComponent, Boom::ModelComponent>();
+        auto view = registry.view<Boom::TransformComponent>();
 
         for (auto entity : view) {
             // Perform ray intersection test
@@ -70,13 +70,33 @@ namespace EditorUI {
 
         auto& registry = m_Context->scene;
 
-        if (!registry.all_of<Boom::TransformComponent, Boom::ModelComponent>(entity)) {
-            return false;
-        }
-
-        // Get entity's bounding box in world space
+        //calculate min aabb based on component type(2d/3d)
         glm::vec3 aabbMin, aabbMax;
-        GetEntityAABB(entity, aabbMin, aabbMax);
+        aabbMin = glm::vec3(FLT_MAX);
+        aabbMax = glm::vec3(-FLT_MAX);
+
+        if (registry.all_of<Boom::TransformComponent, Boom::SpriteComponent>(entity)) {
+            const auto& spriteComp = registry.get<Boom::SpriteComponent>(entity);
+            const auto& transformComp = registry.get<Boom::TransformComponent>(entity);
+            if (spriteComp.uiOverlay) return false; //raycast should only work in 3D mode
+            glm::mat4 tMat{ transformComp.transform.Matrix() };
+            std::array<glm::vec3, 4> corners{
+                glm::vec3{-1.f, -1.f, 0.f},
+                {1.f, -1.f, 0.f},
+                {1.f, 1.f, 0.f},
+                {-1.f, 1.f, 0.f}
+            };
+            for (glm::vec3 const& v : corners) {
+                glm::vec3 tVec{ tMat * glm::vec4{v, 1.f} };
+
+                aabbMin = glm::min(aabbMin, tVec);
+                aabbMax = glm::max(aabbMax, tVec);
+            }
+        }
+        else if (registry.all_of<Boom::TransformComponent, Boom::ModelComponent>(entity)) {
+            GetEntityAABB(entity, aabbMin, aabbMax);
+        }
+        else return false;
 
         // Perform AABB intersection test and get actual hit distance
         return RayAABBIntersection(rayOrigin, rayDirection, aabbMin, aabbMax, hitDistance);
@@ -124,9 +144,6 @@ namespace EditorUI {
                 glm::vec3(modelMin.x, modelMax.y, modelMax.z),
                 glm::vec3(modelMax.x, modelMax.y, modelMax.z)
             };
-
-            aabbMin = glm::vec3(FLT_MAX);
-            aabbMax = glm::vec3(-FLT_MAX);
 
             for (const auto& corner : corners) {
                 glm::vec3 worldCorner = worldMatrix * glm::vec4(corner, 1.0f);

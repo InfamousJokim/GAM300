@@ -6,11 +6,18 @@
 
 #pragma once
 namespace Boom {
+	struct TextureLoadContext; // Forward declaration
+
 	struct BOOM_API Texture2D {
 		Texture2D();
 		//file path starts from Textures folder
 		//textures that shouldn't compress are often already really small in size, like icons
 		Texture2D(std::string const& filename);
+
+		// NEW: Two-phase loading
+		// Constructor that uploads pre-loaded texture data to GPU
+		Texture2D(const TextureLoadContext& context);
+
 		~Texture2D();
 		void Use(int32_t uniform, int32_t unit);
 		void Bind();
@@ -21,11 +28,18 @@ namespace Boom {
 		int32_t Height() const noexcept;
 		int32_t Width() const noexcept;
 
+	public: //static CPU-side loading (no OpenGL calls)
+		static void LoadFromDiskCPU(const std::string& filename, TextureLoadContext& outContext);
+
 	protected: //helpers
 		std::string GetExtension(std::string const& filename);
 
 		void LoadUnCompressed(std::string const& filename);
 		void LoadCompressed(std::string const& filename);
+
+		// NEW: GPU upload methods that work with pre-loaded data
+		void UploadUnCompressedToGPU(const TextureLoadContext& context);
+		void UploadCompressedToGPU(const TextureLoadContext& context);
 
 	private:
 		int32_t height;

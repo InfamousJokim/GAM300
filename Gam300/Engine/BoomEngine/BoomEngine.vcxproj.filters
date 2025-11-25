@@ -23,6 +23,8 @@
     <ClCompile Include="includes\AI\DetourBuildAPI.cpp" />
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\Auxiliaries\DataSerializerAsync.cpp" />
+    <ClCompile Include="src\Auxiliaries\AsyncAssetLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Application\Application.h" />
@@ -92,6 +94,8 @@
     <ClInclude Include="includes\AI\BehaviourTreeActions.h" />
     <ClInclude Include="includes\AI\AISystem.h" />
     <ClInclude Include="includes\Graphics\Shaders\LoadingShader.h" />
+    <ClInclude Include="includes\Auxiliaries\AssetLoadContext.h" />
+    <ClInclude Include="includes\Auxiliaries\AsyncAssetLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VendorSettings.props" />

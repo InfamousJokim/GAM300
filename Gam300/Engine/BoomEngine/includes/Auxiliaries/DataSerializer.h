@@ -7,6 +7,9 @@
 
 namespace Boom
 {
+    // Forward declaration
+    class AsyncAssetLoader;
+
     /**
      * High-level serialization interface that uses the SerializationRegistry.
      * This class is now much simpler and delegates to the registry.
@@ -252,5 +255,19 @@ namespace Boom
                 std::cout << e.what() << std::endl;
             }
         }
+
+        // ===== ASYNC ASSET DESERIALIZATION (NEW - MULTITHREADED) =====
+        /**
+         * @brief Deserialize assets using multithreaded loading
+         * @param registry Asset registry to populate
+         * @param path Path to YAML asset file
+         * @param win Window handle for progress rendering
+         * @param numThreads Number of worker threads (0 = auto-detect)
+         *
+         * This method uses a two-phase loading approach:
+         * 1. CPU Phase (parallel): Load and parse assets on worker threads
+         * 2. GPU Phase (main thread): Upload parsed data to OpenGL
+         */
+        void DeserializeAsync(AssetRegistry& registry, const std::string& path, GLFWwindow* win, size_t numThreads = 0);
     };
 }

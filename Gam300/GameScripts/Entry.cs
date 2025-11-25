@@ -64,8 +64,8 @@ namespace GameScripts
             bool q_KeyDown = API.IsKeyDown(API.KEY_Q); // Quit
             bool ctrl_KeyDown = API.IsKeyDown(API.KEY_LEFT_CONTROL);
 
-            // --- LOGIC FOR MENUS ---
-            if (_currentSceneName == MAIN_MENU_SCENE_NAME || _currentSceneName == HOW_TO_PLAY_SCENE_NAME)
+            // --- LOGIC FOR MAIN MENU ---
+            if (_currentSceneName == MAIN_MENU_SCENE_NAME)
             {
                 // Check for 'P' (without Ctrl) to START the Level
                 if (p_KeyDown && !_p_KeyWasDown && !ctrl_KeyDown)
@@ -85,15 +85,6 @@ namespace GameScripts
                     return; // Exit after action
                 }
 
-                // Check for 'R' (without Ctrl) to RETURN TO MAIN MENU (from HowToPlay)
-                if (r_KeyDown && !_r_KeyWasDown && !ctrl_KeyDown && _currentSceneName == HOW_TO_PLAY_SCENE_NAME)
-                {
-                    API.Log("Returning to Main Menu from HowToPlay.");
-                    API.LoadScene(MAIN_MENU_SCENE_NAME);
-                    _r_KeyWasDown = r_KeyDown; // Set tracker
-                    return; // Exit after action
-                }
-
                 // Check for 'Q' (without Ctrl) to QUIT
                 if (q_KeyDown && !_q_KeyWasDown && !ctrl_KeyDown)
                 {
@@ -106,10 +97,31 @@ namespace GameScripts
                 // Update all menu key trackers if no action was taken
                 _p_KeyWasDown = p_KeyDown;
                 _h_KeyWasDown = h_KeyDown;
+                _r_KeyWasDown = r_KeyDown; // (Doesn't hurt to update this)
+                _q_KeyWasDown = q_KeyDown;
+
+                return; // Exit UpdateGame
+            }
+
+            // --- LOGIC FOR HOW TO PLAY MENU ---
+            else if (_currentSceneName == HOW_TO_PLAY_SCENE_NAME)
+            {
+                // Check for 'R' (without Ctrl) to RETURN TO MAIN MENU
+                if (r_KeyDown && !_r_KeyWasDown && !ctrl_KeyDown)
+                {
+                    API.Log("Returning to Main Menu from HowToPlay.");
+                    API.LoadScene(MAIN_MENU_SCENE_NAME);
+                    _r_KeyWasDown = r_KeyDown; // Set tracker
+                    return; // Exit after action
+                }
+
+                // Update all menu key trackers if no action was taken
+                _p_KeyWasDown = p_KeyDown;
+                _h_KeyWasDown = h_KeyDown;
                 _r_KeyWasDown = r_KeyDown;
                 _q_KeyWasDown = q_KeyDown;
 
-                return;
+                return; // Exit UpdateGame
             }
 
             // --- LOGIC FOR IN-GAME ---

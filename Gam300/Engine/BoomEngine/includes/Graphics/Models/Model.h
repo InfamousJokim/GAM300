@@ -10,6 +10,10 @@
 #include <assimp/scene.h>
 
 namespace Boom {
+	// Forward declarations for two-phase loading
+	struct StaticModelLoadContext;
+	struct SkeletalModelLoadContext;
+
 	struct Model
 	{
 		BOOM_INLINE Model() = default;
@@ -77,6 +81,19 @@ namespace Boom {
 			// parse all meshes
 			ParseNode(ai_scene, ai_scene->mRootNode);
 		}
+
+		/**
+		 * @brief NEW: Two-phase loading constructor - uploads pre-loaded model data to GPU
+		 * @param context Pre-loaded model data from worker thread
+		 */
+		StaticModel(const StaticModelLoadContext& context);
+
+		/**
+		 * @brief NEW: Static CPU-side loading (no OpenGL calls - can run on worker thread)
+		 * @param filename File path to load
+		 * @param outContext Output context to fill with mesh data
+		 */
+		static void LoadFromDiskCPU(const std::string& filename, StaticModelLoadContext& outContext);
 
 		BOOM_INLINE const std::vector<MeshData<ShadedVert>>& GetMeshData() const {
 			return m_PhysicsMeshData;
@@ -177,7 +194,7 @@ namespace Boom {
 			const aiScene* ai_scene = importer.ReadFile(filename, flags);
 			if (!ai_scene || ai_scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode)
 			{
-				BOOM_ERROR("failed to load model: ’{}’", importer.GetErrorString());
+				BOOM_ERROR("failed to load model: ï¿½{}ï¿½", importer.GetErrorString());
 				return;
 			}
 
@@ -193,6 +210,20 @@ namespace Boom {
 			// parse animations
 			ParseAnimations(ai_scene, jointMap);
 		}
+
+		/**
+		 * @brief NEW: Two-phase loading constructor - uploads pre-loaded skeletal model data to GPU
+		 * @param context Pre-loaded skeletal model data from worker thread
+		 */
+		SkeletalModel(const SkeletalModelLoadContext& context);
+
+		/**
+		 * @brief NEW: Static CPU-side loading (no OpenGL calls - can run on worker thread)
+		 * @param filename File path to load
+		 * @param outContext Output context to fill with skeletal mesh and animation data
+		 */
+		static void LoadFromDiskCPU(const std::string& filename, SkeletalModelLoadContext& outContext);
+
 		BOOM_INLINE void Draw(uint32_t mode = GL_TRIANGLES) override final
 		{
 			for (auto& mesh : meshes)

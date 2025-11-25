@@ -537,13 +537,15 @@ namespace Boom
                         if (!entity.Has<ModelComponent>() || comp.modelID == EMPTY_ASSET) return;
                         if (entity.Has<DirectLightComponent>() || entity.Has<PointLightComponent>() || entity.Has<SpotLightComponent>()) return;
 
-                        ModelAsset& model{ m_Context->assets->Get<ModelAsset>(comp.modelID) };
+                        ModelAsset* model{ m_Context->assets->TryGet<ModelAsset>(comp.modelID) };
+                        if (!model) return;
+
                         std::vector<glm::mat4> joints;
                         if (entity.Has<AnimatorComponent>()) {
                             auto& an = entity.Get<AnimatorComponent>();
                             joints = an.animator->Animate(0); //dont update animation here
                         }
-                        else if (model.hasJoints) {
+                        else if (model->hasJoints) {
                             static std::vector<glm::mat4> identityPalette(100, glm::mat4(1.0f));
                             joints = identityPalette;
                         }
@@ -552,7 +554,7 @@ namespace Boom
                         Transform3D worldTransform;
                         DecomposeMatrix(worldMatrix, worldTransform.translate, worldTransform.rotate, worldTransform.scale);
 
-                        m_Context->renderer->DrawShadow(model.data, worldTransform, joints);
+                        m_Context->renderer->DrawShadow(model->data, worldTransform, joints);
                         });
 
                     m_Context->renderer->EndShadowPass();
@@ -834,9 +836,11 @@ namespace Boom
             BOOM_INFO("[Scene] Reinitializing scene systems...");
 
             EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
-                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
-                m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
-                BOOM_INFO("[Scene] Reinitialized skybox");
+                SkyboxAsset* skybox{ m_Context->assets->TryGet<SkyboxAsset>(comp.skyboxID) };
+                if (skybox) {
+                    m_Context->renderer->InitSkybox(skybox->data, skybox->envMap, skybox->size);
+                    BOOM_INFO("[Scene] Reinitialized skybox");
+                }
                 });
 
             // Only reinitialize physics

@@ -333,7 +333,9 @@ namespace Boom
             if (entity.Has<ModelComponent>()) {
                 ModelComponent& comp{ entity.Get<ModelComponent>() };
                 if (comp.modelID == EMPTY_ASSET) return;
-                ModelAsset& model{ m_Context->assets->Get<ModelAsset>(comp.modelID) };
+                ModelAsset* mdlPtr{ m_Context->assets->TryGet<ModelAsset>(comp.modelID) };
+                if (!mdlPtr) return;
+                ModelAsset& model{ *mdlPtr };
                 if (entity.Has<AnimatorComponent>()) {
                     auto& an = entity.Get<AnimatorComponent>();
                     // Only update animations in play mode when RUNNING
@@ -403,8 +405,9 @@ namespace Boom
 
         //render gui overlays at the end
         for (auto const& gui : guiList) {
-            TextureAsset& texture{ m_Context->assets->Get<TextureAsset>(gui.first.textureID) };
-            m_Context->renderer->DrawQuad(texture.data, gui.second, gui.first.color);
+            TextureAsset* texture{ m_Context->assets->TryGet<TextureAsset>(gui.first.textureID) };
+            if (texture)
+                m_Context->renderer->DrawQuad(texture->data, gui.second, gui.first.color);
         }
     }
 

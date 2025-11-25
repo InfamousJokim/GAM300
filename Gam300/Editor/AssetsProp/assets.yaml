@@ -217,317 +217,20 @@ ASSETS:
           Time: 832.96283
 
   - Type: TEXTURE
-    UID: 14031039903704197013
-    Name: Grass_Flower_Tint_02_FlowerBlue_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16300877889967123005
-    Name: asset.png
-    Source: Resources/Textures/Icons/asset.png
-    Properties:
-      Data:
-        CompileAsCompressed: false
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8646556619228535654
-    Name: UnderRoof_SquareTile_Flat_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10250648811772488735
-    Name: Grass_Flower_Tint_02_FlowerBlue_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12104325017165008649
-    Name: Grass_Dense_Tint_01_Leaves_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12073455208006825564
-    Name: Grass_Flower_Tint_02_Rocks_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Rocks_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2000641971401327177
-    Name: folder.png
-    Source: Resources/Textures/Icons/folder.png
-    Properties:
-      Data:
-        CompileAsCompressed: false
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14452546169200855872
-    Name: HowToPlayButton
-    Source: Resources/Textures/MainMenu/HowToPlayButton.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1675773503269632886
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
-    Source: Resources/Textures/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6705119568759610617
-    Name: Planks014_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Planks014_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16490361536122300952
-    Name: roughness.png
-    Source: Resources/Textures/Marble/roughness.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7762259362424041595
-    Name: height.png
-    Source: Resources/Textures/Marble/height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15248026036352975164
-    Name: Grass_Dense_Tint_02_Leaves_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13678383001348279943
-    Name: Wall_Stone_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16570544328326899609
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
-    Source: Resources/Textures/1_JAN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5741204174820446725
-    Name: albedo.png
-    Source: Resources/Textures/Marble/albedo.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18399105239901256411
-    Name: normal.png
-    Source: Resources/Textures/Marble/normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14059379981247117013
-    Name: Grass_Dense_Tint_02_Leaves_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8632336512379292186
-    Name: Grass_Flower_Tint_01_FlowerPurple_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4789105407518014319
-    Name: gradient.png
-    Source: Resources/Textures/gradient.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6280975248246761076
-    Name: Sand_Beach_Base_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Base_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3880862529767907456
-    Name: UnderRoof_Hay_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/UnderRoof_Hay_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12254886986544709422
-    Name: Grass_Dense_Tint_01_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10150390690263502230
-    Name: Grass_Flower_Tint_02_FlowerYellow_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10092207545566310336
-    Name: Dirt_Path_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/DIRT/Dirt_Path_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9983041115239008273
-    Name: Wall_Brick_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5064665984215678092
-    Name: UnderRoof_RoundTile_Flat_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13727863156839115652
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
-    Source: Resources/Textures/1_JAN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7911752211198247993
+    UID: 4036289525977957957
     Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Height
-    Source: Resources/Textures/1_JAN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 15056488335627110656
+    Name: Pedastal_normal
+    Source: Resources/Models/Enemy/Stationary Sentry/Pedastal_normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -547,31 +250,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 1275277109388505073
-    Name: Grass_Dense_Tint_02_Leaves_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 786928255412049801
-    Name: Grass_Dense_Tint_02_Base_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10622021275499597168
+    UID: 2600166467088307522
     Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness
-    Source: Resources/Textures/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -580,9 +261,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 13406068769322134878
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness
-    Source: Resources/Textures/1_JAN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
+    UID: 4067648091469832735
+    Name: Ninja_occlusionRoughnessMetallic
+    Source: Resources/Models/Enemy/Stationary Sentry/Ninja_occlusionRoughnessMetallic.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -591,9 +272,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 6299029081101298327
-    Name: Rocks_Cliff_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_Metallic.png
+    UID: 14452546169200855872
+    Name: HowToPlayButton
+    Source: Resources/Textures/MainMenu/HowToPlayButton.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -602,9 +283,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 9653529260760146859
-    Name: Grass_Flower_Tint_02_Rocks_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Rocks_AO.png
+    UID: 11555272199408419487
+    Name: Red_Gem
+    Source: Resources/UnityOtherFiles/UI Assets/Red_Gem.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -613,9 +294,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 13839630849184923779
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Height
-    Source: Resources/Textures/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
+    UID: 4669697712673348506
+    Name: Scissors_Ninja_Body_Normal
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Body_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -624,9 +305,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 18132916392460419191
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Height
-    Source: Resources/Textures/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
+    UID: 12364827878238943988
+    Name: Outdoor_Stone_Lantern2_midsection_BaseColor
+    Source: Resources/Models/Props/Stone_Lantern_Textures/Outdoor_Stone_Lantern2_midsection_BaseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -635,9 +316,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 12699356419827675960
-    Name: Grass_Dense_Tint_01_Leaves_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_A_Metallic.png
+    UID: 6648352726293174554
+    Name: Lantern_Hanging_openPBR_shader1_Height
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Lantern_Hanging_openPBR_shader1_Height.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -646,20 +327,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 11464188837038649927
-    Name: Dirt_Path_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/DIRT/Dirt_Path_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9939830284124924924
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness
-    Source: Resources/Textures/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
+    UID: 1821848361694167965
+    Name: Lantern_Hanging_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Lantern_Hanging_openPBR_shader1_BaseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -679,39 +349,6 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 13065290689969381210
-    Name: Grass_Flower_Tint_01_FlowerYellow_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7709339697587121146
-    Name: Grass_Flower_Tint_01_FlowerBlue_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16922011051394714355
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
-    Source: Resources/Textures/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
     UID: 2356045084069282249
     Name: Cold Night__Cam_4_Up+Y
     Source: Resources/UnityOtherFiles/Cold Night/Cold Night__Cam_4_Up+Y.png
@@ -723,163 +360,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 10584106203782579332
-    Name: Wood_Planks_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15452316838442651769
-    Name: Grass_Dense_Tint_01_Base_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
     UID: 12678405704945466943
     Name: NewGameButton_Clicked
     Source: Resources/Textures/MainMenu/NewGameButton_Clicked.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11428205054354235130
-    Name: Roof_RoundTile_Flat_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1635220012906117702
-    Name: Grass_Flower_Tint_01_FlowerBlue_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9881575800718576474
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
-    Source: Resources/Textures/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2302951673458243023
-    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
-    Source: Resources/Textures/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16693412492608723146
-    Name: Dirt_Path_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/DIRT/Dirt_Path_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4087636047340004673
-    Name: Dirt_Path_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/DIRT/Dirt_Path_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 117243652823017203
-    Name: UnderRoof_SquareTile_Bump_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1477280918390331514
-    Name: Grass_Dense_Tint_02_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10188459085107735349
-    Name: Grass_Flower_Tint_01_FlowerPurple_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6382549459324224415
-    Name: Dirt_Path_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/DIRT/Dirt_Path_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1284627859369571680
-    Name: Grass_Dense_Tint_01_Base_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3397359786255767116
-    Name: Paper003_1K-PNG_ColorTorn
-    Source: Resources/Textures/Paper003_1K-PNG_ColorTorn.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -910,127 +393,6 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 5633507845722200628
-    Name: Grass_Dense_Tint_02_Base_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4180272005981950022
-    Name: Grass_Dense_Tint_01_Base_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17339051380742535187
-    Name: UnderRoof_SquareTile_Flat_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9322219390451215028
-    Name: Grass_Flower_Tint_02_FlowerRed_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15122956267329302318
-    Name: Grass_Dense_Tint_02_Leaves_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7475844108452358685
-    Name: Grass_Dense_Tint_01_Base_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12559722910352830805
-    Name: Grass_Dense_Tint_01_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18028454470801986305
-    Name: UnderRoof_Hay_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/UnderRoof_Hay_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6796494654996867880
-    Name: Grass_Flower_Tint_02_FlowerYellow_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10813102543285730039
-    Name: Grass_Dense_Tint_01_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10349009912288430398
-    Name: Grass_Dense_Tint_02_Leaves_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
     UID: 8298581291578973732
     Name: PauseMenuMockup
     Source: Resources/Textures/PauseMenu/PauseMenuMockup.png
@@ -1042,9 +404,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7623221611151369262
-    Name: Roof_SquareTile_Flat_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Basecolor_C.png
+    UID: 16209169500842126980
+    Name: Wall_Stone_C_Height
+    Source: Resources/Textures/Wall Textures/Wall stone/Wall_Stone_C_Height.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1053,240 +415,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7682059724155238069
-    Name: Grass_Dense_Tint_01_Leaves_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15720133276963814697
-    Name: Grass_Dense_Tint_02_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6311911837803504487
-    Name: Wood_Plain_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3349839499096505477
-    Name: Grass_Flower_Tint_02_FlowerYellow_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2730348197178032704
-    Name: Grass_Flower_Tint_01_Base_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Base_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13210238056498414688
-    Name: UnderRoof_SquareTile_Bump_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2690731475044456418
-    Name: Grass_Dense_Tint_01_Leaves_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15301527874396008488
-    Name: Roof_RoundTile_Bump_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4012893623632112794
-    Name: Grass_Dense_Tint_01_Leaves_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16188836975288082132
-    Name: Wall_Brick_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8054833361196041557
-    Name: Grass_Flower_Tint_01_Base_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Base_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14371689878341549611
-    Name: Grass_Dense_Tint_02_Leaves_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11114936135591938694
-    Name: Grass_Dense_Tint_01_Leaves_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4797578079368148032
-    Name: Grass_Dense_Tint_01_Leaves_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15950770515504880469
-    Name: Grass_Dense_Tint_01_Leaves_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8112400078858650335
-    Name: Grass_Dense_Tint_01_Leaves_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 933705884169248048
-    Name: Rocks_Cliff_B_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1751972474961193136
-    Name: Grass_Flower_Tint_02_FlowerYellow_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 923456554021573551
-    Name: Grass_Flower_Tint_02_FlowerPurple_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11253190035920884669
-    Name: Grass_Dense_Tint_01_Leaves_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_01/Grass_Dense_Tint_01_Leaves_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15166625253463898815
-    Name: Cold Night__Cam_5_Down-Y
-    Source: Resources/UnityOtherFiles/Cold Night/Cold Night__Cam_5_Down-Y.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 72067623907814834
-    Name: Grass_Dense_Tint_02_Leaves_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_B_AO.png
+    UID: 4655935181254714960
+    Name: Scissors_Ninja_Hood_Height
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Hood_Height.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1306,9 +437,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 11978972056060007405
-    Name: Grass_Dense_Tint_02_Base_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Basecolor_B.png
+    UID: 15166625253463898815
+    Name: Cold Night__Cam_5_Down-Y
+    Source: Resources/UnityOtherFiles/Cold Night/Cold Night__Cam_5_Down-Y.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1317,9 +448,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 2049879524455642906
-    Name: Grass_Dense_Tint_02_Base_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Basecolor_C.png
+    UID: 3319781495498037179
+    Name: bottom roof texture
+    Source: Resources/Textures/Wall Textures/bottom roof texture.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1328,119 +459,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 10571728991319447225
-    Name: Grass_Flower_Tint_01_FlowerRed_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14546775178466173699
-    Name: Grass_Dense_Tint_02_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12372733091822081835
-    Name: Outdoor_Stone_Lantern2_Roof_BaseColor
-    Source: Resources/Textures/Stone Lantern Textures/Outdoor_Stone_Lantern2_Roof_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 504647526722330753
-    Name: Grass_Dense_Tint_02_Leaves_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16917961052036366036
-    Name: Grass_Dense_Tint_02_Leaves_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6939043668031648777
-    Name: Roof_RoundTile_Flat_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2766818619143773377
-    Name: Grass_Dense_Tint_02_Leaves_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Dense_Tint_02/Grass_Dense_Tint_02_Leaves_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15105287846782441747
-    Name: Grass_Flower_Tint_01_FlowerYellow_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 101854388863603846
-    Name: Grass_Flower_Tint_01_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16732117466802027743
-    Name: Grass_Flower_Tint_01_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3357252881612045757
-    Name: Grass_Flower_Tint_01_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Base_Normal.png
+    UID: 15873517341497826991
+    Name: lantern_colour_2_BaseMap
+    Source: Resources/Models/Props/lantern mat/lantern_colour_2_BaseMap.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1460,9 +481,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 4378015420296012060
-    Name: Grass_Flower_Tint_01_FlowerBlue_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_A_AO.png
+    UID: 13461473539925509901
+    Name: RestartButton
+    Source: Resources/Textures/PauseMenu/RestartButton.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1471,141 +492,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 16397574898682711411
-    Name: Grass_Flower_Tint_01_FlowerBlue_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 72016736316759809
-    Name: UnderRoof_RoundTile_Flat_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10429848038465765277
-    Name: Grass_Flower_Tint_01_FlowerBlue_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4739820940307550947
-    Name: Grass_Flower_Tint_01_FlowerBlue_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18104510100664830584
-    Name: Grass_Flower_Tint_02_FlowerBlue_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15439799985166355435
-    Name: Grass_Flower_Tint_01_FlowerBlue_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9919659196293505649
-    Name: Rocks_Cliff_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14025918283238074934
-    Name: Grass_Flower_Tint_01_FlowerRed_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14507030459278886015
-    Name: Grass_Flower_Tint_01_FlowerBlue_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 165383710695102508
-    Name: Grass_Flower_Tint_01_FlowerBlue_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6710050034795515548
-    Name: Grass_Flower_Tint_01_FlowerBlue_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerBlue_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2412851751110448831
-    Name: Wood_Plain_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3830315725878071302
-    Name: Grass_Flower_Tint_01_FlowerPurple_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_A_AO.png
+    UID: 11795212342725236264
+    Name: lantern_colour_2_MaskMap
+    Source: Resources/Models/Props/lantern mat/lantern_colour_2_MaskMap.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1625,9 +514,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 16096833441726375795
-    Name: Grass_Flower_Tint_01_FlowerRed_B_metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_B_metallic.png
+    UID: 10559148284126310835
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Height
+    Source: Resources/Models/Props/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -1636,1538 +525,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7303977440320645312
-    Name: Grass_Flower_Tint_01_FlowerPurple_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2123469330542508245
-    Name: Grass_Flower_Tint_01_FlowerPurple_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12230184940495093376
-    Name: UnderRoof_SquareTile_Flat_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14920734298881293407
-    Name: Grass_Flower_Tint_01_FlowerPurple_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15872632924668064061
-    Name: Grass_Flower_Tint_01_FlowerPurple_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4819704607451141257
-    Name: Grass_Flower_Tint_01_FlowerPurple_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11821188130518234610
-    Name: UnderRoof_RoundTile_Flat_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7310174363791635810
-    Name: Grass_Flower_Tint_01_FlowerPurple_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1060946566140767416
-    Name: Grass_Flower_Tint_01_FlowerPurple_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerPurple_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 911805751577403981
-    Name: Grass_Flower_Tint_01_FlowerRed_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16764188965643025403
-    Name: Grass_Flower_Tint_02_FlowerRed_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4549002202820270889
-    Name: Grass_Flower_Tint_01_FlowerRed_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16413439888151577014
-    Name: Grass_Flower_Tint_01_FlowerRed_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14214149136319375964
-    Name: Grass_Flower_Tint_01_FlowerRed_A_metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_A_metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8313015780745380480
-    Name: Grass_Flower_Tint_01_FlowerYellow_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1571332470605650666
-    Name: Grass_Flower_Tint_01_FlowerRed_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4506244282827417796
-    Name: Grass_Flower_Tint_01_FlowerRed_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9859243057554509273
-    Name: Grass_Flower_Tint_01_FlowerRed_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerRed_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15596654031217973887
-    Name: UnderRoof_SquareTile_Bump_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7620646068946402288
-    Name: Grass_Flower_Tint_01_FlowerYellow_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13671418689435228455
-    Name: arrow2
-    Source: Resources/UnityOtherFiles/UI Assets/arrow2.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13403825031700194455
-    Name: Grass_Flower_Tint_01_FlowerYellow_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18179852177318910097
-    Name: Grass_Flower_Tint_01_FlowerYellow_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8060685898074393055
-    Name: Wall_Stone_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9541331918528633839
-    Name: Grass_Flower_Tint_01_FlowerYellow_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1641892483275859350
-    Name: Planks014_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Planks014_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4785393322757013167
-    Name: Grass_Flower_Tint_01_FlowerYellow_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3935847109414726782
-    Name: Grass_Flower_Tint_01_FlowerYellow_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12487585202287136493
-    Name: Roof_RoundTile_Bump_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7475144100710249752
-    Name: Grass_Flower_Tint_01_FlowerYellow_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_FlowerYellow_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8380435587749385819
-    Name: Roof_RoundTile_Flat_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3976777424691390497
-    Name: Grass_Flower_Tint_01_Rocks_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Rocks_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15513600605049839549
-    Name: Grass_Flower_Tint_01_Rocks_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Rocks_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2804059744306882458
-    Name: Grass_Flower_Tint_01_Rocks_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Rocks_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4874781705578101188
-    Name: Rock_Volcanic_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15188415760657051328
-    Name: Grass_Flower_Tint_01_Rocks_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Rocks_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15085026334591824194
-    Name: Grass_Flower_Tint_01_Rocks_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_01/Grass_Flower_Tint_01_Rocks_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14432979402231900351
-    Name: Wall_Stone_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 640670245029754208
-    Name: Grass_Flower_Tint_02_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2085230042671348234
-    Name: Wall_Stone_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8410994415639470122
-    Name: Grass_Flower_Tint_02_Base_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Base_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4532168247004748724
-    Name: Wood_Planks_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14269865546628813095
-    Name: Grass_Flower_Tint_02_Base_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Base_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9698090690449579498
-    Name: Rock_Volcanic_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18379499452982514250
-    Name: Rocks_Cliff_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12199457738259855649
-    Name: Grass_Flower_Tint_02_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14510235580153938559
-    Name: Grass_Flower_Tint_02_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Base_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7334461267489941258
-    Name: Grass_Flower_Tint_02_FlowerYellow_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14345488115922987974
-    Name: Grass_Flower_Tint_02_FlowerBlue_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10304821721740190080
-    Name: Grass_Flower_Tint_02_FlowerBlue_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1585897109745788925
-    Name: Grass_Flower_Tint_02_FlowerBlue_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17529268369782165463
-    Name: Wood_Planks_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15043983976700130889
-    Name: Grass_Flower_Tint_02_FlowerBlue_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15244197743287646453
-    Name: Grass_Flower_Tint_02_FlowerBlue_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6137067585143652642
-    Name: Grass_Flower_Tint_02_FlowerBlue_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16317399512514551258
-    Name: Grass_Flower_Tint_02_FlowerBlue_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerBlue_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 92764377795633152
-    Name: Rocks_Cliff_A_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2048295643685463176
-    Name: Grass_Flower_Tint_02_FlowerPurple_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17857187777494449091
-    Name: Wall_Stone_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10109282395362693202
-    Name: Grass_Flower_Tint_02_FlowerYellow_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11980508704578741986
-    Name: Grass_Flower_Tint_02_FlowerPurple_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10591325139178501188
-    Name: Wall_Brick_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8970941899422191129
-    Name: Grass_Flower_Tint_02_FlowerPurple_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3378183979872669879
-    Name: Grass_Flower_Tint_02_FlowerPurple_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11321530503675881591
-    Name: Wall_Brick_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9676281624002109511
-    Name: Grass_Flower_Tint_02_FlowerPurple_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12336264719323175771
-    Name: Grass_Flower_Tint_02_FlowerPurple_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2266211140118944488
-    Name: Tatami003_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Tatami003_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18172400720463154727
-    Name: UnderRoof_SquareTile_Flat_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7079399142158187640
-    Name: Grass_Flower_Tint_02_FlowerPurple_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9915581082047735942
-    Name: Sand_Underwater_Shell_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Shell_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 790051710731238182
-    Name: Grass_Flower_Tint_02_FlowerPurple_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5426351751634759504
-    Name: WoodenButton
-    Source: Resources/UnityOtherFiles/UI Assets/WoodenButton.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7299876130980789758
-    Name: HP_Bar_Fill
-    Source: Resources/UnityOtherFiles/UI Assets/HP_Bar_Fill.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15527986153225547776
-    Name: Grass_Flower_Tint_02_FlowerPurple_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerPurple_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1197824655372019
-    Name: Grass_Flower_Tint_02_FlowerRed_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 716407839655515351
-    Name: Grass_Flower_Tint_02_FlowerRed_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12043306018414896724
-    Name: Grass_Flower_Tint_02_FlowerRed_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5998112260069038994
-    Name: Grass_Flower_Tint_02_FlowerRed_A_metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_A_metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9711525296687489924
-    Name: Grass_Flower_Tint_02_FlowerRed_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17181480614742058617
-    Name: Sand_Beach_Shell_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Shell_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9063314320264745438
-    Name: Grass_Flower_Tint_02_FlowerRed_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12449405060314588699
-    Name: Grass_Flower_Tint_02_FlowerRed_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4519754782532132949
-    Name: Grass_Flower_Tint_02_FlowerRed_B_metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerRed_B_metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10937024447131399087
-    Name: UnderRoof_RoundTile_Bump_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5868202345675627599
-    Name: Grass_Flower_Tint_02_FlowerYellow_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17966103926245365165
-    Name: Grass_Flower_Tint_02_FlowerYellow_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14485376290015927854
-    Name: blackfadebg
-    Source: Resources/UnityOtherFiles/UI Assets/blackfadebg.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17202682569664953177
-    Name: Grass_Flower_Tint_02_FlowerYellow_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18169214238639461733
-    Name: Grass_Flower_Tint_02_FlowerYellow_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_FlowerYellow_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3121544927678006919
-    Name: Roof_RoundTile_Bump_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13717467198186100799
-    Name: Grass_Flower_Tint_02_Rocks_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Rocks_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1337408477592283372
-    Name: Grass_Flower_Tint_02_Rocks_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Rocks_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3392961336509633210
-    Name: Grass_Flower_Tint_02_Rocks_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/GRASS/GRASS_Flower_Tint_02/Grass_Flower_Tint_02_Rocks_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2659758530953148430
-    Name: Rocks_Cliff_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14207531478017788313
-    Name: Rocks_Cliff_A_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4878932083928218557
-    Name: Rocks_Cliff_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16811860288957803893
-    Name: Rocks_Cliff_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15354717759113204617
-    Name: Rocks_Cliff_B_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15805306165835434160
-    Name: Rocks_Cliff_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17877369498989114048
-    Name: Cold Night__Cam_3_Right-X
-    Source: Resources/UnityOtherFiles/Cold Night/Cold Night__Cam_3_Right-X.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3736929027617949346
-    Name: RoofingTiles013A_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/RoofingTiles013A_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14918611328967003570
-    Name: Rocks_Cliff_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Cliff/Rocks_Cliff_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9038563971421332813
-    Name: Rock_Volcanic_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_A_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4948005530255989593
-    Name: small sliding door
-    Source: Resources/Textures/Environment Textures/small sliding door.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4917539625570954281
-    Name: Rock_Volcanic_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_A_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11542204488413000886
-    Name: Rock_Volcanic_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1530179459523714748
-    Name: Rock_Volcanic_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9154682883499498806
-    Name: Rock_Volcanic_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4988007657815933145
-    Name: Rock_Volcanic_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_B_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 494115671084248595
-    Name: Rock_Volcanic_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5700493591580871097
-    Name: Rock_Volcanic_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9612308188891190795
-    Name: Rock_Volcanic_C_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_C_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8288930093785389663
-    Name: Rock_Volcanic_C_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_C_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6670649556573918092
-    Name: Rock_Volcanic_C_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_C_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15382069592815071225
-    Name: noise
-    Source: Resources/Textures/noise.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17796888048379444954
-    Name: Rock_Volcanic_C_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_C_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6803943588028388737
-    Name: Roof_SquareTile_Flat_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11602929659555180924
-    Name: Rock_Volcanic_C_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROCKS/ROCKS_Volcanic/Rock_Volcanic_C_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 923947202414704558
-    Name: Wall_Stone_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_A_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6663262184559675901
-    Name: Sand_Underwater_Shell_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Shell_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6322174560359643868
-    Name: Roof_Hay_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/Roof_Hay_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15949832303990446086
-    Name: Roof_Hay_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/Roof_Hay_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9489299877089765171
-    Name: Roof_Hay_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/Roof_Hay_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16854575820722687837
-    Name: Roof_Hay_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/Roof_Hay_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13348745330159624867
-    Name: Roof_Hay_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/Roof_Hay_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16746850320350681226
-    Name: UnderRoof_Hay_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/UnderRoof_Hay_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3566901511081861263
-    Name: Roof_RoundTile_Bump_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13284890272304589319
-    Name: UnderRoof_Hay_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/UnderRoof_Hay_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14820547835589039593
-    Name: Sand_Beach_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Base_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8927074008022438926
-    Name: Roof_RoundTile_Bump_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7667193169030702431
-    Name: UnderRoof_Hay_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_HAY/UnderRoof_Hay_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1867864214051165142
-    Name: Roof_RoundTile_Bump_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14097020518228147809
-    Name: Roof_RoundTile_Bump_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16984998495960144837
-    Name: Roof_RoundTile_Bump_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/Roof_RoundTile_Bump_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11456998797303691184
-    Name: UnderRoof_RoundTile_Bump_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2643184785446249534
-    Name: UnderRoof_RoundTile_Bump_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8155842672761129104
-    Name: Wood_Plain_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2034900761506756619
-    Name: UnderRoof_RoundTile_Bump_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9017638651819819096
-    Name: UnderRoof_RoundTile_Bump_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Basecolor_C.png
+    UID: 15452675258460406062
+    Name: roof texture
+    Source: Resources/Textures/Wall Textures/roof texture.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3187,9 +547,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 8879265139970255037
-    Name: UnderRoof_RoundTile_Bump_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Basecolor_D.png
+    UID: 9814913805119522920
+    Name: Lantern_Hanging_openPBR_shader1_Normal
+    Source: Resources/Models/Props/3_PON_LanternTextures/Lantern_Hanging_openPBR_shader1_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3198,9 +558,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 1034715434816929111
-    Name: UnderRoof_RoundTile_Bump_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Height.png
+    UID: 2779217692485608494
+    Name: Tatami_Indoor
+    Source: Resources/Textures/Floor Texture/Tatami_Indoor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3209,9 +569,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 8528477054085304045
-    Name: Lion_Statue2_openPBR_shader1_BaseColor
-    Source: Resources/Textures/Lion Statue/Lion_Statue2_openPBR_shader1_BaseColor.png
+    UID: 17665476113226354807
+    Name: lantern_openPBR_shader1_BaseMap
+    Source: Resources/Models/Props/lantern mat/lantern_openPBR_shader1_BaseMap.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3220,9 +580,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 6671556377209777745
-    Name: UnderRoof_RoundTile_Bump_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Bump/UnderRoof_RoundTile_Bump_Metallic.png
+    UID: 13671418689435228455
+    Name: arrow2
+    Source: Resources/UnityOtherFiles/UI Assets/arrow2.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3231,9 +591,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 15890715643297179930
-    Name: Roof_RoundTile_Flat_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_AO.png
+    UID: 3258529618581877054
+    Name: paper wall texture
+    Source: Resources/Textures/Wall Textures/paper wall texture.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3242,9 +602,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 14766950145834080532
-    Name: Roof_RoundTile_Flat_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Basecolor_A.png
+    UID: 12247090417330245849
+    Name: Outdoor_Stone_Lantern2_fire holder_BaseColor
+    Source: Resources/Models/Props/Stone_Lantern_Textures/Outdoor_Stone_Lantern2_fire holder_BaseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3253,9 +613,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 9092302346467168845
-    Name: Roof_RoundTile_Flat_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Basecolor_B.png
+    UID: 2945813282417974352
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3264,592 +624,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 9150606754582668073
-    Name: back
-    Source: Resources/UnityOtherFiles/UI Assets/back.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2075997847887772137
-    Name: Roof_RoundTile_Flat_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7375098932442382879
-    Name: UnderRoof_SquareTile_Flat_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9891060777709692003
-    Name: Roof_RoundTile_Flat_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/Roof_RoundTile_Flat_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16165965415927489477
-    Name: UnderRoof_RoundTile_Flat_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17136956191551660146
-    Name: UnderRoof_RoundTile_Flat_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14058505952479266291
-    Name: UnderRoof_RoundTile_Flat_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12435969346909980011
-    Name: UnderRoof_RoundTile_Flat_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6190095224389027377
-    Name: UnderRoof_RoundTile_Flat_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_RoundTile_Flat/UnderRoof_RoundTile_Flat_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3471916586812859896
-    Name: Roof_SquareTile_Bump_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16141654225999260729
-    Name: Sand_Underwater_Shell_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Shell_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17025625040826582662
-    Name: Roof_SquareTile_Bump_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 791821785775272499
-    Name: Roof_SquareTile_Bump_Basecolor_B
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Basecolor_B.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1917626058596876448
-    Name: Roof_SquareTile_Bump_Basecolor_C
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Basecolor_C.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2899562724200317701
-    Name: Roof_SquareTile_Bump_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11974137822196559099
-    Name: Wood_Planks_B_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_B_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16621958411127751526
-    Name: Sand_Underwater_Shell_height
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Shell_height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5183005327762234303
-    Name: Roof_SquareTile_Bump_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3886341877686456489
-    Name: Roof_SquareTile_Bump_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13404082957034322021
-    Name: UnderRoof_SquareTile_Flat_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10182225850865254727
-    Name: Roof_SquareTile_Bump_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/Roof_SquareTile_Bump_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9401454698162006202
-    Name: PauseMenuScroll
-    Source: Resources/Textures/PauseMenu/PauseMenuScroll.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5006552547130192312
-    Name: UnderRoof_SquareTile_Bump_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16105882203110793030
-    Name: UnderRoof_SquareTile_Bump_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2224703116271240389
-    Name: UnderRoof_SquareTile_Bump_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6893100940977897833
-    Name: UnderRoof_SquareTile_Bump_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7415551736003431210
-    Name: Wall_Brick_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13231137786280170759
-    Name: UnderRoof_SquareTile_Bump_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Bump/UnderRoof_SquareTile_Bump_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1822388055345917366
-    Name: Roof_SquareTile_Flat_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 7955247590368502472
-    Name: Roof_SquareTile_Flat_Basecolor_A
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Basecolor_A.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14222008717360052519
-    Name: Roof_SquareTile_Flat_Basecolor_D
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Basecolor_D.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 12429613758958013669
-    Name: Roof_SquareTile_Flat_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15312819254535691951
-    Name: Roof_SquareTile_Flat_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8599415587374143757
-    Name: Roof_SquareTile_Flat_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/Roof_SquareTile_Flat_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14812515579068168088
-    Name: UnderRoof_SquareTile_Flat_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 955542765422159676
-    Name: pngtree-keyboard-keys-vector-png-image_6705739
-    Source: Resources/UnityOtherFiles/UI Assets/pngtree-keyboard-keys-vector-png-image_6705739.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13647541609446026602
-    Name: Wood_Plain_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_B_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16619761939725009801
-    Name: UnderRoof_SquareTile_Flat_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/ROOF/ROOF_SquareTile_Flat/UnderRoof_SquareTile_Flat_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 18136445463312722746
-    Name: Sand_Beach_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10394065121190840649
-    Name: Sand_Beach_Base_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Base_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3345184070176755139
-    Name: Sand_Beach_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4170947873841451077
-    Name: Sand_Beach_Shell_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Shell_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9117756329566698546
-    Name: Sand_Beach_Shell_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Shell_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6747957795838378952
-    Name: Wall_Stone_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_A_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10484608003179850504
-    Name: Sand_Beach_Shell_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Shell_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11555272199408419487
-    Name: Red_Gem
-    Source: Resources/UnityOtherFiles/UI Assets/Red_Gem.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11527929572584783594
-    Name: Sand_Beach_Shell_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Beach/Sand_Beach_Shell_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1570518677005058934
-    Name: Sand_Underwater_Base_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Base_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 14285474149239744080
-    Name: Sand_Underwater_Base_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Base_Basecolor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2413296549208662917
-    Name: Sand_Underwater_Base_height
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Base_height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15937790592546892399
-    Name: Sand_Underwater_Base_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Base_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2123970429605632205
-    Name: Sand_Underwater_Base_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Base_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 595690489849349644
-    Name: Sand_Underwater_Shell_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/SAND/SAND_Underwater/Sand_Underwater_Shell_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16877092693229611915
-    Name: Wall_Brick_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Height.png
+    UID: 10743047858016871760
+    Name: Lantern_Hanging_openPBR_shader1_Height
+    Source: Resources/Models/Props/3_PON_LanternTextures/Lantern_Hanging_openPBR_shader1_Height.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3869,75 +646,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 8428711431153124005
-    Name: Wall_Brick_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 605859917831280875
-    Name: Wall_Brick_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Bricks/Wall_Brick_Normal.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15338915200391010608
-    Name: Wall_Stone_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_A_Height.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3339833060523490560
-    Name: Wall_Stone_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_B_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6178572105913265025
-    Name: Wall_Stone_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_B_Metallic.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4385144511050956113
-    Name: Wall_Stone_C_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_C_AO.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5210131046697803277
+    UID: 3670703154944615175
     Name: Wall_Stone_C_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_C_Basecolor.png
+    Source: Resources/Textures/Wall Textures/Wall stone/Wall_Stone_C_Basecolor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3946,9 +657,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 5121461816971318890
-    Name: Wall_Stone_C_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_C_Height.png
+    UID: 255836083165499956
+    Name: Sliding door long texture
+    Source: Resources/Textures/Wall Textures/Sliding door long texture.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3957,9 +668,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7889547674415731408
-    Name: Wall_Stone_C_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_C_Metallic.png
+    UID: 7299876130980789758
+    Name: HP_Bar_Fill
+    Source: Resources/UnityOtherFiles/UI Assets/HP_Bar_Fill.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3968,9 +679,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 1661263810733963090
-    Name: Wall_Stone_C_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WALLS/WALL_Stone/Wall_Stone_C_Normal.png
+    UID: 5426351751634759504
+    Name: WoodenButton
+    Source: Resources/UnityOtherFiles/UI Assets/WoodenButton.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3979,9 +690,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 14527023888560479967
-    Name: Wood_Plain_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_A_AO.png
+    UID: 13725429989173629243
+    Name: Pedastal_baseColor
+    Source: Resources/Models/Enemy/Stationary Sentry/Pedastal_baseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -3990,9 +701,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 16137675078684143651
-    Name: Wood_Plain_A_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_A_Basecolor.png
+    UID: 14485376290015927854
+    Name: blackfadebg
+    Source: Resources/UnityOtherFiles/UI Assets/blackfadebg.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4001,9 +712,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 999000249816949183
-    Name: Paper003_1K-PNG_ColorYellowed
-    Source: Resources/Textures/Environment Textures/Paper003_1K-PNG_ColorYellowed.png
+    UID: 3489333510165140307
+    Name: seamless sand zen garden texture_Outdoor
+    Source: Resources/Textures/Floor Texture/seamless sand zen garden texture_Outdoor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4012,9 +723,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 13642226340882774286
-    Name: Wood_Plain_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_A_Metallic.png
+    UID: 9401454698162006202
+    Name: PauseMenuScroll
+    Source: Resources/Textures/PauseMenu/PauseMenuScroll.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4023,9 +734,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 10448427777901060776
-    Name: Wood_Plain_A_Normal
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_A_Normal.png
+    UID: 284235029935849495
+    Name: Outdoor_Stone_Lantern2_Roof_BaseColor
+    Source: Resources/Models/Props/Stone_Lantern_Textures/Outdoor_Stone_Lantern2_Roof_BaseColor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4034,9 +745,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 5341883150068328608
-    Name: Wood_Plain_B_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_B_AO.png
+    UID: 17877369498989114048
+    Name: Cold Night__Cam_3_Right-X
+    Source: Resources/UnityOtherFiles/Cold Night/Cold Night__Cam_3_Right-X.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4045,9 +756,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 132954068817252705
-    Name: Wood_Plain_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Plain/Wood_Plain_B_Metallic.png
+    UID: 5007598784380969136
+    Name: lantern_openPBR_shader1_MaskMap
+    Source: Resources/Models/Props/lantern mat/lantern_openPBR_shader1_MaskMap.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4056,9 +767,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 873778731750461427
-    Name: Wood_Planks_A_AO
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_A_AO.png
+    UID: 482575242868564674
+    Name: Lantern_Hanging_openPBR_shader1_Normal
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Lantern_Hanging_openPBR_shader1_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4067,9 +778,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7253254874968430420
-    Name: Wood_Planks_A_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_A_Height.png
+    UID: 2335343751038784486
+    Name: HEIGHT MAPseamless sand zen garden texture_Outdoor
+    Source: Resources/Textures/Floor Texture/HEIGHT MAPseamless sand zen garden texture_Outdoor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4078,9 +789,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 3398226549970179506
-    Name: Wood_Planks_A_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_A_Metallic.png
+    UID: 8080306587810410516
+    Name: Stone_Outdoor
+    Source: Resources/Textures/Floor Texture/Stone_Outdoor.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4089,9 +800,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7429430776681843934
-    Name: Wood_Planks_B_Basecolor
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_B_Basecolor.png
+    UID: 9150606754582668073
+    Name: back
+    Source: Resources/UnityOtherFiles/UI Assets/back.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4100,9 +811,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 7659353916868122395
-    Name: Wood_Planks_B_Height
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_B_Height.png
+    UID: 17985620306014501229
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4111,9 +822,64 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 15264635235189583861
-    Name: Wood_Planks_B_Metallic
-    Source: Resources/Textures/Cartoon_Texture_Pack/WOOD/WOOD_Planks/Wood_Planks_B_Metallic.png
+    UID: 17039813470002885239
+    Name: Lantern_Hanging_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Lantern_Hanging_openPBR_shader1_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 955542765422159676
+    Name: pngtree-keyboard-keys-vector-png-image_6705739
+    Source: Resources/UnityOtherFiles/UI Assets/pngtree-keyboard-keys-vector-png-image_6705739.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 3099767715431323552
+    Name: lantern_colour_1_Emissive
+    Source: Resources/Models/Props/lantern mat/lantern_colour_1_Emissive.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 15849755688191928543
+    Name: lantern_colour_2_Emissive
+    Source: Resources/Models/Props/lantern mat/lantern_colour_2_Emissive.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 18284772037872114494
+    Name: NORMAL MAPseamless sand zen garden texture_Outdoor
+    Source: Resources/Textures/Floor Texture/NORMAL MAPseamless sand zen garden texture_Outdoor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 3559562522405013851
+    Name: lantern_colour_2_Normal
+    Source: Resources/Models/Props/lantern mat/lantern_colour_2_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4133,295 +899,9 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
-    UID: 8960374798158356864
-    Name: Fabric038_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Fabric038_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 4616707319524506394
-    Name: funeral pallet 1
-    Source: Resources/Textures/Environment Textures/funeral pallet 1.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2696151767196220775
-    Name: funeral pallet 2
-    Source: Resources/Textures/Environment Textures/funeral pallet 2.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10826892505751360439
-    Name: sliding doors
-    Source: Resources/Textures/Environment Textures/sliding doors.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 8200335640791064116
-    Name: funeral pallet 3
-    Source: Resources/Textures/Environment Textures/funeral pallet 3.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 16683902982856181342
-    Name: Ground037_1K-PNG_Colorpixel
-    Source: Resources/Textures/Environment Textures/Ground037_1K-PNG_Colorpixel.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17345783567382088003
-    Name: HEIGHT MAPseamless sand zen garden texture
-    Source: Resources/Textures/Environment Textures/HEIGHT MAPseamless sand zen garden texture.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13461473539925509901
-    Name: RestartButton
-    Source: Resources/Textures/PauseMenu/RestartButton.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 15767327962948420323
-    Name: NORMAL MAPseamless sand zen garden texture
-    Source: Resources/Textures/Environment Textures/NORMAL MAPseamless sand zen garden texture.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 592880849277813240
-    Name: PaintedWood007A_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/PaintedWood007A_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 3205368415918660471
-    Name: Paper003_1K-PNG_ColorTorn
-    Source: Resources/Textures/Environment Textures/Paper003_1K-PNG_ColorTorn.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 5949171749931082697
-    Name: Planks015_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Planks015_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1520020614579998102
-    Name: seamless sand zen garden texture
-    Source: Resources/Textures/Environment Textures/seamless sand zen garden texture.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13285867157106425732
-    Name: sliding doors 1
-    Source: Resources/Textures/Environment Textures/sliding doors 1.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 13011878188783559207
-    Name: Tatami003_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Tatami003_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10001703840897864074
-    Name: Tatami005_1K-PNG_Color
-    Source: Resources/Textures/Environment Textures/Tatami005_1K-PNG_Color.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11280259755673396709
-    Name: Tatami005_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Tatami005_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 10801641915954878769
-    Name: Wood051_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Environment Textures/Wood051_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 11586186577190104630
-    Name: noise 1
-    Source: Resources/Textures/noise 1.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6268425122759745879
-    Name: PaintedWood007A_1K-PNG_ColorPixeled
-    Source: Resources/Textures/PaintedWood007A_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1357239137340241712
-    Name: Paper003_1K-PNG_ColorYellowed
-    Source: Resources/Textures/Paper003_1K-PNG_ColorYellowed.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17704566306190979526
-    Name: Planks015_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Planks015_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 1861131791176943519
-    Name: RoofingTiles013A_1K-PNG_ColorPixeled
-    Source: Resources/Textures/RoofingTiles013A_1K-PNG_ColorPixeled.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 17195483231918520684
-    Name: Outdoor_Stone_Lantern2_Base_BaseColor
-    Source: Resources/Textures/Stone Lantern Textures/Outdoor_Stone_Lantern2_Base_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 2551121778118902989
-    Name: Outdoor_Stone_Lantern2_fire holder_BaseColor
-    Source: Resources/Textures/Stone Lantern Textures/Outdoor_Stone_Lantern2_fire holder_BaseColor.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 9643451941508189715
-    Name: Tatami005_1K-PNG_Color
-    Source: Resources/Textures/Tatami005_1K-PNG_Color.png
-    Properties:
-      Data:
-        CompileAsCompressed: true
-        quality: 0.5
-        alphaThreshold: 128
-        mipLevel: 10
-        isGamma: true
-  - Type: TEXTURE
-    UID: 6508065811526598606
-    Name: Tatami005_1K-PNG_ColorPixeled
-    Source: Resources/Textures/Tatami005_1K-PNG_ColorPixeled.png
+    UID: 9425825932550323732
+    Name: lantern_colour_1_Normal
+    Source: Resources/Models/Props/lantern mat/lantern_colour_1_Normal.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -4639,6 +1119,17 @@ ASSETS:
         mipLevel: 10
         isGamma: true
   - Type: TEXTURE
+    UID: 12220421531860267391
+    Name: Pedastal_occlusionRoughnessMetallic
+    Source: Resources/Models/Enemy/Stationary Sentry/Pedastal_occlusionRoughnessMetallic.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
     UID: 13384554175947983795
     Name: ResumeButton
     Source: Resources/Textures/PauseMenu/ResumeButton.png
@@ -4671,12 +1162,441 @@ ASSETS:
         alphaThreshold: 128
         mipLevel: 10
         isGamma: true
+  - Type: TEXTURE
+    UID: 13175597232551743125
+    Name: Scissors_Ninja_Body_BaseColor
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Body_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 3347535564085692130
+    Name: Scissors_Ninja_Body_Height
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Body_Height.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 9549650342157466168
+    Name: Scissors_Ninja_Body_Metallic
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Body_Metallic.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 11246060146662733147
+    Name: Scissors_Ninja_Body_Roughness
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Body_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 7568472483619014978
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 8241072972640532675
+    Name: Scissors_Ninja_Hood_BaseColor
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Hood_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 18116571246883620302
+    Name: Scissors_Ninja_Hood_Metallic
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Hood_Metallic.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 16738226509792806577
+    Name: lantern_colour_1_MaskMap
+    Source: Resources/Models/Props/lantern mat/lantern_colour_1_MaskMap.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 3727801128357366120
+    Name: Scissors_Ninja_Hood_Normal
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Hood_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 7119423401994078713
+    Name: Scissors_Ninja_Hood_Roughness
+    Source: Resources/Models/Enemy/Patrol/Scissors_Ninja_Hood_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 11307617190584154139
+    Name: Ninja_baseColor
+    Source: Resources/Models/Enemy/Stationary Sentry/Ninja_baseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 17639289908748203916
+    Name: Ninja_emissive
+    Source: Resources/Models/Enemy/Stationary Sentry/Ninja_emissive.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 17384339938560687904
+    Name: Ninja_normal
+    Source: Resources/Models/Enemy/Stationary Sentry/Ninja_normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 15684685430910489836
+    Name: Pedastal_emissive
+    Source: Resources/Models/Enemy/Stationary Sentry/Pedastal_emissive.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 15050805329289275236
+    Name: Wall_Stone_C_Normal
+    Source: Resources/Textures/Wall Textures/Wall stone/Wall_Stone_C_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 14309967036895273443
+    Name: Lantern_Hanging_openPBR_shader1_Roughness
+    Source: Resources/Models/Props/1_JAN_Lantern Textures/Lantern_Hanging_openPBR_shader1_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 6744359996713554799
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Height
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Height.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 8147384053096136311
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 17803026501501650564
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 7684017362689627028
+    Name: Lantern_Hanging_openPBR_shader1_Height
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Lantern_Hanging_openPBR_shader1_Height.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 4197000569045631220
+    Name: Lantern_Hanging_openPBR_shader1_Normal
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Lantern_Hanging_openPBR_shader1_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 11797305392739743109
+    Name: Lantern_Hanging_openPBR_shader1_Roughness
+    Source: Resources/Models/Props/2_KEN_LanternTextures/Lantern_Hanging_openPBR_shader1_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 18036222300221331622
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 5444082718129606842
+    Name: wooden plank texture
+    Source: Resources/Textures/Wall Textures/wooden plank texture.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 14418593737196170531
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Normal
+    Source: Resources/Models/Props/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 13878332192706272032
+    Name: Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness
+    Source: Resources/Models/Props/3_PON_LanternTextures/Indoor_Lantern_Hanging_2_openPBR_shader1_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 14434732551653002691
+    Name: Lantern_Hanging_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/3_PON_LanternTextures/Lantern_Hanging_openPBR_shader1_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 13313082981006548729
+    Name: Lantern_Hanging_openPBR_shader1_Roughness
+    Source: Resources/Models/Props/3_PON_LanternTextures/Lantern_Hanging_openPBR_shader1_Roughness.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 11743504275063107094
+    Name: lantern_colour_1_BaseMap
+    Source: Resources/Models/Props/lantern mat/lantern_colour_1_BaseMap.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 13377175521995129463
+    Name: lantern_openPBR_shader1_Emissive
+    Source: Resources/Models/Props/lantern mat/lantern_openPBR_shader1_Emissive.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 8651887321472737155
+    Name: lantern_openPBR_shader1_Normal
+    Source: Resources/Models/Props/lantern mat/lantern_openPBR_shader1_Normal.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 8781181629247619230
+    Name: Lion_Statue2_openPBR_shader1_BaseColor
+    Source: Resources/Models/Props/Lion_Statue/Lion_Statue2_openPBR_shader1_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 8189347454469401464
+    Name: Outdoor_Stone_Lantern2_Base_BaseColor
+    Source: Resources/Models/Props/Stone_Lantern_Textures/Outdoor_Stone_Lantern2_Base_BaseColor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 599280312598501437
+    Name: sliding door small texture
+    Source: Resources/Textures/Wall Textures/sliding door small texture.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 660614054657113155
+    Name: Wall_Stone_C_AO
+    Source: Resources/Textures/Wall Textures/Wall stone/Wall_Stone_C_AO.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 7561553270291559458
+    Name: Wall_Stone_C_Metallic
+    Source: Resources/Textures/Wall Textures/Wall stone/Wall_Stone_C_Metallic.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 16300877889967123005
+    Name: asset
+    Source: Resources/Textures/Icons/asset.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
+  - Type: TEXTURE
+    UID: 2000641971401327177
+    Name: folder
+    Source: Resources/Textures/Icons/folder.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.5
+        alphaThreshold: 128
+        mipLevel: 10
+        isGamma: true
   - Type: SKYBOX
     UID: 10427935764841817814
     Name: sky.DDS
     Source: Resources/Textures/Skybox/sky.DDS
     Properties:
       Size: 2048
+  - Type: MODEL
+    UID: 17862911105458314379
+    Name: Indoor_Lanturn_Hangingfbx
+    Source: Resources/Models/Indoor_Lanturn_Hangingfbx.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
   - Type: MODEL
     UID: 9625104056789884581
     Name: dance.FBX
@@ -4687,39 +1607,6 @@ ASSETS:
           Translate: [0, -1, 0]
           Rotate: [0, 0, 0]
           Scale: [0.00999999978, 0.00999999978, 0.00999999978]
-      HasJoints: true
-  - Type: MODEL
-    UID: 15771049607565255665
-    Name: GAM300_Ninja
-    Source: Resources/Models/Enemy/GAM300_Ninja.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 11571973121006748334
-    Name: Zombie Idle Cautious Looking out
-    Source: Resources/Models/Enemy/new anims/Zombie Idle Cautious Looking out.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 5196195182764112076
-    Name: Samurai Hurt (1)
-    Source: Resources/Models/Player/PlayerAnimations/Samurai Hurt (1).fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
     UID: 7633162898494281895
@@ -4744,50 +1631,6 @@ ASSETS:
           Scale: [0.00999999978, 0.00999999978, 0.00999999978]
       HasJoints: true
   - Type: MODEL
-    UID: 2969614915951242434
-    Name: Zombie Agonizing
-    Source: Resources/Models/Enemy/new anims/Zombie Agonizing.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 6778583016148211621
-    Name: Ch02_nonPBR@Two Handed Sword Death
-    Source: Resources/Models/Player/PlayerAnimations/Ch02_nonPBR@Two Handed Sword Death.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 17454854124883072093
-    Name: Walking Backwards
-    Source: Resources/Models/Player/NewPlayerAttack/Walking Backwards.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 2871120229430948171
-    Name: Jump Landing
-    Source: Resources/Models/PlayerAnimations/Jump Landing.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 11565258723769024311
     Name: sphere.fbx
     Source: Resources/Models/sphere.fbx
@@ -4798,17 +1641,6 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
-  - Type: MODEL
-    UID: 257972211582460622
-    Name: Great Sword Slash
-    Source: Resources/Models/Player/PlayerAnimations/Great Sword Slash.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
   - Type: MODEL
     UID: 12369161784125194221
     Name: walking.fbx
@@ -4821,9 +1653,20 @@ ASSETS:
           Scale: [0.00999999978, 0.00999999978, 0.00999999978]
       HasJoints: true
   - Type: MODEL
-    UID: 6829728261434427183
-    Name: Lion_Statue2
-    Source: Resources/Models/Environmental Props/Lion_Statue2.fbx
+    UID: 17047777006874206768
+    Name: JanKenPon_Lantern
+    Source: Resources/Models/Maya files/JanKenPon_Lantern.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 17971063540041505471
+    Name: Outdoor_Stone_Lantern
+    Source: Resources/Models/Outdoor_Stone_Lantern.fbx
     Properties:
       Model Transform:
         transform:
@@ -4843,16 +1686,27 @@ ASSETS:
           Scale: [0.00999999978, 0.00999999978, 0.00999999978]
       HasJoints: true
   - Type: MODEL
-    UID: 3304847326650753428
-    Name: Great Sword Walk
-    Source: Resources/Models/Player/PlayerAnimations/Great Sword Walk.fbx
+    UID: 6829728261434427183
+    Name: Lion_Statue2
+    Source: Resources/Models/Environmental Props/Lion_Statue2.fbx
     Properties:
       Model Transform:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
-      HasJoints: true
+      HasJoints: false
+  - Type: MODEL
+    UID: 5607527584775828236
+    Name: Desert_Plant_06_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_06_Small_0_1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
   - Type: MODEL
     UID: 5190089082055736376
     Name: kick.fbx
@@ -4863,17 +1717,6 @@ ASSETS:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
           Scale: [0.00999999978, 0.00999999978, 0.00999999978]
-      HasJoints: true
-  - Type: MODEL
-    UID: 11257553141552909396
-    Name: Flying
-    Source: Resources/Models/Enemy/Animations/Flying.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
     UID: 3091820953851232485
@@ -4887,9 +1730,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 9913856368786720724
-    Name: Standing 2H Magic Area Attack 02
-    Source: Resources/Models/Player/NewPlayerAttack/Standing 2H Magic Area Attack 02.fbx
+    UID: 11479122689655157238
+    Name: Hanging Idle
+    Source: Resources/Models/Player/animations/throw away/Hanging Idle.fbx
     Properties:
       Model Transform:
         transform:
@@ -4898,9 +1741,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
-    UID: 18152503895748136380
-    Name: Cross Punch
-    Source: Resources/Models/Player/NewPlayerAttack/Punch/Cross Punch.fbx
+    UID: 4878958897926110889
+    Name: Walking
+    Source: Resources/Models/Player/animations/Walking.fbx
     Properties:
       Model Transform:
         transform:
@@ -4909,60 +1752,16 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: true
   - Type: MODEL
-    UID: 13331055930447686201
-    Name: Ninja Idle
-    Source: Resources/Models/Enemy/Animations/Ninja Idle.fbx
+    UID: 7477699483648389514
+    Name: Desert_Plant_04_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_04_Small_0_1.fbx
     Properties:
       Model Transform:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 2580842701706841996
-    Name: Ninja Slash
-    Source: Resources/Models/Enemy/Animations/Ninja Slash.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 10140763321623208850
-    Name: Sneaking Forward
-    Source: Resources/Models/Enemy/Animations/Sneaking Forward.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 14393108904054269407
-    Name: Sneaking
-    Source: Resources/Models/Enemy/Animations/Sneaking.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 2015051513152723817
-    Name: Standing React Small From Headshot
-    Source: Resources/Models/Enemy/Animations/Standing React Small From Headshot.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
+      HasJoints: false
   - Type: MODEL
     UID: 4447526863727165212
     Name: New folder
@@ -4975,27 +1774,27 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 3317631606450225360
-    Name: Zombie Attack
-    Source: Resources/Models/Enemy/new anims/Zombie Attack.fbx
+    UID: 109962362927819430
+    Name: Gate_Desert_Big_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Gate_Desert_Big_0_1.fbx
     Properties:
       Model Transform:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
-      HasJoints: true
+      HasJoints: false
   - Type: MODEL
-    UID: 4793464425760074122
-    Name: Zombie Idle
-    Source: Resources/Models/Enemy/new anims/Zombie Idle.fbx
+    UID: 6736459313355784400
+    Name: Desert_Plant_02_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_02_Small_0_1.fbx
     Properties:
       Model Transform:
         transform:
           Translate: [0, 0, 0]
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
-      HasJoints: true
+      HasJoints: false
   - Type: MODEL
     UID: 8468216516841351967
     Name: Indoor_Lantern_Hanging
@@ -5030,6 +1829,17 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
+    UID: 16876243872413922063
+    Name: Desert_Skull_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Skull_Small_0_1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
     UID: 5790576149006634497
     Name: Outdoor_Stone_Lantern2
     Source: Resources/Models/Environmental Props/Outdoor_Stone_Lantern2.fbx
@@ -5040,17 +1850,6 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
-  - Type: MODEL
-    UID: 4899929556751429735
-    Name: Hook
-    Source: Resources/Models/Player/NewPlayerAttack/Punch/Hook.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
   - Type: MODEL
     UID: 17773246069672836568
     Name: Stairs
@@ -5063,17 +1862,6 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 4002821080489291504
-    Name: Magic Spell Casting
-    Source: Resources/Models/Player/NewPlayerAttack/Magic Spell Casting.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 3566111065211576240
     Name: Level
     Source: Resources/Models/Level.fbx
@@ -5085,9 +1873,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 388423843869548359
-    Name: Jumping
-    Source: Resources/Models/Player/PlayerAnimations/Jumping.fbx
+    UID: 4766645401414519908
+    Name: Scissors Walk
+    Source: Resources/Models/Enemy/Patrol/Scissors Walk.fbx
     Properties:
       Model Transform:
         transform:
@@ -5107,17 +1895,6 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 11576261927201924133
-    Name: Bouncing Fight Idle
-    Source: Resources/Models/Player/NewPlayerAttack/Bouncing Fight Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 8799229443024710434
     Name: Monuntain_Desert_03_Big_0_1
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Monuntain_Desert_03_Big_0_1.fbx
@@ -5128,116 +1905,6 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
-  - Type: MODEL
-    UID: 4220298601410614463
-    Name: Mutant Jump Attack
-    Source: Resources/Models/Player/NewPlayerAttack/Mutant Jump Attack.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 12110677173697291949
-    Name: Moving Hook
-    Source: Resources/Models/Player/NewPlayerAttack/Punch/Moving Hook.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 11608565302035311578
-    Name: Braced Hang To Crouch
-    Source: Resources/Models/PlayerAnimations/Braced Hang To Crouch.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 3529656363106026392
-    Name: Standing 2H Magic Attack 03
-    Source: Resources/Models/Player/NewPlayerAttack/Standing 2H Magic Attack 03.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 17977885962344533210
-    Name: Punch Combo
-    Source: Resources/Models/Player/NewPlayerAttack/Punch/Punch Combo.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 10916938860619904813
-    Name: Braced Hang Drop
-    Source: Resources/Models/Player/PlayerAnimations/Braced Hang Drop.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 10773394155219314113
-    Name: Braced Hang To Crouch
-    Source: Resources/Models/Player/PlayerAnimations/Braced Hang To Crouch.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 1656504963983067554
-    Name: Fast Run
-    Source: Resources/Models/Player/PlayerAnimations/Fast Run.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 16565117379706317407
-    Name: Great Sword Idle
-    Source: Resources/Models/Player/PlayerAnimations/Great Sword Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 1858093810868160711
-    Name: Hanging Idle
-    Source: Resources/Models/Player/PlayerAnimations/Hanging Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
   - Type: MODEL
     UID: 3890115912180241845
     Name: Floating_Island_2_Bioma2
@@ -5250,75 +1917,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 8066507860780607918
-    Name: Jump Landing
-    Source: Resources/Models/Player/PlayerAnimations/Jump Landing.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 15037704897475620884
-    Name: Jumping 1
-    Source: Resources/Models/Player/PlayerAnimations/Jumping 1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 272478935043901053
-    Name: Samurai Idle
-    Source: Resources/Models/Player/PlayerAnimations/Samurai Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 5857660347989881526
-    Name: Sheath Sword 1
-    Source: Resources/Models/Player/PlayerAnimations/Sheath Sword 1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 13451867633347839736
-    Name: Walking
-    Source: Resources/Models/Player/PlayerAnimations/Walking.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 3940924084442315935
-    Name: Sheath Sword 1
-    Source: Resources/Models/PlayerAnimations/Sheath Sword 1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 11724852811765603911
-    Name: Standing 1H Magic Attack 02
-    Source: Resources/Models/Player/PlayerAnimations/Standing 1H Magic Attack 02.fbx
+    UID: 7746641044800409692
+    Name: Floating_Island_3_Bioma2
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Floating_Island_3_Bioma2.fbx
     Properties:
       Model Transform:
         transform:
@@ -5327,20 +1928,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 3871143737241298361
-    Name: Standing 2H Magic Attack 01
-    Source: Resources/Models/Player/PlayerAnimations/Standing 2H Magic Attack 01.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 9858498430227169258
-    Name: Samurai_Player_2_use this
-    Source: Resources/Models/Player/Samurai_Player_2_use this.fbx
+    UID: 3957557556641863430
+    Name: Sword
+    Source: Resources/Models/Player/Sword.fbx
     Properties:
       Model Transform:
         transform:
@@ -5371,83 +1961,6 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 3957557556641863430
-    Name: Sword
-    Source: Resources/Models/Player/Sword.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 1162522111857566616
-    Name: Braced Hang Drop
-    Source: Resources/Models/PlayerAnimations/Braced Hang Drop.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 8761947000739019311
-    Name: Fast Run
-    Source: Resources/Models/PlayerAnimations/Fast Run.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 12337370146083967318
-    Name: Great Sword Idle
-    Source: Resources/Models/PlayerAnimations/Great Sword Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 13735307073743252721
-    Name: Great Sword Slash
-    Source: Resources/Models/PlayerAnimations/Great Sword Slash.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 8865878773599391030
-    Name: Samurai Idle (1)
-    Source: Resources/Samurai Idle (1).fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 10504076749405191173
-    Name: Great Sword Walk
-    Source: Resources/Models/PlayerAnimations/Great Sword Walk.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 5963078964798272625
     Name: Sliding_Door
     Source: Resources/Models/Sliding_Door.fbx
@@ -5459,53 +1972,20 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 2136512529543519074
-    Name: Hanging Idle
-    Source: Resources/Models/PlayerAnimations/Hanging Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 17431357717427574912
-    Name: Jumping
-    Source: Resources/Models/PlayerAnimations/Jumping.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 7033540437426745380
-    Name: Samurai Idle
-    Source: Resources/Models/PlayerAnimations/Samurai Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 15734322141743840447
-    Name: Walking
-    Source: Resources/Models/PlayerAnimations/Walking.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 4722549275472783507
     Name: Samurai_Player_2_use this
     Source: Resources/Models/Samurai_Player_2_use this.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 13255697117107322585
+    Name: Monuntain_Desert_02_Big_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Monuntain_Desert_02_Big_0_1.fbx
     Properties:
       Model Transform:
         transform:
@@ -5536,31 +2016,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 6736459313355784400
-    Name: Desert_Plant_02_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_02_Small_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
     UID: 7900470207975455239
     Name: Desert_Plant_03_Small_0_1
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_03_Small_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 7477699483648389514
-    Name: Desert_Plant_04_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_04_Small_0_1.fbx
     Properties:
       Model Transform:
         transform:
@@ -5580,9 +2038,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 5607527584775828236
-    Name: Desert_Plant_06_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_06_Small_0_1.fbx
+    UID: 8736150507930359929
+    Name: Desert_Rock_03_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Rock_03_Small_0_1.fbx
     Properties:
       Model Transform:
         transform:
@@ -5613,6 +2071,17 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
+    UID: 7382839964237602523
+    Name: Rock_Desert_01_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Rock_Desert_01_Small_0_1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
     UID: 14613304312840923883
     Name: Desert_Plant_10_Small_0_1
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_10_Small_0_1.fbx
@@ -5635,6 +2104,28 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
+    UID: 5156670162497623977
+    Name: Fruit_Tree
+    Source: Resources/Models/Fruit_Tree.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 1210694132816957575
+    Name: Plant_Desert_Small_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Plant_Desert_Small_0_1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
     UID: 1392450154355743361
     Name: Desert_Plant_12_Small_0_1
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Plant_12_Small_0_1.fbx
@@ -5646,9 +2137,31 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
+    UID: 13779674563758479505
+    Name: Cushion
+    Source: Resources/Models/Cushion.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
     UID: 2038469021834599090
     Name: Desert_Ribs_Small_0_1
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Ribs_Small_0_1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 17591824555368859551
+    Name: Scissors Ninja
+    Source: Resources/Models/Enemy/Patrol/Scissors Ninja.fbx
     Properties:
       Model Transform:
         transform:
@@ -5679,53 +2192,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 8736150507930359929
-    Name: Desert_Rock_03_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Rock_03_Small_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 16876243872413922063
-    Name: Desert_Skull_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Desert_Skull_Small_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 7746641044800409692
-    Name: Floating_Island_3_Bioma2
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Floating_Island_3_Bioma2.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
     UID: 976269438033975207
     Name: Floating_Island_4_Bioma2
     Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Floating_Island_4_Bioma2.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 4137517056597156407
-    Name: Floor_Desert_01_Big_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Floor_Desert_01_Big_0_1.fbx
     Properties:
       Model Transform:
         transform:
@@ -5745,9 +2214,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 109962362927819430
-    Name: Gate_Desert_Big_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Gate_Desert_Big_0_1.fbx
+    UID: 4137517056597156407
+    Name: Floor_Desert_01_Big_0_1
+    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Floor_Desert_01_Big_0_1.fbx
     Properties:
       Model Transform:
         transform:
@@ -5767,31 +2236,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 13255697117107322585
-    Name: Monuntain_Desert_02_Big_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Monuntain_Desert_02_Big_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 1210694132816957575
-    Name: Plant_Desert_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Plant_Desert_Small_0_1.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 7382839964237602523
-    Name: Rock_Desert_01_Small_0_1
-    Source: Resources/UnityOtherFiles/LowPolyEnv/Cross_Plains/Models/Rock_Desert_01_Small_0_1.fbx
+    UID: 8039408713556627694
+    Name: Hut_Roof
+    Source: Resources/Models/Hut_Roof.fbx
     Properties:
       Model Transform:
         transform:
@@ -5811,17 +2258,6 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 13779674563758479505
-    Name: Cushion
-    Source: Resources/Models/Cushion.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
     UID: 618926925563278836
     Name: Floor_Cushion
     Source: Resources/Models/Floor_Cushion.fbx
@@ -5833,64 +2269,9 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 4233240296124840691
-    Name: Scissors Idle
-    Source: Resources/Scissors Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 5156670162497623977
-    Name: Fruit_Tree
-    Source: Resources/Models/Fruit_Tree.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 8039408713556627694
-    Name: Hut_Roof
-    Source: Resources/Models/Hut_Roof.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 17862911105458314379
-    Name: Indoor_Lanturn_Hangingfbx
-    Source: Resources/Models/Indoor_Lanturn_Hangingfbx.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
     UID: 5838446488854438722
     Name: Japanese_Table
     Source: Resources/Models/Japanese_Table.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: false
-  - Type: MODEL
-    UID: 17971063540041505471
-    Name: Outdoor_Stone_Lantern
-    Source: Resources/Models/Outdoor_Stone_Lantern.fbx
     Properties:
       Model Transform:
         transform:
@@ -5965,42 +2346,284 @@ ASSETS:
           Scale: [1, 1, 1]
       HasJoints: false
   - Type: MODEL
-    UID: 13424550679758465822
-    Name: Rock_Ninja_Textured
-    Source: Resources/Rock_Ninja_Textured.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 12143150468276051948
-    Name: Jumping Down
-    Source: Resources/Jumping Down.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
-    UID: 13014395158654677929
-    Name: Old Man Idle
-    Source: Resources/Old Man Idle.fbx
-    Properties:
-      Model Transform:
-        transform:
-          Translate: [0, 0, 0]
-          Rotate: [0, 0, 0]
-          Scale: [1, 1, 1]
-      HasJoints: true
-  - Type: MODEL
     UID: 12560727673762081371
     Name: Old Man Idle
     Source: Resources/Models/Old Man Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 8821844016016290378
+    Name: GAM300_Ninja
+    Source: Resources/Models/Enemy/old/GAM300_Ninja.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 17405944140807304052
+    Name: Ninja Hurt
+    Source: Resources/Models/Enemy/old/Ninja Hurt.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 11958527882006464411
+    Name: Ninja Idle
+    Source: Resources/Models/Enemy/old/Ninja Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 7109362629999376114
+    Name: Ninja Slash
+    Source: Resources/Models/Enemy/old/Ninja Slash.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 12951326161066567349
+    Name: Scissors Attack
+    Source: Resources/Models/Enemy/Patrol/Scissors Attack.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 9132954734934811553
+    Name: Scissors Death
+    Source: Resources/Models/Enemy/Patrol/Scissors Death.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 560542088211616288
+    Name: Scissors Hurt
+    Source: Resources/Models/Enemy/Patrol/Scissors Hurt.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 4678657617744890191
+    Name: Scissors Idle
+    Source: Resources/Models/Enemy/Patrol/Scissors Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 9260176050107668565
+    Name: Pedastal_textured
+    Source: Resources/Models/Enemy/Stationary Sentry/Pedastal_textured.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 4710766639830257905
+    Name: Rock_Ninja_Textured
+    Source: Resources/Models/Enemy/Stationary Sentry/Rock_Ninja_Textured.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 4864486435085006234
+    Name: Great Sword Idle
+    Source: Resources/Models/Player/animations/throw away/Great Sword Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 11591269389451211434
+    Name: Lion_Statue
+    Source: Resources/Models/Maya files/Lion_Statue.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 8889198571139867812
+    Name: Outdoor_Stone_Lantern
+    Source: Resources/Models/Maya files/Outdoor_Stone_Lantern.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 12464550849573268093
+    Name: Fast Run
+    Source: Resources/Models/Player/animations/Fast Run.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 14581026577437520233
+    Name: Jump Landing
+    Source: Resources/Models/Player/animations/Jump Landing.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 8224693472174704198
+    Name: Jumping
+    Source: Resources/Models/Player/animations/Jumping.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 17037819585619048672
+    Name: Braced Hang Drop
+    Source: Resources/Models/Player/animations/no for m3 ( for now)/Braced Hang Drop.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 2425390187941178450
+    Name: Braced Hang To Crouch
+    Source: Resources/Models/Player/animations/no for m3 ( for now)/Braced Hang To Crouch.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 17271057970080671101
+    Name: Samurai Hurt
+    Source: Resources/Models/Player/animations/Samurai Hurt.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 8568892093123981898
+    Name: Samurai Idle
+    Source: Resources/Models/Player/animations/Samurai Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 10661742191467522989
+    Name: Great Sword Slash
+    Source: Resources/Models/Player/animations/throw away/Great Sword Slash.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 18235586360693495649
+    Name: Great Sword Walk
+    Source: Resources/Models/Player/animations/throw away/Great Sword Walk.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 8256798345896697363
+    Name: Sheath Sword 1
+    Source: Resources/Models/Player/animations/throw away/Sheath Sword 1.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 9823568683429185027
+    Name: Samurai_Player_4_toTexture
+    Source: Resources/Models/Player/Samurai_Player_4_toTexture.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: false
+  - Type: MODEL
+    UID: 8417812735906594734
+    Name: Zombie Idle
+    Source: Resources/Models/Zombie Idle.fbx
     Properties:
       Model Transform:
         transform:

@@ -1102,8 +1102,19 @@ namespace EditorUI {
 
         if (selected.Has<DirectLightComponent>()) {
             auto& dl = selected.Get<DirectLightComponent>();
-            DrawComponentSection("Directional Light", &dl, GetDirectLightComponentProperties, true,
-                [&]() { ctx->scene.remove<DirectLightComponent>(m_App->SelectedEntity()); });
+            DrawComponentSection(
+                "Point Light",
+                &dl,
+                [&](void* p) -> const xproperty::type::object*
+                {
+                    auto* comp = static_cast<DirectLightComponent*>(p);
+                    ImGui::ColorEdit3("Irradiance", &comp->light.radiance[0]);
+
+                    return GetDirectLightComponentProperties(p);
+                },
+                true,
+                [&]() { ctx->scene.remove<DirectLightComponent>(m_App->SelectedEntity()); }
+            );
         }
 
         if (selected.Has<PointLightComponent>()) {
@@ -1126,8 +1137,19 @@ namespace EditorUI {
 
         if (selected.Has<SpotLightComponent>()) {
             auto& sl = selected.Get<SpotLightComponent>();
-            DrawComponentSection("Spot Light", &sl, GetSpotLightComponentProperties, true,
-                [&]() { ctx->scene.remove<SpotLightComponent>(m_App->SelectedEntity()); });
+            DrawComponentSection(
+                "Point Light",
+                &sl,
+                [&](void* p) -> const xproperty::type::object*
+                {
+                    auto* comp = static_cast<SpotLightComponent*>(p);
+                    ImGui::ColorEdit3("Irradiance", &comp->light.radiance[0]);
+
+                    return GetSpotLightComponentProperties(p);
+                },
+                true,
+                [&]() { ctx->scene.remove<SpotLightComponent>(m_App->SelectedEntity()); }
+            );
         }
 
         if (selected.Has<SkyboxComponent>()) {

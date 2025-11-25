@@ -5,16 +5,17 @@
 namespace Boom {
 	class FrameBuffer {
 	public:
-		BOOM_INLINE FrameBuffer(int32_t w, int32_t h, bool lowRes = false)
+		BOOM_INLINE FrameBuffer(int32_t w, int32_t h, bool lowRes = false, bool isPick = false)
 			: buffId{}, render{}, color{}
 			, width{ w }, height{ h }
 			, isLowPoly{lowRes}
+			, isPickBuffer{isPick}
 		{
 			//glSampleCoverage(1.f, GL_FALSE); //for multisampling
 			glGenFramebuffers(1, &buffId);
 			glBindFramebuffer(GL_FRAMEBUFFER, buffId);
 
-			CreateColorAttachment();
+			isPick ? CreateColorAttachmentPicker() : CreateColorAttachment();
 			CreateBrightnessAttachment();
 			CreateRenderBuffer();
 
@@ -48,7 +49,7 @@ namespace Boom {
 			const int th = targetH();
 			//resize color attachment
 			glBindTexture(GL_TEXTURE_2D, color);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, tw, th, 0, GL_RGBA, GL_FLOAT, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			//resize depth attachment
@@ -58,7 +59,7 @@ namespace Boom {
 
 			//resize brightness attachment
 			glBindTexture(GL_TEXTURE_2D, brightness);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, tw, th, 0, GL_RGBA, GL_FLOAT, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			//resize render buffer
@@ -117,6 +118,16 @@ namespace Boom {
 		}
 
 	private:
+		BOOM_INLINE void CreateColorAttachmentPicker() {
+			glGenTextures(1, &color);
+			glBindTexture(GL_TEXTURE_2D, color);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, isLowPoly ? GL_NEAREST : GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, isLowPoly ? GL_NEAREST : GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_R32I, isLowPoly ? 320 : width, isLowPoly ? 240 : height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, NULL);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color, 0);
+		}
 		BOOM_INLINE void CreateColorAttachment() {
 			glGenTextures(1, &color);
 			glBindTexture(GL_TEXTURE_2D, color);
@@ -124,7 +135,7 @@ namespace Boom {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, isLowPoly ? GL_NEAREST : GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, isLowPoly ? 320 : width, isLowPoly ? 240 : height, 0, GL_RGBA, GL_FLOAT, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, isLowPoly ? 320 : width, isLowPoly ? 240 : height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color, 0);
 		}
 		BOOM_INLINE void CreateRenderBuffer() {
@@ -140,7 +151,7 @@ namespace Boom {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, isLowPoly ? GL_NEAREST : GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, targetW(), targetH(), 0, GL_RGBA, GL_FLOAT, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, targetW(), targetH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, brightness, 0);
 		}
 		//lowpoly needs to resize using this, not width/height directly
@@ -156,8 +167,6 @@ namespace Boom {
 		int32_t height;
 
 		bool isLowPoly;
-	
-
-	
+		bool isPickBuffer;
 	};
 }

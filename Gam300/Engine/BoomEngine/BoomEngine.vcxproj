@@ -200,7 +200,9 @@
     <ClInclude Include="includes\Audio\Audio.hpp" />
     <ClInclude Include="includes\Audio\SoundSystem.hpp" />
     <ClInclude Include="includes\Audio\TrackLibrary.h" />
+    <ClInclude Include="includes\Auxiliaries\AssetLoadContext.h" />
     <ClInclude Include="includes\Auxiliaries\Assets.h" />
+    <ClInclude Include="includes\Auxiliaries\AsyncAssetLoader.h" />
     <ClInclude Include="includes\Auxiliaries\DataSerializer.h" />
     <ClInclude Include="includes\Auxiliaries\PrefabUtility.h" />
     <ClInclude Include="includes\Auxiliaries\Profiler.h" />
@@ -269,11 +271,23 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Auxiliaries\AsyncAssetLoader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Auxiliaries\ComponentSerializer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Auxiliaries\DataSerializerAsync.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Auxiliaries\PropertyAPI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelLoader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>

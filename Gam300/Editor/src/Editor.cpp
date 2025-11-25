@@ -130,9 +130,10 @@ namespace EditorUI {
     namespace fs = std::filesystem;
     void Editor::Init()
     {
-        { //load assets
+        { //load assets - using multithreaded loading for faster startup
             DataSerializer serializer;
-            serializer.Deserialize(*m_Context->assets, "AssetsProp/assets.yaml", m_App->GetWindowHandle().get());
+            serializer.DeserializeAsync(*m_Context->assets, "AssetsProp/assets.yaml", m_App->GetWindowHandle().get());
+            // Note: Pass 0 as numThreads to auto-detect CPU cores, or specify a number like 4 or 8
         }
 
         // Construct panels here; they persist across frames.
