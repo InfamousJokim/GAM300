@@ -154,6 +154,47 @@ namespace EditorUI {
                 info.name = std::string(m_NameBuffer);
             }
             ImGui::PopItemWidth();
+
+            // ===== PARENT FIELD =====
+            ImGui::Spacing();
+            ImGui::TextUnformatted("Parent");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(-1);
+
+            entt::entity currentParent = Boom::GetParentEntity(ctx->scene, m_App->SelectedEntity());
+            std::string parentName = "None";
+            if (currentParent != entt::null && ctx->scene.all_of<Boom::InfoComponent>(currentParent)) {
+                parentName = ctx->scene.get<Boom::InfoComponent>(currentParent).name;
+            }
+
+            ImGui::Button(parentName.c_str(), ImVec2(-1, 0));
+
+            // Drag-drop to set parent
+            if (ImGui::BeginDragDropTarget()) {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_HIERARCHY")) {
+                    entt::entity draggedEntity = *(const entt::entity*)payload->Data;
+                    if (Boom::SetParent(ctx->scene, m_App->SelectedEntity(), draggedEntity)) {
+                        BOOM_INFO("[Inspector] Set parent to '{}'",
+                                 ctx->scene.get<Boom::InfoComponent>(draggedEntity).name);
+                    } else {
+                        BOOM_WARN("[Inspector] Failed to set parent (circular reference prevented)");
+                    }
+                }
+                ImGui::EndDragDropTarget();
+            }
+
+            // Right-click to clear parent
+            if (ImGui::IsItemClicked(ImGuiMouseButton_Right) && currentParent != entt::null) {
+                if (Boom::SetParent(ctx->scene, m_App->SelectedEntity(), entt::null)) {
+                    BOOM_INFO("[Inspector] Cleared parent");
+                }
+            }
+
+            ImGui::PopItemWidth();
+
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Drag an entity from Hierarchy to set parent\nRight-click to clear parent");
+            }
         }
 
         ImGui::PopStyleVar();
@@ -1440,66 +1481,85 @@ namespace EditorUI {
             });
     }
 
-    void InspectorPanel::DeleteUpdate() {
-        if ((m_App->SelectedEntity() != entt::null ||
-            m_App->SelectedAsset().id != 0u) &&
-            ImGui::IsKeyPressed(ImGuiKey_Delete, false))
+    void InspectorPanel::DeleteUpdate()
+    {
+        // 1. Only care if something is actually selected
+        const bool hasSelection =
+            (m_App->SelectedEntity() != entt::null) ||
+            (m_App->SelectedAsset().id != 0u);
+
+        if (!hasSelection)
+            return;
+
+        // 2. When Delete is pressed this frame, open the popup
+        if (ImGui::IsKeyPressed(ImGuiKey_Delete, false))
         {
-            showDeletePopup = true;
-        }
-        if (showDeletePopup) {
             ImGui::OpenPopup("Confirm Delete");
-            ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+        }
 
-            if (ImGui::BeginPopupModal("Confirm Delete", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-                AppInterface::AssetInfo info{};
+        // 3. Center the popup when it *appears*
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::SetNextWindowPos(
+            ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f),
+            ImGuiCond_Appearing,
+            ImVec2(0.5f, 0.5f)
+        );
 
-                if (m_App->SelectedEntity() != entt::null) {
-                    Boom::Entity selectedEntity{ &m_App->GetEntityRegistry(), m_App->SelectedEntity() };
-                    info.name = selectedEntity.Get<Boom::InfoComponent>().name;
-                    info.id = selectedEntity.Get<Boom::InfoComponent>().uid;
-                }
-                else if (m_App->SelectedAsset().id != 0u) {
-                    info = m_App->SelectedAsset();
-                }
+        // 4. Draw the popup if it's open
+        if (ImGui::BeginPopupModal("Confirm Delete", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            AppInterface::AssetInfo info{};
 
-                ImGui::Text("Are you sure you want to delete:\n%s?", info.name.c_str());
-                ImGui::Separator();
-                if (ImGui::Button("Yes", ImVec2(120, 0)) || ImGui::IsKeyPressed(ImGuiKey_Enter, false)) {
-                    if (m_App->SelectedEntity() != entt::null) {
-
-                        // === BEGIN PHYSICS CLEANUP ===
-
-                        // 1. Get the entity
-                        Boom::Entity entity{ &m_App->GetEntityRegistry(), m_App->SelectedEntity() };
-
-                        // 2. Call your new function
-                        Boom::PhysicsContext* physicsCtx = &m_App->GetPhysicsContext();
-                        if (physicsCtx) {
-                            physicsCtx->RemoveRigidBody(entity);
-                        }
-
-                        // === END PHYSICS CLEANUP ===
-
-                        m_App->GetEntityRegistry().destroy(m_App->SelectedEntity());
-                        m_App->ResetAllSelected();
-                    }
-                    else if (m_App->SelectedAsset().id != 0u) {
-                        m_App->DeleteAsset(info.id, info.type);
-                        m_App->ResetAllSelected();
-                    }
-                    showDeletePopup = false;
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("No", ImVec2(120, 0)) || ImGui::IsKeyPressed(ImGuiKey_Escape)) {
-                    showDeletePopup = false;
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndPopup();
+            if (m_App->SelectedEntity() != entt::null)
+            {
+                Boom::Entity selectedEntity{ &m_App->GetEntityRegistry(), m_App->SelectedEntity() };
+                info.name = selectedEntity.Get<Boom::InfoComponent>().name;
+                info.id = selectedEntity.Get<Boom::InfoComponent>().uid;
             }
+            else if (m_App->SelectedAsset().id != 0u)
+            {
+                info = m_App->SelectedAsset();
+            }
+
+            ImGui::Text("Are you sure you want to delete:\n%s?", info.name.c_str());
+            ImGui::Separator();
+
+            // Yes / Enter
+            if (ImGui::Button("Yes", ImVec2(120, 0)) || ImGui::IsKeyPressed(ImGuiKey_Enter, false))
+            {
+                if (m_App->SelectedEntity() != entt::null)
+                {
+                    // === PHYSICS CLEANUP ===
+                    Boom::Entity entity{ &m_App->GetEntityRegistry(), m_App->SelectedEntity() };
+                    if (auto* physicsCtx = &m_App->GetPhysicsContext())
+                    {
+                        physicsCtx->RemoveRigidBody(entity);
+                    }
+
+                    m_App->GetEntityRegistry().destroy(m_App->SelectedEntity());
+                    m_App->ResetAllSelected();
+                }
+                else if (m_App->SelectedAsset().id != 0u)
+                {
+                    m_App->DeleteAsset(info.id, info.type);
+                    m_App->ResetAllSelected();
+                }
+
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SameLine();
+
+            // No / Escape
+            if (ImGui::Button("No", ImVec2(120, 0)) || ImGui::IsKeyPressed(ImGuiKey_Escape))
+            {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
         }
     }
+
 
     // === Animator-specific UpdateComponent specialization ===
     template<>

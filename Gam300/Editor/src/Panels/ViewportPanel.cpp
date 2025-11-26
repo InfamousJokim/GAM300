@@ -243,7 +243,7 @@ namespace EditorUI {
             m_UseSnap ? m_SnapValues : nullptr
         );
 
-        gizmoWantsInput = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
+        gizmoWantsInput = ImGuizmo::IsUsing();
 
         if (ImGuizmo::IsUsing())
         {
@@ -271,7 +271,9 @@ namespace EditorUI {
         // ImGuizmo manipulation
         entt::entity selectedEntity = m_App->SelectedEntity();
         auto& ltrans = m_Ctx->scene.get<Boom::TransformComponent>(selectedEntity);
-        glm::mat4 matrix = ltrans.transform.Matrix();
+
+        // Use world matrix for gizmo (handles hierarchy correctly)
+        glm::mat4 matrix = Boom::GetWorldMatrix(m_Ctx->scene, selectedEntity);
 
         ImGuizmo::SetOrthographic(false);
         ImGuizmo::SetDrawlist();
@@ -293,25 +295,12 @@ namespace EditorUI {
         );
 
         // Check if gizmo wants input
-        gizmoWantsInput = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
+        gizmoWantsInput = ImGuizmo::IsUsing();
 
         if (ImGuizmo::IsUsing())
         {
-            glm::vec3 newPosition, newRotation, newScale;
-            DecomposeTransform(matrix, newPosition, newRotation, newScale);
-
-            //must be within switch to prevent overwrite
-            switch (m_GizmoOperation) {
-            case ImGuizmo::TRANSLATE:
-                ltrans.transform.translate = newPosition;
-                break;
-            case ImGuizmo::ROTATE:
-                ltrans.transform.rotate = newRotation;
-                break;
-            case ImGuizmo::SCALE:
-                ltrans.transform.scale = newScale;
-                break;
-            }
+            // Convert manipulated world matrix back to local space
+            Boom::SetWorldMatrix(m_Ctx->scene, selectedEntity, matrix);
         }
 
     }

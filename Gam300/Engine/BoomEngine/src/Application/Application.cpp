@@ -427,46 +427,39 @@ namespace Boom
 
     glm::mat4 Application::GetWorldMatrix(Entity& entity)
     {
-        // 1. Get this entity's local matrix (e.g., the visual model's transform)
-        glm::mat4 localMatrix(1.0f);
-        if (entity.Has<TransformComponent>()) {
-            localMatrix = entity.Get<TransformComponent>().transform.Matrix();
+        if (!entity.Has<TransformComponent>()) {
+            return glm::mat4(1.0f);
         }
 
-        // 2. Get the parent's world matrix (e.g., the physics body's transform)
-        glm::mat4 pMatrix(1.0f);
-        if (entity.Has<InfoComponent>()) {
-            uint64_t parentUID = entity.Get<InfoComponent>().parent;
+        const auto& transform = entity.Get<TransformComponent>();
+        glm::mat4 localMatrix = transform.transform.Matrix();
 
-            if (parentUID != 0) // 0 means root/no parent
-            {
-                entt::entity parentEnttID = entt::null;
+        // Get parent entity
+        entt::entity parentEntity = entt::null;
+        if (entity.Has<InfoComponent>()) {
+            AssetID parentUID = entity.Get<InfoComponent>().parent;
+
+            if (parentUID != EMPTY_ASSET && parentUID != 0) {
                 auto view = m_Context->scene.view<InfoComponent>();
                 for (auto e : view) {
                     if (view.get<InfoComponent>(e).uid == parentUID) {
-                        parentEnttID = e;
+                        parentEntity = e;
                         break;
                     }
-                }
-
-                if (parentEnttID != entt::null) {
-                    Entity parentEntity{ &m_Context->scene, parentEnttID };
-                    pMatrix = GetWorldMatrix(parentEntity); // Recurse
                 }
             }
         }
 
-        // 3. Decompose the parent's matrix into T, R, and S
-        glm::vec3 pTranslate, pRotate, pScale;
-        DecomposeMatrix(pMatrix, pTranslate, pRotate, pScale);
+        // If no parent, return local matrix
+        if (parentEntity == entt::null) {
+            return localMatrix;
+        }
 
+        // Recursively get parent's world matrix and combine WITH SCALE
+        Entity parentEntityWrapper{ &m_Context->scene, parentEntity };
+        glm::mat4 parentMatrix = GetWorldMatrix(parentEntityWrapper);
 
-        // 4. Recompose the parent's matrix *without* its scale
-        glm::mat4 pMatrix_NoScale;
-        pMatrix_NoScale = RecomposeMatrix(pTranslate, pRotate, glm::vec3(1.0f));
-
-        // 5. Return the parent's (T*R) multiplied by the child's (T*R*S)
-        return pMatrix_NoScale * localMatrix;
+        return parentMatrix * localMatrix;
     }
 
     void Application::UpdateThirdPersonCameras()

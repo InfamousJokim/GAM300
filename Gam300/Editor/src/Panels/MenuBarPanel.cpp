@@ -211,6 +211,41 @@ namespace EditorUI {
 
             ImGui::Separator();
 
+            // TEST: Create parent-child hierarchy for testing
+            if (ImGui::MenuItem("TEST: Create Parent-Child Hierarchy")) {
+                if (m.ctx) {
+                    auto& reg = m.ctx->scene;
+
+                    // Create parent
+                    Entity parent{ &reg };
+                    parent.Attach<InfoComponent>().name = "TEST_Parent";
+                    auto& parentTransform = parent.Attach<TransformComponent>();
+                    parentTransform.transform.translate = glm::vec3(0, 0, 0);
+                    parentTransform.transform.scale = glm::vec3(1, 1, 1);
+
+                    // Create child
+                    Entity child{ &reg };
+                    auto& childInfo = child.Attach<InfoComponent>();
+                    childInfo.name = "TEST_Child";
+                    auto& childTransform = child.Attach<TransformComponent>();
+                    childTransform.transform.translate = glm::vec3(2, 0, 0); // 2 units to the right of parent (local space)
+                    childTransform.transform.scale = glm::vec3(1, 1, 1);
+
+                    // Set parent relationship
+                    AssetID parentUID = parent.Get<InfoComponent>().uid;
+                    childInfo.parent = parentUID;
+
+                    BOOM_INFO("[MenuBar] Created test hierarchy: Parent (UID:{}) with Child (UID:{}, parent:{})",
+                             parentUID, childInfo.uid, childInfo.parent);
+                    BOOM_INFO("[MenuBar] Parent at world (0,0,0), Child at local (2,0,0) -> should appear at world (2,0,0)");
+                    BOOM_INFO("[MenuBar] When you move Parent, Child should follow!");
+
+                    m.selectedEntity = child.ID();
+                }
+            }
+
+            ImGui::Separator();
+
             if (ImGui::MenuItem("Save Selected as Prefab")) {
                 if ( m.selectedEntity != entt::null) {
                     if (m.showSavePrefabDialog) *m.showSavePrefabDialog = true;

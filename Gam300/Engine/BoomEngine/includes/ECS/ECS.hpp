@@ -187,6 +187,279 @@ namespace Boom {
         }
         return entt::null;
     }
+
+    // ========== HIERARCHY HELPER FUNCTIONS ==========
+    // NOTE: Parent relationships use UID (not entity ID) for serialization stability
+
+    // Get parent entity by UID lookup (returns entt::null if no parent)
+    BOOM_INLINE entt::entity GetParentEntity(entt::registry& reg, entt::entity entity) {
+        if (!reg.valid(entity) || !reg.all_of<InfoComponent>(entity)) {
+            return entt::null;
+        }
+        const auto& info = reg.get<InfoComponent>(entity);
+        AssetID parentUID = info.parent;
+
+        if (parentUID == EMPTY_ASSET || parentUID == 0) {
+            return entt::null;
+        }
+
+        // Find entity with matching UID
+        auto view = reg.view<InfoComponent>();
+        for (auto e : view) {
+            if (view.get<InfoComponent>(e).uid == parentUID) {
+                // Found parent
+                return e;
+            }
+        }
+
+        // Parent UID is set but entity not found - this is a warning condition
+        BOOM_WARN("[GetParentEntity] Entity '{}' has parent UID {} but no matching entity found!",
+                 info.name, parentUID);
+        return entt::null;
+    }
+
+    // Get all children of an entity (by UID)
+    BOOM_INLINE std::vector<entt::entity> GetChildren(entt::registry& reg, entt::entity parent) {
+        std::vector<entt::entity> children;
+        if (!reg.valid(parent) || !reg.all_of<InfoComponent>(parent)) return children;
+
+        AssetID parentUID = reg.get<InfoComponent>(parent).uid;
+        auto view = reg.view<InfoComponent>();
+        for (auto [e, info] : view.each()) {
+            if (info.parent == parentUID) {
+                children.push_back(e);
+            }
+        }
+        return children;
+    }
+
+    // Check if 'ancestor' is in the parent chain of 'entity' (prevents circular parenting)
+    BOOM_INLINE bool HasAncestor(entt::registry& reg, entt::entity entity, entt::entity ancestor) {
+        if (!reg.all_of<InfoComponent>(ancestor)) return false;
+
+        AssetID ancestorUID = reg.get<InfoComponent>(ancestor).uid;
+        entt::entity current = entity;
+        int depth = 0;
+        const int maxDepth = 1000; // Prevent infinite loops
+
+        while (current != entt::null && depth < maxDepth) {
+            if (reg.all_of<InfoComponent>(current)) {
+                if (reg.get<InfoComponent>(current).uid == ancestorUID) {
+                    return true;
+                }
+            }
+            current = GetParentEntity(reg, current);
+            depth++;
+        }
+        return false;
+    }
+
+    // Get world transform matrix (combines local transform with parent chain)
+    BOOM_INLINE glm::mat4 GetWorldMatrix(entt::registry& reg, entt::entity entity) {
+        if (!reg.valid(entity) || !reg.all_of<TransformComponent>(entity)) {
+            return glm::mat4(1.0f);
+        }
+
+        const auto& transform = reg.get<TransformComponent>(entity);
+        glm::mat4 localMatrix = transform.transform.Matrix();
+
+        entt::entity parent = GetParentEntity(reg, entity);
+        if (parent == entt::null) {
+            return localMatrix;
+        }
+
+        // Recursively get parent's world matrix and combine
+        glm::mat4 parentMatrix = GetWorldMatrix(reg, parent);
+        return parentMatrix * localMatrix;
+    }
+
+    // Get world position from transform hierarchy
+    BOOM_INLINE glm::vec3 GetWorldPosition(entt::registry& reg, entt::entity entity) {
+        glm::mat4 worldMatrix = GetWorldMatrix(reg, entity);
+        return glm::vec3(worldMatrix[3]);
+    }
+
+    // --- Utility: Decompose TRS matrix into translate / euler-deg / scale ---
+    //     without normalizing away scale.
+    BOOM_INLINE void DecomposeTRS(const glm::mat4& m,
+        glm::vec3& outT,
+        glm::vec3& outRDeg,
+        glm::vec3& outS)
+    {
+        // Translation = 4th column
+        outT = glm::vec3(m[3]);
+
+        // Basis vectors (3x3 block columns)
+        glm::vec3 col0 = glm::vec3(m[0]);
+        glm::vec3 col1 = glm::vec3(m[1]);
+        glm::vec3 col2 = glm::vec3(m[2]);
+
+        // Scale = lengths of basis vectors
+        outS.x = glm::length(col0);
+        outS.y = glm::length(col1);
+        outS.z = glm::length(col2);
+
+        // Guard against zero scale
+        glm::vec3 safeS = outS;
+        if (safeS.x == 0.f) safeS.x = 1.f;
+        if (safeS.y == 0.f) safeS.y = 1.f;
+        if (safeS.z == 0.f) safeS.z = 1.f;
+
+        // Remove scale from basis vectors to get rotation-only matrix
+        glm::mat3 rotMat;
+        rotMat[0] = col0 / safeS.x;
+        rotMat[1] = col1 / safeS.y;
+        rotMat[2] = col2 / safeS.z;
+
+        glm::quat q = glm::quat_cast(rotMat);
+        glm::vec3 eulerRad = glm::eulerAngles(q);
+        outRDeg = glm::degrees(eulerRad);
+    }
+
+
+
+    // Helper to decompose world matrix back to transform (for gizmos)
+    BOOM_INLINE void SetWorldMatrix(entt::registry& reg, entt::entity entity, const glm::mat4& worldMatrix) {
+        if (!reg.valid(entity) || !reg.all_of<TransformComponent>(entity)) {
+            return;
+        }
+
+        auto& transform = reg.get<TransformComponent>(entity);
+        entt::entity parent = GetParentEntity(reg, entity);
+
+        // Compute local = inverse(parentWorld) * world
+        glm::mat4 localMatrix;
+        if (parent == entt::null) {
+            localMatrix = worldMatrix;
+        }
+        else {
+            glm::mat4 parentMatrix = GetWorldMatrix(reg, parent);
+            localMatrix = glm::inverse(parentMatrix) * worldMatrix;
+        }
+
+        glm::vec3 T, RDeg, S;
+        DecomposeTRS(localMatrix, T, RDeg, S);
+
+        transform.transform.translate = T;
+        transform.transform.rotate = RDeg;
+        transform.transform.scale = S;
+    }
+
+
+
+
+    // Set parent of an entity using UID (validates to prevent circular references)
+// preserveWorldTransform: if true, adjusts local transform to keep same world position (Unity/Unreal behavior)
+    BOOM_INLINE bool SetParent(entt::registry& reg,
+        entt::entity entity,
+        entt::entity newParent,
+        bool preserveWorldTransform = true)
+    {
+        if (!reg.valid(entity) || !reg.all_of<InfoComponent>(entity)) {
+            BOOM_WARN("[SetParent] Entity invalid or missing InfoComponent");
+            return false;
+        }
+
+        // Prevent self-parenting
+        if (entity == newParent) {
+            BOOM_WARN("[SetParent] Cannot parent entity to itself");
+            return false;
+        }
+
+        // Prevent circular parenting (entity can't be parent of its ancestor)
+        if (newParent != entt::null && HasAncestor(reg, newParent, entity)) {
+            BOOM_WARN("[SetParent] Circular reference prevented");
+            return false;
+        }
+
+        auto& info = reg.get<InfoComponent>(entity);
+        AssetID oldParent = info.parent;
+
+        const bool hasTransform = reg.all_of<TransformComponent>(entity);
+
+        // 1) Capture current WORLD matrix and original scale BEFORE changing parent
+        glm::mat4 worldMatrix(1.0f);
+        glm::vec3 originalLocalScale(1.0f);
+
+        if (preserveWorldTransform && hasTransform) {
+            auto& t = reg.get<TransformComponent>(entity);
+            originalLocalScale = t.transform.scale;  // SAVE THIS FIRST!
+            worldMatrix = GetWorldMatrix(reg, entity);
+
+            BOOM_INFO("[SetParent] BEFORE - Entity '{}' local: pos({}, {}, {}), scale({}, {}, {})",
+                info.name,
+                t.transform.translate.x, t.transform.translate.y, t.transform.translate.z,
+                t.transform.scale.x, t.transform.scale.y, t.transform.scale.z);
+
+            glm::vec3 worldPos = GetWorldPosition(reg, entity);
+            BOOM_INFO("[SetParent] World position: ({}, {}, {})", worldPos.x, worldPos.y, worldPos.z);
+        }
+
+        // 2) Update parent relationship (InfoComponent.parent stores UID)
+        if (newParent == entt::null) {
+            info.parent = EMPTY_ASSET;
+            BOOM_INFO("[SetParent] Cleared parent: '{}' (UID:{}) is now root (was parent UID:{})",
+                info.name, info.uid, oldParent);
+        }
+        else {
+            if (!reg.all_of<InfoComponent>(newParent)) {
+                BOOM_WARN("[SetParent] New parent missing InfoComponent");
+                return false;
+            }
+
+            AssetID newParentUID = reg.get<InfoComponent>(newParent).uid;
+            info.parent = newParentUID;
+
+            BOOM_INFO("[SetParent] Set parent: '{}' (UID:{}) -> parent '{}' (UID:{})",
+                info.name, info.uid,
+                reg.get<InfoComponent>(newParent).name, newParentUID);
+        }
+
+        // 3) Recompute LOCAL transform so that WORLD stays the same
+        if (preserveWorldTransform && hasTransform) {
+            auto& t = reg.get<TransformComponent>(entity);
+
+            // Extract the ACTUAL current world scale from the world matrix
+            glm::vec3 worldT, worldRDeg, worldScale;
+            DecomposeTRS(worldMatrix, worldT, worldRDeg, worldScale);
+
+            glm::mat4 parentWorld(1.0f);
+            glm::vec3 parentScale(1.0f);
+
+            if (newParent != entt::null && reg.all_of<TransformComponent>(newParent)) {
+                parentWorld = GetWorldMatrix(reg, newParent);
+
+                // Extract parent's world scale
+                glm::vec3 parentT, parentRDeg;
+                DecomposeTRS(parentWorld, parentT, parentRDeg, parentScale);
+            }
+
+            glm::mat4 localMatrix = glm::inverse(parentWorld) * worldMatrix;
+
+            glm::vec3 T, RDeg, S;
+            DecomposeTRS(localMatrix, T, RDeg, S);
+
+            t.transform.translate = T;
+            t.transform.rotate = RDeg;
+
+            // Adjust local scale to compensate for parent's scale
+            // localScale = worldScale / parentScale (component-wise division)
+            t.transform.scale.x = (parentScale.x != 0.0f) ? (worldScale.x / parentScale.x) : worldScale.x;
+            t.transform.scale.y = (parentScale.y != 0.0f) ? (worldScale.y / parentScale.y) : worldScale.y;
+            t.transform.scale.z = (parentScale.z != 0.0f) ? (worldScale.z / parentScale.z) : worldScale.z;
+
+            BOOM_INFO("[SetParent] AFTER - local: pos({}, {}, {}), scale({}, {}, {})",
+                T.x, T.y, T.z,
+                t.transform.scale.x, t.transform.scale.y, t.transform.scale.z);
+            BOOM_INFO("[SetParent] Parent scale: ({}, {}, {}), World scale preserved: ({}, {}, {})",
+                parentScale.x, parentScale.y, parentScale.z,
+                worldScale.x, worldScale.y, worldScale.z);
+        }
+
+        return true;
+    }
+
+
     struct DirectLightComponent
     {
         BOOM_INLINE DirectLightComponent(const DirectLightComponent&) = default;
@@ -386,19 +659,14 @@ namespace Boom {
             "PauseMenuTagComponent", PauseMenuTagComponent
         )
     };
-    struct SceneNavmeshComponent {
-        std::string navmeshFile;   // e.g. "Resources/NavData/level1.bin"
-        XPROPERTY_DEF("SceneNavmeshComponent", SceneNavmeshComponent,
-            obj_member<"NavmeshFile", &SceneNavmeshComponent::navmeshFile>)
-    };
-   
+
     struct Entity
     {
         BOOM_INLINE Entity(EntityRegistry* registry, EntityID entity) :
             m_Registry(registry), m_EnttID(entity)
         {
         }
-       
+
         BOOM_INLINE Entity(EntityRegistry* registry) :
             m_Registry(registry)
         {
@@ -462,24 +730,193 @@ namespace Boom {
         EntityID m_EnttID = NENTT;
     };
 
-    BOOM_INLINE entt::entity GetOrCreateSceneSettings(entt::registry& reg)
-    {
-        auto view = reg.view<SceneNavmeshComponent>();
+    // ========== ENTITY MANIPULATION FUNCTIONS ==========
+    // NOTE: These are placed at the end of the file after all component declarations
 
-        for (auto e : view) {
-            return e;                  // first one
+    // Delete entity and all its children recursively (with physics cleanup)
+    BOOM_INLINE void DeleteEntityRecursive(entt::registry& reg, entt::entity entity, void* physicsCtx = nullptr) {
+        if (!reg.valid(entity)) return;
+
+        // Get entity name for logging
+        std::string entityName = "Unknown";
+        if (reg.all_of<InfoComponent>(entity)) {
+            entityName = reg.get<InfoComponent>(entity).name;
         }
 
-        // Otherwise create + attach component
-        auto e = reg.create();
-        reg.emplace<SceneNavmeshComponent>(e);
-        return e;
+        // First, delete all children recursively
+        auto children = GetChildren(reg, entity);
+        for (entt::entity child : children) {
+            DeleteEntityRecursive(reg, child, physicsCtx);
+        }
+
+        // Clean up physics if context provided
+        if (physicsCtx != nullptr) {
+            // Cast to PhysicsContext and remove rigid body
+            // Note: PhysicsContext is forward-declared, so we need to include it where this is called
+            // For now, just log
+            BOOM_INFO("[DeleteEntity] Physics cleanup for '{}'", entityName);
+        }
+
+        // Destroy the entity
+        BOOM_INFO("[DeleteEntity] Destroying entity '{}'", entityName);
+        reg.destroy(entity);
     }
-    BOOM_INLINE entt::entity TryGetSceneSettings(entt::registry& reg)
-    {
-        auto view = reg.view<SceneNavmeshComponent>();
-        if (!view.empty())
-            return *view.begin();
-        return entt::null;
+
+    // Duplicate entity with all components (optionally with children)
+    BOOM_INLINE entt::entity DuplicateEntity(entt::registry& reg, entt::entity source, bool duplicateChildren = true) {
+        if (!reg.valid(source)) {
+            BOOM_WARN("[DuplicateEntity] Source entity is invalid");
+            return entt::null;
+        }
+
+        // Create new entity
+        entt::entity duplicate = reg.create();
+
+        // Copy InfoComponent with new UID and modified name
+        if (reg.all_of<InfoComponent>(source)) {
+            auto& srcInfo = reg.get<InfoComponent>(source);
+            auto& dstInfo = reg.emplace<InfoComponent>(duplicate);
+            dstInfo.name = srcInfo.name + " (Copy)";
+            dstInfo.uid = RandomU64(); // New unique ID
+            dstInfo.parent = srcInfo.parent; // Keep same parent
+        }
+
+        // Copy TransformComponent
+        if (reg.all_of<TransformComponent>(source)) {
+            auto& srcTrans = reg.get<TransformComponent>(source);
+            auto& dstTrans = reg.emplace<TransformComponent>(duplicate);
+            dstTrans = srcTrans; // Copy all transform data
+        }
+
+        // Copy CameraComponent
+        if (reg.all_of<CameraComponent>(source)) {
+            auto& srcCam = reg.get<CameraComponent>(source);
+            reg.emplace<CameraComponent>(duplicate, srcCam);
+        }
+
+        // Copy ModelComponent
+        if (reg.all_of<ModelComponent>(source)) {
+            auto& srcModel = reg.get<ModelComponent>(source);
+            auto& dstModel = reg.emplace<ModelComponent>(duplicate);
+            dstModel.modelID = srcModel.modelID;
+            dstModel.materialID = srcModel.materialID;
+        }
+
+        // Copy AnimatorComponent
+        if (reg.all_of<AnimatorComponent>(source)) {
+            auto& srcAnim = reg.get<AnimatorComponent>(source);
+            auto& dstAnim = reg.emplace<AnimatorComponent>(duplicate);
+            dstAnim.animator = srcAnim.animator; // Copy animator data
+        }
+
+        // Copy RigidBodyComponent (but NOT the physics actor - that needs special handling)
+        if (reg.all_of<RigidBodyComponent>(source)) {
+            auto& srcRB = reg.get<RigidBodyComponent>(source);
+            auto& dstRB = reg.emplace<RigidBodyComponent>(duplicate);
+            dstRB = srcRB;
+            // Note: Physics actor will be created by physics system on next update
+        }
+
+        // Copy ColliderComponent
+        if (reg.all_of<ColliderComponent>(source)) {
+            auto& srcCol = reg.get<ColliderComponent>(source);
+            reg.emplace<ColliderComponent>(duplicate, srcCol);
+        }
+
+        // Copy Light Components
+        if (reg.all_of<DirectLightComponent>(source)) {
+            auto& srcLight = reg.get<DirectLightComponent>(source);
+            reg.emplace<DirectLightComponent>(duplicate, srcLight);
+        }
+        if (reg.all_of<PointLightComponent>(source)) {
+            auto& srcLight = reg.get<PointLightComponent>(source);
+            reg.emplace<PointLightComponent>(duplicate, srcLight);
+        }
+        if (reg.all_of<SpotLightComponent>(source)) {
+            auto& srcLight = reg.get<SpotLightComponent>(source);
+            reg.emplace<SpotLightComponent>(duplicate, srcLight);
+        }
+
+        // Copy SoundComponent
+        if (reg.all_of<SoundComponent>(source)) {
+            auto& srcSound = reg.get<SoundComponent>(source);
+            auto& dstSound = reg.emplace<SoundComponent>(duplicate);
+            dstSound.name = srcSound.name;
+            dstSound.filePath = srcSound.filePath;
+            dstSound.loop = srcSound.loop;
+            dstSound.volume = srcSound.volume;
+            dstSound.playOnStart = srcSound.playOnStart;
+        }
+
+        // Copy ScriptComponent
+        if (reg.all_of<ScriptComponent>(source)) {
+            auto& srcScript = reg.get<ScriptComponent>(source);
+            auto& dstScript = reg.emplace<ScriptComponent>(duplicate);
+            dstScript.TypeName = srcScript.TypeName;
+            dstScript.Enabled = srcScript.Enabled;
+            // Note: InstanceId will be set by scripting system
+        }
+
+        // Copy NavAgentComponent
+        if (reg.all_of<NavAgentComponent>(source)) {
+            auto& srcNav = reg.get<NavAgentComponent>(source);
+            reg.emplace<NavAgentComponent>(duplicate, srcNav);
+        }
+
+        // Copy AIComponent
+        if (reg.all_of<AIComponent>(source)) {
+            auto& srcAI = reg.get<AIComponent>(source);
+            auto& dstAI = reg.emplace<AIComponent>(duplicate);
+            dstAI.detectRadius = srcAI.detectRadius;
+            dstAI.loseRadius = srcAI.loseRadius;
+            dstAI.idleWait = srcAI.idleWait;
+            dstAI.playerName = srcAI.playerName;
+            dstAI.patrolPoints = srcAI.patrolPoints;
+            // Note: Don't copy runtime state (idleTimer, patrolIndex, etc.)
+        }
+
+        // Copy SpriteComponent
+        if (reg.all_of<SpriteComponent>(source)) {
+            auto& srcSprite = reg.get<SpriteComponent>(source);
+            reg.emplace<SpriteComponent>(duplicate, srcSprite);
+        }
+
+        // Copy ThirdPersonCameraComponent
+        if (reg.all_of<ThirdPersonCameraComponent>(source)) {
+            auto& srcCam = reg.get<ThirdPersonCameraComponent>(source);
+            reg.emplace<ThirdPersonCameraComponent>(duplicate, srcCam);
+        }
+
+        // Copy SkyboxComponent
+        if (reg.all_of<SkyboxComponent>(source)) {
+            auto& srcSky = reg.get<SkyboxComponent>(source);
+            reg.emplace<SkyboxComponent>(duplicate, srcSky);
+        }
+
+        // Copy PauseMenuTagComponent
+        if (reg.all_of<PauseMenuTagComponent>(source)) {
+            reg.emplace<PauseMenuTagComponent>(duplicate);
+        }
+
+        BOOM_INFO("[DuplicateEntity] Duplicated '{}' -> '{}'",
+                 reg.get<InfoComponent>(source).name,
+                 reg.get<InfoComponent>(duplicate).name);
+
+        // Recursively duplicate children if requested
+        if (duplicateChildren) {
+            auto children = GetChildren(reg, source);
+            AssetID duplicateUID = reg.get<InfoComponent>(duplicate).uid;
+
+            for (entt::entity child : children) {
+                entt::entity childDuplicate = DuplicateEntity(reg, child, true);
+                if (reg.valid(childDuplicate) && reg.all_of<InfoComponent>(childDuplicate)) {
+                    // Set duplicated child's parent to the duplicated parent
+                    reg.get<InfoComponent>(childDuplicate).parent = duplicateUID;
+                }
+            }
+        }
+
+        return duplicate;
     }
+
 }

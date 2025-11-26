@@ -1950,3 +1950,312 @@ C:.
 +---x64
     +---Debug
     +---Release
+Folder PATH listing
+Volume serial number is 2CEE-B71D
+C:\USERS\AMOSH\DESKTOP\GAM300\GAM300\-F
+Invalid path - \USERS\AMOSH\DESKTOP\GAM300\GAM300\-F
+No subfolders exist 
+
+¦   ¦   Editor.h
+¦   ¦   resource.h
+¦   ¦   ¦   Editor.cpp
+¦   ¦   ¦   Editor.h
+¦   ¦   ¦   EditorPCH.h
+¦   ¦   ¦   main.cpp
+¦   ¦   ¦       Context.cpp
+¦   ¦   ¦       Context.h
+¦   ¦   ¦       DebugHelpers.h
+¦   ¦   ¦       Events.h
+¦   ¦   ¦       Helpers.h
+¦   ¦   ¦       InputBridge.h
+¦   ¦   ¦       Inputs.h
+¦   ¦   ¦       Widgets.h
+¦   ¦   ¦   ¦   AnimatorGraphPanel.cpp
+¦   ¦   ¦   ¦   AnimatorGraphPanel.h
+¦   ¦   ¦   ¦   AudioPanel.cpp
+¦   ¦   ¦   ¦   AudioPanel.h
+¦   ¦   ¦   ¦   ConsolePanel.cpp
+¦   ¦   ¦   ¦   ConsolePanel.h
+¦   ¦   ¦   ¦   DirectoryPanel.cpp
+¦   ¦   ¦   ¦   DirectoryPanel.h
+¦   ¦   ¦   ¦   HierarchyPanel.cpp
+¦   ¦   ¦   ¦   HierarchyPanel.h
+¦   ¦   ¦   ¦   MenuBarPanel.cpp
+¦   ¦   ¦   ¦   MenuBarPanel.h
+¦   ¦   ¦   ¦   NavMeshPanel.cpp
+¦   ¦   ¦   ¦   NavMeshPanel.h
+¦   ¦   ¦   ¦   PerformancePanel.cpp
+¦   ¦   ¦   ¦   PerformancePanel.h
+¦   ¦   ¦   ¦   PlaybackControlsPanel.cpp
+¦   ¦   ¦   ¦   PlaybackControlsPanel.h
+¦   ¦   ¦   ¦   PrefabBrowserPanel.cpp
+¦   ¦   ¦   ¦   PrefabBrowserPanel.h
+¦   ¦   ¦   ¦   PropertiesImgui.cpp
+¦   ¦   ¦   ¦   PropertiesImgui.h
+¦   ¦   ¦   ¦   RayCast.cpp
+¦   ¦   ¦   ¦   RayCast.h
+¦   ¦   ¦   ¦   ResourcePanel.cpp
+¦   ¦   ¦   ¦   ResourcePanel.h
+¦   ¦   ¦   ¦   ViewportPanel.cpp
+¦   ¦   ¦   ¦   ViewportPanel.h
+¦   ¦   ¦           AnimationPanel.cpp
+¦   ¦   ¦           InspectorPanel.cpp
+¦   ¦   ¦           InspectorPanel.h
+¦   ¦   ¦       RecastBaker.cpp
+¦   ¦   ¦       RecastBaker.h
+¦   ¦   ¦   ¦   FA.h
+¦   ¦   ¦   ¦   ¦       DebugDraw.h
+¦   ¦   ¦   ¦   ¦       RecastDebugDraw.h
+¦   ¦   ¦   ¦   ¦       RecastDump.h
+¦   ¦   ¦   ¦           DebugDraw.cpp
+¦   ¦   ¦   ¦           RecastDebugDraw.cpp
+¦   ¦   ¦   ¦           RecastDump.cpp
+¦   ¦   ¦   ¦   ¦   imconfig.h
+¦   ¦   ¦   ¦   ¦   imgui.cpp
+¦   ¦   ¦   ¦   ¦   imgui.h
+¦   ¦   ¦   ¦   ¦   imgui_demo.cpp
+¦   ¦   ¦   ¦   ¦   imgui_draw.cpp
+¦   ¦   ¦   ¦   ¦   imgui_impl_glfw.cpp
+¦   ¦   ¦   ¦   ¦   imgui_impl_glfw.h
+¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3.cpp
+¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3.h
+¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3_loader.h
+¦   ¦   ¦   ¦   ¦   imgui_internal.h
+¦   ¦   ¦   ¦   ¦   imgui_tables.cpp
+¦   ¦   ¦   ¦   ¦   imgui_widgets.cpp
+¦   ¦   ¦   ¦   ¦   imstb_rectpack.h
+¦   ¦   ¦   ¦   ¦   imstb_textedit.h
+¦   ¦   ¦   ¦   ¦   imstb_truetype.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_allegro5.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_allegro5.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_android.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_android.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx10.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx10.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx11.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx11.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx12.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx12.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx9.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_dx9.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_glfw.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_glfw.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_glut.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_glut.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_metal.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_opengl2.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_opengl2.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_opengl3_loader.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_osx.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdl2.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdl2.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdl3.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdl3.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlgpu3.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlgpu3.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlgpu3_shaders.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlrenderer2.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlrenderer2.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlrenderer3.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_sdlrenderer3.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_vulkan.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_vulkan.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_wgpu.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_wgpu.h
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_win32.cpp
+¦   ¦   ¦   ¦   ¦   ¦   imgui_impl_win32.h
+¦   ¦   ¦   ¦   ¦   ¦       imconfig_allegro5.h
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦   ¦   main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦   ¦       main.cpp
+¦   ¦   ¦   ¦   ¦       ¦       emscripten_mainloop_stub.h
+¦   ¦   ¦   ¦   ¦       ¦   ¦           glfw3.h
+¦   ¦   ¦   ¦   ¦       ¦   ¦           glfw3native.h
+¦   ¦   ¦   ¦   ¦               uSynergy.h
+¦   ¦   ¦   ¦       ¦       imgui_stdlib.cpp
+¦   ¦   ¦   ¦       ¦       imgui_stdlib.h
+¦   ¦   ¦   ¦       ¦       binary_to_compressed_c.cpp
+¦   ¦   ¦   ¦       ¦       imgui_freetype.cpp
+¦   ¦   ¦   ¦       ¦       imgui_freetype.h
+¦   ¦   ¦   ¦               imgui_single_file.h
+¦   ¦   ¦   ¦       GraphEditor.cpp
+¦   ¦   ¦   ¦       GraphEditor.h
+¦   ¦   ¦   ¦       ImCurveEdit.cpp
+¦   ¦   ¦   ¦       ImCurveEdit.h
+¦   ¦   ¦   ¦       ImGradient.cpp
+¦   ¦   ¦   ¦       ImGradient.h
+¦   ¦   ¦   ¦       ImGuizmo.cpp
+¦   ¦   ¦   ¦       ImGuizmo.h
+¦   ¦   ¦   ¦       ImSequencer.cpp
+¦   ¦   ¦   ¦       ImSequencer.h
+¦   ¦   ¦   ¦       ImZoomSlider.h
+¦   ¦   ¦       ¦       Recast.h
+¦   ¦   ¦       ¦       RecastAlloc.h
+¦   ¦   ¦       ¦       RecastAssert.h
+¦   ¦   ¦               Recast.cpp
+¦   ¦   ¦               RecastAlloc.cpp
+¦   ¦   ¦               RecastArea.cpp
+¦   ¦   ¦               RecastAssert.cpp
+¦   ¦   ¦               RecastContour.cpp
+¦   ¦   ¦               RecastFilter.cpp
+¦   ¦   ¦               RecastLayers.cpp
+¦   ¦   ¦               RecastMesh.cpp
+¦   ¦   ¦               RecastMeshDetail.cpp
+¦   ¦   ¦               RecastRasterization.cpp
+¦   ¦   ¦               RecastRegion.cpp
+¦   ¦           AudioPanel.h
+¦       ¦   ¦   AppWindow.h
+¦       ¦   ¦   BoomEngine.h
+¦       ¦   ¦   GlobalConstants.h
+¦       ¦   ¦       Actions.h
+¦       ¦   ¦       AIComponent.h
+¦       ¦   ¦       AISystem.h
+¦       ¦   ¦       BehaviourTree.h
+¦       ¦   ¦       BehaviourTreeActions.h
+¦       ¦   ¦       DetourBuildAPI.cpp
+¦       ¦   ¦       DetourBuildAPI.h
+¦       ¦   ¦       DetourNavSystem.cpp
+¦       ¦   ¦       DetourNavSystem.h
+¦       ¦   ¦       Grid.h
+¦       ¦   ¦       GridAStar.h
+¦       ¦   ¦       GridChaseAI.h
+¦       ¦   ¦       GridReverseDjik.h
+¦       ¦   ¦       NavAgent.cpp
+¦       ¦   ¦       NavAgent.h
+¦       ¦   ¦       Application.h
+¦       ¦   ¦       Context.h
+¦       ¦   ¦       Interface.h
+¦       ¦   ¦       Audio.cpp
+¦       ¦   ¦       TrackLibrary.h
+¦       ¦   ¦       AssetLoadContext.h
+¦       ¦   ¦       Assets.h
+¦       ¦   ¦       AsyncAssetLoader.h
+¦       ¦   ¦       DataSerializer.h
+¦       ¦   ¦       PrefabUtility.h
+¦       ¦   ¦       Profiler.h
+¦       ¦   ¦       PropertyAPI.h
+¦       ¦   ¦       SerializationRegistry.h
+¦       ¦   ¦   ¦   BoomProperties.h
+¦       ¦   ¦   ¦   Core.h
+¦       ¦   ¦   ¦   Events.h
+¦       ¦   ¦   ¦   framework.h
+¦       ¦   ¦   ¦   xproperty.h
+¦       ¦   ¦   ¦   YAML.h
+¦       ¦   ¦           property_sprop.h
+¦       ¦   ¦           property_sprop_collector.h
+¦       ¦   ¦           property_sprop_container.h
+¦       ¦   ¦           property_sprop_getset.h
+¦       ¦   ¦           property_sprop_xtextfile_serializer.h
+¦       ¦   ¦   ¦   Renderer.h
+¦       ¦   ¦   ¦       Frame.h
+¦       ¦   ¦   ¦       Mesh.h
+¦       ¦   ¦   ¦       Vertex.h
+¦       ¦   ¦   ¦       Animation.h
+¦       ¦   ¦   ¦       Animator.h
+¦       ¦   ¦   ¦       Helper.h
+¦       ¦   ¦   ¦       Model.h
+¦       ¦   ¦   ¦       Bloom.h
+¦       ¦   ¦   ¦       Color.h
+¦       ¦   ¦   ¦       DebugLines.h
+¦       ¦   ¦   ¦       Final.h
+¦       ¦   ¦   ¦       LoadingShader.h
+¦       ¦   ¦   ¦       PBR.h
+¦       ¦   ¦   ¦       Shader.h
+¦       ¦   ¦   ¦       Shadow.h
+¦       ¦   ¦   ¦       Skybox.h
+¦       ¦   ¦   ¦       SkyMap.h
+¦       ¦   ¦   ¦       Compression.h
+¦       ¦   ¦   ¦       Texture.h
+¦       ¦   ¦           Culling.h
+¦       ¦   ¦           Data.h
+¦       ¦   ¦           Quad.h
+¦       ¦   ¦           Skybox.h
+¦       ¦   ¦       CameraManager.h
+¦       ¦   ¦       InputHandler.h
+¦       ¦   ¦       Callback.h
+¦       ¦   ¦       Context.h
+¦       ¦   ¦       Helpers.h
+¦       ¦   ¦       Utilities.h
+¦       ¦           FileWatcher.h
+¦       ¦           MonoRuntime.h
+¦       ¦           ScriptBinding.h
+¦       ¦           ScriptingSystem.h
+¦       ¦   ¦   BoomEngine.cpp
+¦       ¦   ¦   Core.cpp
+¦       ¦   ¦   Logger.cpp
+¦       ¦   ¦   SoundSystem.cpp
+¦       ¦   ¦       Application.cpp
+¦       ¦   ¦       Context.cpp
+¦       ¦   ¦       AssetSerializer.cpp
+¦       ¦   ¦       AsyncAssetLoader.cpp
+¦       ¦   ¦       ComponentSerializer.cpp
+¦       ¦   ¦       DataSerializerAsync.cpp
+¦       ¦   ¦       PropertyAPI.cpp
+¦       ¦   ¦       RegisterProperties.cpp
+¦       ¦   ¦       SerializationRegistry.cpp
+¦       ¦   ¦       SerializerInit.cpp
+¦       ¦   ¦       ModelLoader.cpp
+¦       ¦   ¦       FileWatcher.cpp
+¦       ¦   ¦       MonoRuntime.cpp
+¦       ¦   ¦       ScriptBinding.cpp
+¦       ¦   ¦       ScriptingSystem.cpp
+¦       ¦           Compression.cpp
+¦       ¦           Texture.cpp
+¦       ¦   ¦   ¦       DebugDraw.h
+¦       ¦   ¦   ¦       DetourDebugDraw.h
+¦       ¦   ¦           DebugDraw.cpp
+¦       ¦   ¦           DetourDebugDraw.cpp
+¦       ¦   ¦   ¦       DetourAlloc.h
+¦       ¦   ¦   ¦       DetourAssert.h
+¦       ¦   ¦   ¦       DetourCommon.h
+¦       ¦   ¦   ¦       DetourMath.h
+¦       ¦   ¦   ¦       DetourNavMesh.h
+¦       ¦   ¦   ¦       DetourNavMeshBuilder.h
+¦       ¦   ¦   ¦       DetourNavMeshQuery.h
+¦       ¦   ¦   ¦       DetourNode.h
+¦       ¦   ¦   ¦       DetourStatus.h
+¦       ¦   ¦           DetourAlloc.cpp
+¦       ¦   ¦           DetourAssert.cpp
+¦       ¦   ¦           DetourCommon.cpp
+¦       ¦   ¦           DetourNavMesh.cpp
+¦       ¦   ¦           DetourNavMeshBuilder.cpp
+¦       ¦   ¦           DetourNavMeshQuery.cpp
+¦       ¦   ¦           DetourNode.cpp
+¦       ¦   ¦   ¦       DetourCrowd.h
+¦       ¦   ¦   ¦       DetourLocalBoundary.h
+¦       ¦   ¦   ¦       DetourObstacleAvoidance.h
+¦       ¦   ¦   ¦       DetourPathCorridor.h
+¦       ¦   ¦   ¦       DetourPathQueue.h
+¦       ¦   ¦   ¦       DetourProximityGrid.h
+¦       ¦   ¦           DetourCrowd.cpp
+¦       ¦   ¦           DetourLocalBoundary.cpp
+¦       ¦   ¦           DetourObstacleAvoidance.cpp
+¦       ¦   ¦           DetourPathCorridor.cpp
+¦       ¦   ¦           DetourPathQueue.cpp
+¦       ¦   ¦           DetourProximityGrid.cpp
+¦       ¦       ¦       DetourTileCache.h
+¦       ¦       ¦       DetourTileCacheBuilder.h
+¦       ¦               DetourTileCache.cpp
+¦       ¦               DetourTileCacheBuilder.cpp
