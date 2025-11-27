@@ -443,28 +443,50 @@ namespace EditorUI {
         {
         }
 
-        void Execute(CommandPtr command) {
-            // Execute the command
-            command->Execute();
+        void ClearRedo()
+        {
+            const int size = static_cast<int>(m_Commands.size());
+            const int firstRedoIndex = m_CurrentIndex + 1;
 
-            // Clear redo stack (any commands after current index)
-            if (m_CurrentIndex < static_cast<int>(m_Commands.size()) - 1) {
-                m_Commands.erase(m_Commands.begin() + m_CurrentIndex + 1, m_Commands.end());
+            BOOM_INFO("[CommandHistory] ClearRedo: idx = {}, size = {}, firstRedo = {}",
+                m_CurrentIndex, size, firstRedoIndex);
+
+            if (size == 0) return;
+
+            if (firstRedoIndex >= 0 && firstRedoIndex < size) {
+                m_Commands.erase(m_Commands.begin() + firstRedoIndex, m_Commands.end());
+            }
+        }
+
+
+
+        void Execute(CommandPtr command) {
+            if (!command) {
+                BOOM_WARN("[CommandHistory] Execute called with null command");
+                return;
             }
 
-            // Add command to history
-            m_Commands.push_back(std::move(command));
-            m_CurrentIndex++;
+            // 1) Clear redo stack safely
+            ClearRedo();
 
-            // Enforce history limit
+            // 2) Append new command to history and update index
+            m_Commands.push_back(std::move(command));
+            m_CurrentIndex = static_cast<int>(m_Commands.size()) - 1;
+
+            // 3) Enforce history limit
             if (m_Commands.size() > m_MaxHistory) {
                 m_Commands.erase(m_Commands.begin());
-                m_CurrentIndex--;
+                m_CurrentIndex = static_cast<int>(m_Commands.size()) - 1; // stay at last
             }
 
+            // 4) Execute the command from history
+            auto& cmd = m_Commands[m_CurrentIndex];
+            cmd->Execute();
+
             BOOM_INFO("[CommandHistory] Executed: {} (index: {})",
-                     m_Commands[m_CurrentIndex]->GetDescription(), m_CurrentIndex);
+                cmd->GetDescription(), m_CurrentIndex);
         }
+
 
         bool CanUndo() const {
             return m_CurrentIndex >= 0 && !m_Commands.empty();
@@ -476,14 +498,23 @@ namespace EditorUI {
 
         void Undo() {
             if (!CanUndo()) {
-                BOOM_WARN("[CommandHistory] Cannot undo: no commands in history");
+                BOOM_WARN("[CommandHistory] Cannot undo: no commands in history (idx: {}, size: {})",
+                    m_CurrentIndex, m_Commands.size());
                 return;
             }
 
+            BOOM_ASSERT(m_CurrentIndex >= 0);  // should always hold if CanUndo() is correct
+
             BOOM_INFO("[CommandHistory] Undoing: {}", m_Commands[m_CurrentIndex]->GetDescription());
             m_Commands[m_CurrentIndex]->Undo();
+
             m_CurrentIndex--;
+            if (m_CurrentIndex < -1) {
+                BOOM_WARN("[CommandHistory] m_CurrentIndex went below -1 ({}). Clamping to -1.", m_CurrentIndex);
+                m_CurrentIndex = -1;
+            }
         }
+
 
         void Redo() {
             if (!CanRedo()) {
