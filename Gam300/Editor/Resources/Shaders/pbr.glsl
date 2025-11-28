@@ -80,39 +80,55 @@ struct Material {
 uniform Material material;
 
 const float PI = 3.14159265358979323846;
-const int MAX_LIGHTS = 10; //this number has to be redefined here due to glsl constrains
 layout (location=0) out vec4 out_fragment;
 layout(location=1) out vec4 out_brightness; //for bloom
 const vec3 BLOOM_THRESHOLD = vec3(0.2126, 0.7152, 0.0722) ;
 
-struct PointLight {
-    vec3 position;
-    vec3 radiance;
-    float intensity;
-    float range;
+#define MAX_POINT_LIGHTS 128
+#define MAX_DIR_LIGHTS   32
+#define MAX_SPOT_LIGHTS  32
+
+// GPU-friendly packed structs (std140-friendly: only vec4)
+struct GPUPointLight {
+    // xyz = position, w = range
+    vec4 position_range;
+    // rgb = radiance, w = intensity
+    vec4 radiance_intensity;
 };
-uniform PointLight pointLights[MAX_LIGHTS];
+
+struct GPUDirLight {
+    // xyz = direction, w = intensity
+    vec4 dir_intensity;
+    // rgb = radiance, w unused
+    vec4 radiance;
+};
+
+struct GPUSpotLight {
+    // xyz = position, w = fallOff
+    vec4 position_falloff;
+    // xyz = direction, w = cutOff
+    vec4 dir_cutoff;
+    // rgb = radiance, w = intensity
+    vec4 radiance_intensity;
+};
+
+// One UBO per type, with explicit bindings
+layout(std140, binding = 0) uniform PointLightBlock {
+    GPUPointLight pointLights[MAX_POINT_LIGHTS];
+};
+
+layout(std140, binding = 1) uniform DirLightBlock {
+    GPUDirLight dirLights[MAX_DIR_LIGHTS];
+};
+
+layout(std140, binding = 2) uniform SpotLightBlock {
+    GPUSpotLight spotLights[MAX_SPOT_LIGHTS];
+};
+
+// Light counts stay as normal uniforms
 uniform int noPointLight;
-
-struct DirectionalLight {
-    vec3 radiance;
-    vec3 dir;
-    float intensity;
-};
-uniform DirectionalLight dirLights[MAX_LIGHTS];
 uniform int noDirLight;
-
-struct SpotLight {
-    vec3 dir;
-    vec3 position;
-    vec3 radiance;
-    float intensity;
-    float fallOff;
-    float cutOff;
-};
-uniform SpotLight spotLights[MAX_LIGHTS];
 uniform int noSpotLight;
-
 uniform vec3 viewPos;
 
 uniform bool isDebugMode;
@@ -266,98 +282,112 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
 vec3 ComputePointLights(vec3 N, vec3 V, vec3 f0, vec3 albedo, float roughness, float metallic) {
     vec3 result = vec3(0.0); 
 
-    for (int i = 0; i < noPointLight; ++i) {
-        //break condition
-        if (i >= MAX_LIGHTS) {
-            break;
-        }
+    // clamp by both count & array size
+    int count = min(noPointLight, MAX_POINT_LIGHTS);
 
-        vec3 L = normalize(pointLights[i].position - vertex.position);
+    for (int i = 0; i < count; ++i) {
+        GPUPointLight pl = pointLights[i];
+
+        vec3  lightPos      = pl.position_range.xyz;
+        float lightRange    = pl.position_range.w;
+        vec3  lightRadiance = pl.radiance_intensity.rgb;
+        float lightIntensity= pl.radiance_intensity.w;
+
+        vec3 L = normalize(lightPos - vertex.position);
         vec3 H = normalize(L + V);
         float nDotL = max(dot(N, L), 0.0);
         float nDotV = max(dot(N, V), 0.0);
 
-        //Cook-Torrance (BRDF)
+        // Cook–Torrance BRDF (same as before)
         float NDF = DistributionGGX(N, H, roughness);
-        vec3 FS = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
-        float GS = GeometrySmithGGX(nDotV, nDotL, roughness);
+        vec3  FS  = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
+        float GS  = GeometrySmithGGX(nDotV, nDotL, roughness);
 
-        vec3 diffuse = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
-        vec3 specular = (NDF * GS * FS) / max(4.0 * nDotV * nDotL, 0.0001);
-        float dist = length(pointLights[i].position - vertex.position);
-        if (dist > pointLights[i].range)
-    continue;
-        float attenuation = pointLights[i].intensity / (dist * dist);
-        float theta = dot(L, normalize(-spotLights[i].dir));
+        vec3 diffuse  = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
+        vec3 specular = (NDF * GS * FS) / max(4.0 * nDotL * nDotV, 0.0001);
 
-        result += (diffuse + specular) * pointLights[i].radiance * attenuation * nDotL;
+        float dist = length(lightPos - vertex.position);
+        if (dist > lightRange)
+            continue;
+
+        float attenuation = lightIntensity / (dist * dist);
+
+        result += (diffuse + specular) * lightRadiance * attenuation * nDotL;
     }
-
     return result;
 }
+
 vec3 ComputeDirLights(vec3 N, vec3 V, vec3 f0, vec3 albedo, float roughness, float metallic) {
     vec3 result = vec3(0.0);
+    int count = min(noDirLight, MAX_DIR_LIGHTS);
 
-    for (int i = 0; i < noDirLight; ++i) {
-        //break condition
-        if (i >= MAX_LIGHTS) {
-            break;
-        }
+    for (int i = 0; i < count; ++i) {
+        GPUDirLight dl = dirLights[i];
 
-        vec3 L = -normalize(dirLights[i].dir);
+        vec3  dir        = normalize(dl.dir_intensity.xyz);
+        float intensity  = dl.dir_intensity.w;
+        vec3  radiance   = dl.radiance.rgb;
+
+        vec3 L = -dir;
         float nDotL = max(dot(N, L), 0.0);
         float nDotV = max(dot(N, V), 0.0);
         vec3 H = normalize(L + V);
 
-        //BRDF
         float NDF = DistributionGGX(N, H, roughness);
-        vec3 FS = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
-        float GS = GeometrySmithGGX(nDotV, nDotL, roughness);
+        vec3  FS  = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
+        float GS  = GeometrySmithGGX(nDotV, nDotL, roughness);
 
-        vec3 diffuse = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
-        vec3 specular = (NDF * GS * FS) / max(4.0 * nDotV * nDotL, 0.0001);
+        vec3 diffuse  = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
+        vec3 specular = (NDF * GS * FS) / max(4.0 * nDotL * nDotV, 0.0001);
 
-        result += (diffuse + specular) * dirLights[i].radiance * dirLights[i].intensity * nDotL;
+        result += (diffuse + specular) * radiance * intensity * nDotL;
     }
-
     return result;
 }
 vec3 ComputeSpotLights(vec3 N, vec3 V, vec3 f0, vec3 albedo, float roughness, float metallic) {
     vec3 result = vec3(0.0);
 
-    for (int i = 0; i < noSpotLight; ++i) {
-        //break condition
-        if (i >= MAX_LIGHTS) {
-            break;
-        }
+    // make sure we don't run past the array
+    int count = min(noSpotLight, MAX_SPOT_LIGHTS);
 
-        vec3 L = normalize(spotLights[i].position - vertex.position);
+    for (int i = 0; i < count; ++i) {
+        GPUSpotLight sl = spotLights[i];
+
+        vec3  lightPos      = sl.position_falloff.xyz;
+        float fallOff       = sl.position_falloff.w;
+        vec3  lightDir      = normalize(sl.dir_cutoff.xyz);
+        float cutOff        = sl.dir_cutoff.w;
+        vec3  radiance      = sl.radiance_intensity.rgb;
+        float intensity     = sl.radiance_intensity.w;
+
+        vec3 L = normalize(lightPos - vertex.position);
         float nDotL = max(dot(N, L), 0.0);
         float nDotV = max(dot(N, V), 0.0);
         vec3 H = normalize(L + V);
 
-        //BRDF
+        // BRDF
         float NDF = DistributionGGX(N, H, roughness);
-        vec3 FS = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
-        float GS = GeometrySmithGGX(nDotV, nDotL, roughness);
+        vec3  FS  = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
+        float GS  = GeometrySmithGGX(nDotV, nDotL, roughness);
 
-        vec3 diffuse = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
+        vec3 diffuse  = (vec3(1.0) - FS) * (1.0 - metallic) * albedo / PI;
         vec3 specular = (NDF * GS * FS) / max(4.0 * nDotV * nDotL, 0.0001);
 
-        //compute spot
-        float theta = dot(L, normalize(-spotLights[i].dir));
-        float epsilon = max(spotLights[i].fallOff - spotLights[i].cutOff, 0.0001);
-        float spotFactor = clamp((theta - spotLights[i].cutOff) / epsilon, 0.0, 1.0);
+        // spot shape
+        float theta    = dot(L, normalize(-lightDir));
+        float epsilon  = max(fallOff - cutOff, 0.0001);
+        float spotFactor = clamp((theta - cutOff) / epsilon, 0.0, 1.0);
 
-        float dist = length(spotLights[i].position - vertex.position);
-        float attenuation = spotLights[i].intensity / (dist * dist);
+        float dist        = length(lightPos - vertex.position);
+        float attenuation = intensity / (dist * dist);
 
-        result += (diffuse + specular) * 
-                    spotLights[i].radiance * 
-                    spotLights[i].intensity * 
-                    attenuation * 
-                    nDotL
-                    * spotFactor;
+        // 
+        result += (diffuse + specular) *
+                  radiance *
+                  intensity *
+                  attenuation *
+                  nDotL *
+                  spotFactor;
     }
 
     return result;

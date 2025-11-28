@@ -7,6 +7,7 @@
 
 namespace EditorUI
 {
+
     AudioPanel::AudioPanel(AppInterface* ctx)
         : IWidget(ctx)
     {

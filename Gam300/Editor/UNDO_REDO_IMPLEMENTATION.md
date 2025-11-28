@@ -1,7 +1,7 @@
 # Undo/Redo System Implementation
 
 ## Overview
-Implemented a complete Command Pattern-based undo/redo system for the game engine editor. The system supports transform changes, entity creation/deletion, and parent-child hierarchy operations.
+Implemented a complete Command Pattern-based undo/redo system for the game engine editor. The system supports transform changes (both 3D and 2D GUI sprites), entity creation/deletion, parent-child hierarchy operations, component property changes, and sprite component modifications.
 
 ## Files Modified
 
@@ -11,10 +11,13 @@ Implemented a complete Command Pattern-based undo/redo system for the game engin
 ### Modified Files
 1. **Editor/src/Editor.h** - Added CommandHistory member and getter
 2. **Editor/src/Editor.cpp** - Initialize CommandHistory and add Ctrl+Z/Ctrl+Y shortcuts
-3. **Editor/src/Panels/ViewportPanel.h** - Added gizmo state tracking for undo
-4. **Editor/src/Panels/ViewportPanel.cpp** - Record transform commands from gizmo operations
-5. **Editor/src/Panels/HierarchyPanel.cpp** - Record delete and reparent commands
+3. **Editor/src/Panels/ViewportPanel.h** - Added gizmo state tracking for undo (both 2D and 3D)
+4. **Editor/src/Panels/ViewportPanel.cpp** - Record transform commands from gizmo operations (2D and 3D)
+5. **Editor/src/Panels/HierarchyPanel.cpp** - Record delete, reparent, duplicate, and unparent commands
 6. **Editor/src/Panels/MenuBarPanel.cpp** - Record entity creation commands
+7. **Editor/src/Panels/Inspector/InspectorPanel.h** - Added tracking state for sprite and transform edits
+8. **Editor/src/Panels/Inspector/InspectorPanel.cpp** - Record property change commands for sprite and transform components
+9. **Engine/BoomEngine/src/Application/Application.cpp** - Fixed GUI sprite rendering to use world transforms (hierarchy support)
 
 ## Command Types
 
@@ -33,14 +36,29 @@ Records entity creation from menu or shortcuts.
 ### 3. DeleteEntityCommand
 Records entity deletion with full state preservation.
 - Captures complete entity hierarchy (children included)
-- Stores transform, model, camera, and other components
-- Perfectly restores entity on undo
+- Stores transform, model, camera, **sprite**, and other components
+- Perfectly restores entity on undo including all component data
 
 ### 4. ReparentCommand
 Records parent-child relationship changes.
 - Preserves world transform during reparenting
 - Stores old and new parent UIDs
 - Handles unparenting (setting parent to null)
+- Works with both 3D entities and 2D GUI sprites
+
+### 5. ComponentPropertyCommand (Template)
+Records component property changes from Inspector panel.
+- Generic template that works with any component type
+- Captures before/after state of entire component
+- Uses UIDs for entity stability
+- Supports SpriteComponent, TransformComponent, and other components
+
+### 6. DuplicateEntityCommand
+Records entity duplication operations.
+- Duplicates entire hierarchy (including children)
+- Preserves all components (including SpriteComponent)
+- Undo deletes the duplicated entity tree
+- Redo recreates the duplicate
 
 ## Keyboard Shortcuts
 
@@ -49,15 +67,44 @@ Records parent-child relationship changes.
 
 ## Supported Operations
 
+### Viewport Operations (3D Entities)
 | Operation | Panel | Trigger | Undoable |
 |-----------|-------|---------|----------|
-| Move Entity | Viewport | Gizmo (W key) | ✅ |
-| Rotate Entity | Viewport | Gizmo (E key) | ✅ |
-| Scale Entity | Viewport | Gizmo (R key) | ✅ |
+| Move Entity (3D) | Viewport | Gizmo (W key) | ✅ |
+| Rotate Entity (3D) | Viewport | Gizmo (E key) | ✅ |
+| Scale Entity (3D) | Viewport | Gizmo (R key) | ✅ |
+
+### Viewport Operations (2D GUI Sprites)
+| Operation | Panel | Trigger | Undoable |
+|-----------|-------|---------|----------|
+| Move Sprite (2D) | Viewport | 2D Gizmo (W key) | ✅ |
+| Rotate Sprite (2D) | Viewport | 2D Gizmo (E key) | ✅ |
+| Scale Sprite (2D) | Viewport | 2D Gizmo (R key) | ✅ |
+
+### Inspector Operations (Transform)
+| Operation | Panel | Trigger | Undoable |
+|-----------|-------|---------|----------|
+| Change Position | Inspector | Drag translate values | ✅ |
+| Change Rotation | Inspector | Drag rotation values | ✅ |
+| Change Scale | Inspector | Drag scale values | ✅ |
+
+### Inspector Operations (Sprite Component)
+| Operation | Panel | Trigger | Undoable |
+|-----------|-------|---------|----------|
+| Toggle GUI Overlay | Inspector | Click GUI checkbox | ✅ |
+| Change Sprite Texture | Inspector | Drag texture asset | ✅ |
+| Change Sprite Color | Inspector | Edit color picker | ✅ |
+
+### Hierarchy Operations
+| Operation | Panel | Trigger | Undoable |
+|-----------|-------|---------|----------|
 | Create Entity | MenuBar | "Create Empty Object" | ✅ |
 | Delete Entity | Hierarchy | Delete key / Right-click menu | ✅ |
 | Reparent Entity | Hierarchy | Drag-drop | ✅ |
-| Unparent Entity | Hierarchy | Drag to root / Right-click menu | ✅ |
+| Unparent to Root | Hierarchy | Drag to root | ✅ |
+| Unparent (Menu) | Hierarchy | Right-click → Unparent | ✅ |
+| Duplicate Entity | Hierarchy | Right-click → Duplicate | ✅ |
+| Duplicate (Shortcut) | Hierarchy | Ctrl+D | ✅ |
 
 ## Technical Details
 
@@ -81,8 +128,8 @@ SetParent(entity, newParent, preserveWorldTransform=true)
 - Commands are executed immediately, not deferred
 - Redo stack is cleared when new command is executed
 
-### Gizmo Integration
-Transform commands are recorded at the end of gizmo manipulation:
+### Gizmo Integration (3D and 2D)
+Transform commands are recorded at the end of gizmo manipulation for both 3D entities and 2D GUI sprites:
 ```cpp
 // When gizmo starts: capture initial transform
 if (ImGuizmo::IsUsing() && !m_GizmoWasUsing) {
@@ -91,6 +138,31 @@ if (ImGuizmo::IsUsing() && !m_GizmoWasUsing) {
 
 // When gizmo ends: record command
 if (!ImGuizmo::IsUsing() && m_GizmoWasUsing) {
+    auto command = std::make_unique<TransformCommand>(...);
+    history->Execute(std::move(command));
+}
+```
+
+**2D Gizmo** (for GUI sprites):
+- Uses world matrix for proper hierarchy support
+- Converts world matrix back to local space when manipulating
+- Fully supports parent-child relationships
+
+### Inspector Property Tracking
+Property changes in the Inspector panel are tracked using ImGui's activation/deactivation events:
+```cpp
+// Checkbox - immediate tracking
+if (ImGui::Checkbox("GUI", &sprite.uiOverlay)) {
+    auto command = std::make_unique<ComponentPropertyCommand<SpriteComponent>>(...);
+    history->Execute(std::move(command));
+}
+
+// DragFloat - track on release
+ImGui::DragFloat3("Translate", &transform.translate[0], 0.01f);
+if (ImGui::IsItemActivated()) {
+    m_TransformBeforeEdit = transform;
+}
+if (ImGui::IsItemDeactivatedAfterEdit()) {
     auto command = std::make_unique<TransformCommand>(...);
     history->Execute(std::move(command));
 }
@@ -108,6 +180,26 @@ if (!ImGuizmo::IsUsing() && m_GizmoWasUsing) {
 - [x] Reparent entity → Undo → Parent relationship restored
 - [x] Reparent entity → World position preserved
 - [x] Delete parent → Undo → Parent and children restored
+- [x] Unparent (menu) → Undo → Parent relationship restored
+- [x] Duplicate entity → Undo → Duplicate deleted
+- [x] Duplicate with Ctrl+D → Undo → Duplicate deleted
+
+### Sprite Component Operations
+- [x] Toggle GUI checkbox → Undo → Checkbox state restored
+- [x] Change sprite texture → Undo → Original texture restored
+- [x] Change sprite color → Undo → Original color restored
+- [x] Delete entity with sprite → Undo → Sprite component fully restored
+
+### 2D GUI Sprite Hierarchy
+- [x] Parent 2D sprite → Child renders at world position
+- [x] Move parent → 2D child sprite follows
+- [x] 2D gizmo respects parent transforms
+- [x] Undo/redo works with parented 2D sprites
+
+### Inspector Transform Edits
+- [x] Drag translate → Undo → Position restored
+- [x] Drag rotation → Undo → Rotation restored
+- [x] Drag scale → Undo → Scale restored
 
 ### Complex Workflows
 - [x] Create → Move → Delete → Undo 3x → All operations reversed
@@ -120,13 +212,46 @@ if (!ImGuizmo::IsUsing() && m_GizmoWasUsing) {
 - [x] Entity with children deletes/restores correctly
 - [x] Circular parenting prevented by SetParent validation
 
+## Recent Improvements (Session 2)
+
+### SpriteComponent Support
+Added full undo/redo support for sprite components:
+- **EntitySnapshot** now captures sprite data (textureID, color, uiOverlay)
+- Delete/Undo operations preserve sprite components
+- Inspector property changes create undo commands
+
+### Inspector Panel Undo Support
+Implemented property change tracking for Inspector edits:
+- **ComponentPropertyCommand** template for any component type
+- Sprite properties (GUI checkbox, texture, color)
+- Transform properties (translate, rotate, scale)
+- Uses ImGui activation/deactivation events
+
+### 2D Gizmo Undo Support
+Added complete undo/redo for 2D GUI sprite manipulation:
+- Captures transform before/after gizmo use
+- Works identically to 3D gizmo
+- Creates "Move 2D", "Rotate 2D", "Scale 2D" commands
+
+### Hierarchy Panel Enhancements
+Added missing undo support for hierarchy operations:
+- **Unparent menu item** now creates ReparentCommand
+- **Duplicate operations** now create DuplicateEntityCommand
+- **Ctrl+D shortcut** creates undoable duplicate
+
+### 2D GUI Sprite Hierarchy Fix
+Fixed critical bug where GUI sprites ignored parent transforms:
+- **Rendering**: GUI sprites now use world transform (respects hierarchy)
+- **2D Gizmo**: Uses world matrix like 3D gizmo
+- **Parent-child**: 2D sprites now properly follow parent movement
+
 ## Future Enhancements
 
 ### Possible Extensions
 1. **Batch Commands** - Group multiple operations into single undo step
 2. **Undo History Panel** - Visual list of all commands with descriptions
-3. **Component Commands** - Add/remove components with undo support
-4. **Property Commands** - Fine-grained undo for inspector edits
+3. **Component Add/Remove** - Add/remove components with undo support
+4. **More Property Commands** - Extend to all component types
 5. **Persistent History** - Save/load undo history with scene files
 6. **Undo Branches** - Support multiple undo branches (tree instead of stack)
 
@@ -174,15 +299,19 @@ if (history && history->CanUndo()) {
 Editor
   └─ CommandHistory (max 100 commands)
        ├─ Command Stack [0..99]
-       │    ├─ TransformCommand
+       │    ├─ TransformCommand (3D & 2D)
        │    ├─ CreateEntityCommand
-       │    ├─ DeleteEntityCommand
-       │    └─ ReparentCommand
+       │    ├─ DeleteEntityCommand (includes SpriteComponent)
+       │    ├─ ReparentCommand
+       │    ├─ DuplicateEntityCommand
+       │    └─ ComponentPropertyCommand<T> (template)
        └─ Current Index (-1 to 99)
 
 Panels (record commands)
-  ├─ ViewportPanel → TransformCommand
-  ├─ HierarchyPanel → DeleteEntityCommand, ReparentCommand
+  ├─ ViewportPanel → TransformCommand (3D gizmo & 2D gizmo)
+  ├─ HierarchyPanel → DeleteEntityCommand, ReparentCommand, DuplicateEntityCommand
+  ├─ InspectorPanel → ComponentPropertyCommand<SpriteComponent>
+  │                 → TransformCommand (for inspector edits)
   └─ MenuBarPanel → CreateEntityCommand
 ```
 
@@ -201,10 +330,13 @@ Panels (record commands)
 ## Conclusion
 
 The undo/redo system is fully integrated and production-ready. It correctly handles:
-- ✅ Transform operations with parent-child hierarchies
-- ✅ Entity lifecycle (create/delete)
-- ✅ Parent-child relationship changes
+- ✅ Transform operations with parent-child hierarchies (3D and 2D)
+- ✅ Entity lifecycle (create/delete/duplicate)
+- ✅ Parent-child relationship changes (reparent/unparent)
+- ✅ Component property changes (sprite, transform)
+- ✅ Inspector panel edits (all transform and sprite properties)
+- ✅ 2D GUI sprite hierarchy support
 - ✅ UID-based entity tracking for stability
-- ✅ World transform preservation during reparenting
+- ✅ World transform preservation during all operations
 
-The implementation follows established patterns from Unity/Unreal and integrates seamlessly with your existing hierarchy system.
+The implementation follows established patterns from Unity/Unreal and integrates seamlessly with your existing hierarchy system. All major editor operations are now undoable, including previously missing features like 2D gizmo manipulation, inspector property edits, and duplicate operations.

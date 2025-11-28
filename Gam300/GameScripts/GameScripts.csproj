@@ -51,6 +51,9 @@
     <Compile Include="MainMenu.cs" />
     <Compile Include="PlayerFootsteps.cs" />
     <Compile Include="PlayerManager.cs" />
+    <Compile Include="KeyPickup.cs" />
+    <Compile Include="DoorTriggerLeft.cs" />
+    <Compile Include="PlayerInventory.cs" />
     <Compile Include="VisionComponent.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="MovementAnimator.cs" />

@@ -540,33 +540,65 @@ namespace Boom
  }
 
  BOOM_INLINE void LightsUpdate() {
- {
-                int points = 0;
- EnttView<Entity, PointLightComponent, TransformComponent>(
- [this, &points](auto, PointLightComponent& plc, TransformComponent& tc)
- {
- m_Context->renderer->SetLight(plc.light, tc.transform, points++);
- });
- m_Context->renderer->SetPointLightCount(points);
- }
- {
-                int directs = 0;
- EnttView<Entity, DirectLightComponent, TransformComponent>(
- [this, &directs](auto, DirectLightComponent& dlc, TransformComponent& tc)
- {
- m_Context->renderer->SetLight(dlc.light, tc.transform, directs++);
- });
- m_Context->renderer->SetDirectionalLightCount(directs);
- }
- {
-                int spots = 0;
- EnttView<Entity, SpotLightComponent, TransformComponent>(
- [this, &spots](auto, SpotLightComponent& slc, TransformComponent& tc)
- {
- m_Context->renderer->SetLight(slc.light, tc.transform, spots++);
- });
- m_Context->renderer->SetSpotLightCount(spots);
- }
+ 
+         // Point lights
+         std::vector<GPUPointLight> gpuPoints;
+         gpuPoints.reserve(MAX_POINT_LIGHTS);
+         int points = 0;
+
+         EnttView<Entity, PointLightComponent, TransformComponent>(
+             [&](auto, PointLightComponent& plc, TransformComponent& tc)
+             {
+                 if (points >= MAX_POINT_LIGHTS) return;
+
+                 GPUPointLight g{};
+                 g.position_range = glm::vec4(tc.transform.translate, plc.light.range);
+                 g.radiance_intensity = glm::vec4(plc.light.radiance, plc.light.intensity);
+                 gpuPoints.push_back(g);
+                 ++points;
+             });
+
+         m_Context->renderer->UploadPointLights(gpuPoints, points);
+
+         // Directional lights
+         std::vector<GPUDirLight> gpuDirs;
+         gpuDirs.reserve(MAX_DIR_LIGHTS);
+         int directs = 0;
+
+         EnttView<Entity, DirectLightComponent, TransformComponent>(
+             [&](auto, DirectLightComponent& dlc, TransformComponent& tc)
+             {
+                 if (directs >= MAX_DIR_LIGHTS) return;
+
+                 GPUDirLight g{};
+                 g.dir_intensity = glm::vec4(glm::normalize(tc.transform.rotate), dlc.light.intensity);
+                 g.radiance = glm::vec4(dlc.light.radiance, 0.0f);
+                 gpuDirs.push_back(g);
+                 ++directs;
+             });
+
+         m_Context->renderer->UploadDirLights(gpuDirs, directs);
+
+         // Spot lights
+         std::vector<GPUSpotLight> gpuSpots;
+         gpuSpots.reserve(MAX_SPOT_LIGHTS);
+         int spots = 0;
+
+         EnttView<Entity, SpotLightComponent, TransformComponent>(
+             [&](auto, SpotLightComponent& slc, TransformComponent& tc)
+             {
+                 if (spots >= MAX_SPOT_LIGHTS) return;
+
+                 GPUSpotLight g{};
+                 g.position_falloff = glm::vec4(tc.transform.translate, slc.light.fallOff);
+                 g.dir_cutoff = glm::vec4(glm::normalize(tc.transform.rotate), slc.light.cutOff);
+                 g.radiance_intensity = glm::vec4(slc.light.radiance, slc.light.intensity);
+                 gpuSpots.push_back(g);
+                 ++spots;
+             });
+
+         m_Context->renderer->UploadSpotLights(gpuSpots, spots);
+
  }
 
  BOOM_INLINE void RenderShadowScene() {

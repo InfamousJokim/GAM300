@@ -448,10 +448,12 @@ namespace Boom
 
         //sort guiList based on z-axis from negative to positive(opengl z-axis towards camera)
         std::sort(guiList.begin(), guiList.end(), [](const auto& a, const auto& b) {
-            return a.second.translate.z > b.second.translate.z;  // descending Z order
+            return a.second.translate.z < b.second.translate.z;  // descending Z order
             });
 
         //render gui overlays at the end
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL); //supports partial transparency to not interfere with background gui
         for (auto const& gui : guiList) {
             TextureAsset* texture{ m_Context->assets->TryGet<TextureAsset>(gui.first.textureID) };
             if (texture)

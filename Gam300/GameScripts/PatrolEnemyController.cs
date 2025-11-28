@@ -80,7 +80,7 @@ namespace GameScripts
             }
 
             // Update vision system AFTER rotation
-            _vision?.OnUpdate(dt);
+            //_vision?.OnUpdate(dt);
         }
 
         /// <summary>

@@ -4,6 +4,25 @@
 #include "../Models/Model.h"
 
 namespace Boom {
+	//UBO
+	inline constexpr int MAX_POINT_LIGHTS = 128;
+	inline constexpr int MAX_DIR_LIGHTS = 16;
+	inline constexpr int MAX_SPOT_LIGHTS = 32;
+	struct GPUPointLight {
+		glm::vec4 position_range;       // xyz = position, w = range
+		glm::vec4 radiance_intensity;   // rgb = radiance, w = intensity
+	};
+
+	struct GPUDirLight {
+		glm::vec4 dir_intensity;        // xyz = direction, w = intensity
+		glm::vec4 radiance;             // rgb = radiance, w unused
+	};
+
+	struct GPUSpotLight {
+		glm::vec4 position_falloff;     // xyz = position, w = fallOff
+		glm::vec4 dir_cutoff;           // xyz = direction, w = cutOff
+		glm::vec4 radiance_intensity;   // rgb = radiance, w = intensity
+	};
 	struct PBRShader : Shader {
 		BOOM_INLINE PBRShader(std::string const& filename)
 			: Shader{ filename }
@@ -43,9 +62,26 @@ namespace Boom {
 			, u_LightSpace{ GetUniformVar("u_lightSpace") }
 			, u_DepthMap{ GetUniformVar("u_depthMap") }
 		{
+			GLuint prog = shaderId; 
+
+			GLuint plIndex = glGetUniformBlockIndex(prog, "PointLightBlock");
+			if (plIndex != GL_INVALID_INDEX) {
+				glUniformBlockBinding(prog, plIndex, 0);
+			}
+
+			GLuint dlIndex = glGetUniformBlockIndex(prog, "DirLightBlock");
+			if (dlIndex != GL_INVALID_INDEX) {
+				glUniformBlockBinding(prog, dlIndex, 1);
+			}
+
+			GLuint slIndex = glGetUniformBlockIndex(prog, "SpotLightBlock");
+			if (slIndex != GL_INVALID_INDEX) {
+				glUniformBlockBinding(prog, slIndex, 2);
+			}
 		}
 
 	public: //lights
+		
 		template<class TYPE>
 		void SetLight(TYPE const& light, Transform3D const& transform, int32_t index) {
 			static_assert(

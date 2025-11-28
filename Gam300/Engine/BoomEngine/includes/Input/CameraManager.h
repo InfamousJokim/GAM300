@@ -86,7 +86,7 @@ namespace Boom {
             }
             else if (canUse) {
                 // Look (RMB) using the same md
-                m_app->camRot.y = -md.x * (m_cfg.mouseSensitivityX * CONSTANTS::CAM_PAN_SPEED);
+                m_app->camRot.y = +md.x * (m_cfg.mouseSensitivityX * CONSTANTS::CAM_PAN_SPEED);
                 m_app->camRot.x = -md.y * (m_cfg.mouseSensitivityY * CONSTANTS::CAM_PAN_SPEED);
                 if (m_cfg.clampPitch)
                     m_app->camRot.x = std::clamp(m_app->camRot.x, m_cfg.minPitchDeg, m_cfg.maxPitchDeg);

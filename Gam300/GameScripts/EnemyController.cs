@@ -54,7 +54,7 @@ namespace GameScripts
             if (!API.HasTransform(Entity)) return;
 
             // Update vision system
-            _vision?.OnUpdate(dt);
+            //_vision?.OnUpdate(dt);
 
             // Handle rotation (only when not alert)
             if (_vision?.GetState() != VisionComponent.VisionState.Alert)

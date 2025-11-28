@@ -35,7 +35,7 @@ namespace GameScripts
 
         // Movement parameters (configurable)
         private float _walkSpeed = 3f;
-        private float _sprintSpeed = 5f;
+        private float _sprintSpeed = 8f;
         private float _sneakSpeed = 1.5f;
         private float _jumpSpeed = 5f;
 
@@ -79,6 +79,19 @@ namespace GameScripts
         private const float SPEED_DAMP = 10f;    // smoothing for animator Speed
         private double _smoothedSpeed = 0.0;
         private bool _hasAnimator = false;
+
+
+
+        // ===== Roll config/state =====
+        private float _rollSpeed = 14.0f;        // burst speed while rolling
+        private float _rollDuration = 0.9f;    // seconds, match your roll clip
+        private float _rollCooldown = 0.35f;    // small cooldown between rolls
+
+        private bool _isRolling = false;
+        private float _rollTimer = 0f;
+        private float _rollCooldownTimer = 0f;
+        private bool _wasCtrlPressed = false;  // edge detection
+        private Vec3 _rollDir = new Vec3(0, 0, 0); // cached direction for the whole roll
 
         /// <summary>
         /// Called once when the script is first created.
@@ -131,6 +144,7 @@ namespace GameScripts
                 API.AnimatorSetBool(Entity, "IsMoving", false);
                 API.AnimatorSetBool(Entity, "Sprint", false);
                 API.AnimatorSetBool(Entity, "IsSneaking", false);
+                API.AnimatorSetBool(Entity, "IsRolling", false);
                 API.Log("[PlayerMovement] Animator initialized");
             }
             else
@@ -535,6 +549,104 @@ namespace GameScripts
             }
 
             _wasSpacePressed = spacePressed;
+
+            bool ctrlDown = API.IsKeyDown(API.KEY_LEFT_CONTROL);
+
+            Vec3 desiredMoveDir = new Vec3(0, 0, 0);
+            if (hasInput)
+            {
+                float camYawDeg = API.GetThirdPersonCameraYaw();
+                float camYawRad = camYawDeg * (float)Math.PI / 180f;
+
+                Vec3 camForward = new Vec3((float)Math.Sin(camYawRad), 0f, (float)Math.Cos(camYawRad));
+                Vec3 camRight = new Vec3((float)Math.Cos(camYawRad), 0f, -(float)Math.Sin(camYawRad));
+
+                desiredMoveDir = new Vec3(
+                    camRight.X * inputX + camForward.X * inputZ,
+                    0f,
+                    camRight.Z * inputX + camForward.Z * inputZ
+                );
+            }
+
+            if (!_isRolling && _rollCooldownTimer <= 0f && isGrounded && ctrlDown && !_wasCtrlPressed && hasInput)
+{
+    // Normalize desiredMoveDir
+    float len = (float)Math.Sqrt(desiredMoveDir.X * desiredMoveDir.X + desiredMoveDir.Z * desiredMoveDir.Z);
+    if (len > 0f)
+    {
+        _rollDir = new Vec3(desiredMoveDir.X / len, 0f, desiredMoveDir.Z / len);
+    }
+    else
+    {
+        // fallback: face direction
+        float yaw = API.GetRotationY(Entity) * (float)Math.PI / 180f;
+        _rollDir = new Vec3((float)Math.Sin(yaw), 0f, (float)Math.Cos(yaw));
+    }
+
+    _isRolling = true;
+    _rollTimer = _rollDuration;
+
+    // Fire animation
+    if (_hasAnimator)
+    {
+        API.AnimatorSetTrigger(Entity, "Roll");
+        API.AnimatorSetBool(Entity, "IsRolling", true);
+        API.AnimatorSetBool(Entity, "IsSneaking", false); // keep sneak off during roll
+        API.AnimatorSetBool(Entity, "Sprint", false);
+    }
+
+    // First burst this frame
+    var velBurst = API.GetLinearVelocity(Entity);
+    velBurst.X = _rollDir.X * _rollSpeed;
+    velBurst.Z = _rollDir.Z * _rollSpeed;
+    API.SetLinearVelocity(Entity, velBurst);
+
+    // Optional: tiny i-frames
+    _isInvulnerable = true;
+
+    // Cancel normal update this frame so WASD doesn’t override the burst
+    _wasCtrlPressed = ctrlDown;
+    return;
+}
+
+// Continue roll if active
+if (_isRolling)
+{
+    _rollTimer -= dt;
+
+    var v = API.GetLinearVelocity(Entity);
+    v.X = _rollDir.X * _rollSpeed;
+    v.Z = _rollDir.Z * _rollSpeed;
+    API.SetLinearVelocity(Entity, v);
+
+    // keep animator visually coherent
+    if (_hasAnimator)
+    {
+        float displaySpeed = _rollSpeed;
+        _smoothedSpeed += (displaySpeed - _smoothedSpeed) * 0.5;
+        API.AnimatorSetFloat(Entity, "Speed", (float)_smoothedSpeed);
+        API.AnimatorSetBool(Entity, "IsMoving", true);
+        API.AnimatorSetBool(Entity, "IsRolling", true);
+        API.AnimatorSetBool(Entity, "Sprint", false);
+        API.AnimatorSetBool(Entity, "IsSneaking", false);
+    }
+
+    if (_rollTimer <= 0f)
+    {
+        _isRolling = false;
+        _rollCooldownTimer = _rollCooldown;
+        _isInvulnerable = false;
+        if (_hasAnimator) API.AnimatorSetBool(Entity, "IsRolling", false);
+    }
+
+    _wasCtrlPressed = ctrlDown;
+    return; // lock out normal movement while rolling
+}
+
+// tick cooldown & store ctrl edge
+if (_rollCooldownTimer > 0f)
+    _rollCooldownTimer = Math.Max(0f, _rollCooldownTimer - dt);
+_wasCtrlPressed = ctrlDown;
 
             // === CLAMP UPWARD VELOCITY ===
             const float MaxUpwardVelocity = 7.5f;

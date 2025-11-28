@@ -55,7 +55,7 @@ namespace Boom {
             shadowShader = std::make_unique<ShadowShader>("shadow.glsl");
             colorShader = std::make_unique<ColorShader>("color2D.glsl", glm::vec4(1.f));
             color3DShader = std::make_unique<Color3DShader>("color3D.glsl", glm::vec4(1.f));
-
+            InitLightUBOs();
             // --- Framebuffers ---
             frame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/false);
             lowPolyFrame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/true);
@@ -74,13 +74,75 @@ namespace Boom {
 
     public: // ----------------------- Lights -----------------------
         // The PBR shader will ignore lights above MAX_LIGHTS (in-shader define)
-        template <class TYPE>
-        BOOM_INLINE void SetLight(TYPE const& light, Transform3D const& transform, uint32_t index) {
+        BOOM_INLINE void InitLightUBOs() {
+            glGenBuffers(1, &m_PointLightUBO);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_PointLightUBO);
+            glBufferData(GL_UNIFORM_BUFFER,
+                MAX_POINT_LIGHTS * sizeof(GPUPointLight),
+                nullptr,
+                GL_DYNAMIC_DRAW);
+
+            glGenBuffers(1, &m_DirLightUBO);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_DirLightUBO);
+            glBufferData(GL_UNIFORM_BUFFER,
+                MAX_DIR_LIGHTS * sizeof(GPUDirLight),
+                nullptr,
+                GL_DYNAMIC_DRAW);
+
+            glGenBuffers(1, &m_SpotLightUBO);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_SpotLightUBO);
+            glBufferData(GL_UNIFORM_BUFFER,
+                MAX_SPOT_LIGHTS * sizeof(GPUSpotLight),
+                nullptr,
+                GL_DYNAMIC_DRAW);
+
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+        }
+       /* template <class TYPE>*/
+    /*    BOOM_INLINE void SetLight(TYPE const& light, Transform3D const& transform, uint32_t index) {
             pbrShader->SetLight<TYPE>(light, transform, index);
         }
         BOOM_INLINE void SetSpotLightCount(int32_t count) { pbrShader->SetSpotLightCount(count); }
         BOOM_INLINE void SetPointLightCount(int32_t count) { pbrShader->SetPointLightCount(count); }
-        BOOM_INLINE void SetDirectionalLightCount(int32_t count) { pbrShader->SetDirectionalLightCount(count); }
+        BOOM_INLINE void SetDirectionalLightCount(int32_t count) { pbrShader->SetDirectionalLightCount(count); }*/
+        BOOM_INLINE void UploadPointLights(const std::vector<GPUPointLight>& lights, int count) {
+            glBindBuffer(GL_UNIFORM_BUFFER, m_PointLightUBO);
+            if (count > 0) {
+                glBufferSubData(GL_UNIFORM_BUFFER,
+                    0,
+                    count * sizeof(GPUPointLight),
+                    lights.data());
+            }
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            pbrShader->SetUniform(pbrShader->GetUniformVar("noPointLight"), count);
+        }
+
+        BOOM_INLINE void UploadDirLights(const std::vector<GPUDirLight>& lights, int count) {
+            glBindBuffer(GL_UNIFORM_BUFFER, m_DirLightUBO);
+            if (count > 0) {
+                glBufferSubData(GL_UNIFORM_BUFFER,
+                    0,
+                    count * sizeof(GPUDirLight),
+                    lights.data());
+            }
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            pbrShader->SetUniform(pbrShader->GetUniformVar("noDirLight"), count);
+        }
+
+        BOOM_INLINE void UploadSpotLights(const std::vector<GPUSpotLight>& lights, int count) {
+            glBindBuffer(GL_UNIFORM_BUFFER, m_SpotLightUBO);
+            if (count > 0) {
+                glBufferSubData(GL_UNIFORM_BUFFER,
+                    0,
+                    count * sizeof(GPUSpotLight),
+                    lights.data());
+            }
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            pbrShader->SetUniform(pbrShader->GetUniformVar("noSpotLight"), count);
+        }
 
         BOOM_INLINE void DrawShadow(Model3D& model, Transform3D& transform, std::vector<glm::mat4>& joints) {
             if (!joints.empty()) shadowShader->SetJoints(joints);
@@ -168,6 +230,9 @@ namespace Boom {
                 frame->Begin();
             }
             pbrShader->Use();
+            glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_PointLightUBO);
+            glBindBufferBase(GL_UNIFORM_BUFFER, 1, m_DirLightUBO);
+            glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_SpotLightUBO);
         }
 
         BOOM_INLINE void EndFrame() {
@@ -298,7 +363,9 @@ namespace Boom {
         int32_t m_Height{};
         float   m_AspectOverride{ -1.0f }; // < 0.0f => use FBO ratio
         bool    m_TouchViewport{ true };    // false when embedded in ImGui
-
+        GLuint m_PointLightUBO = 0;
+        GLuint m_DirLightUBO = 0;
+        GLuint m_SpotLightUBO = 0;
     public:  // ---------------------- ImGui-exposed toggles ----------------
         bool isDrawDebugMode{};
         bool showLowPoly{};
