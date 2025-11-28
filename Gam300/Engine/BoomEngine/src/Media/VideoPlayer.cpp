@@ -11,6 +11,7 @@ struct VideoPlayerImpl {
     VideoPlayerImpl() {}
     ~VideoPlayerImpl() {}
 
+    std::atomic<bool> opened{false};
     std::atomic<bool> playing{false};
     double duration{0.0};
     double position{0.0};
