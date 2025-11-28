@@ -673,34 +673,27 @@ obj_member<"Scroll Sensitivity", &ThirdPersonCameraComponent::scrollSensitivity>
  )
  };
  struct AIComponent {
- enum class AIMode : int { Auto = 0, Idle = 1, Patrol = 2, Seek = 3 };
- AIMode mode = AIMode::Auto;   // exposed in Inspector
- AIMode lastMode = AIMode::Auto;
- float detectRadius = 8.0f;    // start seeking when within this distance
- float loseRadius = 12.0f;   // stop seeking when beyond this distance
- float idleWait = 1.0f;    // wait at patrol points
- float idleTimer = 0.0f;
- std::string playerName = "Samurai";   // find by name instead of PlayerTag
- entt::entity player = entt::null;     // cached after first successful lookup
- // Patrol
- std::vector<glm::vec3> patrolPoints;
- int patrolIndex = 0;
+        enum class AIMode : int { Auto = 0, Idle = 1, Patrol = 2, Seek = 3 };
+        AIMode mode = AIMode::Auto;   // exposed in Inspector
+        AIMode lastMode = AIMode::Auto;
+        float detectRadius = 8.0f;    // start seeking when within this distance
+        float loseRadius = 12.0f;   // stop seeking when beyond this distance
+        float idleWait = 1.0f;    // wait at patrol points
+        float idleTimer = 0.0f;
+        std::string playerName = "Samurai";   // find by name instead of PlayerTag
+        entt::entity player = entt::null;     // cached after first successful lookup
+        // Patrol
+        std::vector<glm::vec3> patrolPoints;
+        int patrolIndex = 0;
 
 
- // BT root
- BTNodePtr root;
+        // BT root
+        BTNodePtr root;
 
- XPROPERTY_DEF
- ("AIComponent", AIComponent
- , obj_member<"DetectRadius", &AIComponent::detectRadius>
- , obj_member<"LoseRadius", &AIComponent::loseRadius>
- , obj_member<"IdleWait", &AIComponent::idleWait>
- , obj_member<"IdleTimer", &AIComponent::idleTimer>    // include if you want to see the live timer
- , obj_member<"PlayerName", &AIComponent::playerName>
-
- , obj_member<"PatrolIndex", &AIComponent::patrolIndex>
- )
- };
+        // NOTE: xproperty registration omitted due to consteval/compile-time constraints
+        // If you need editor exposure, consider exposing a subset of simple fields
+        // or adding explicit xproperty::var_type specializations for used types.
+    };
 
  struct SpriteComponent {
  AssetID textureID{ EMPTY_ASSET };

@@ -27,6 +27,11 @@
 #include<memory>
 #include<array>
 
+// Forward declarations for engine types
+namespace Boom {
+    class VideoPlayer; // forward-declare VideoPlayer for VideoAsset
+}
+
 //GLM
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>

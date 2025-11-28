@@ -27,5 +27,6 @@ namespace Boom {
 		constexpr std::string_view DND_PAYLOAD_SKYBOX{ "DND_SKYBOX" };
 		constexpr std::string_view COMPRESSED_TEXTURE_OUTPUT_PATH{ "CompressedTexture" };
 		constexpr std::string_view DND_PAYLOAD_PHYSICS_MESH{ "DND_PHY_MSH" };
+		constexpr std::string_view DND_PAYLOAD_VIDEO{ "DND_VID" };
 	}
 }

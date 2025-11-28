@@ -242,6 +242,7 @@
     <ClInclude Include="includes\Input\CameraManager.h" />
     <ClInclude Include="includes\Input\InputHandler.h" />
     <ClInclude Include="includes\Input\RayCast.h" />
+    <ClInclude Include="includes\Media\VideoPlayer.h" />
     <ClInclude Include="includes\Physics\Callback.h" />
     <ClInclude Include="includes\Physics\Context.h" />
     <ClInclude Include="includes\Physics\Helpers.h" />
@@ -288,6 +289,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Media\VideoPlayer.cpp" />
     <ClCompile Include="src\Models\ModelLoader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>

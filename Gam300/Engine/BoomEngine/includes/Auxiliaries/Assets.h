@@ -24,6 +24,7 @@ namespace Boom {
 		MODEL,
 		PHYSICS_MESH,
 		PREFAB,
+		VIDEO,
 		AUDIO,
 	};
 	constexpr char const* TYPE_NAMES[]{
@@ -36,6 +37,7 @@ namespace Boom {
 		"Models(.fbx)",
 		"Physics Meshes (.pxm)",
 		"Prefab",
+		"Videos",
 		"Audio",
 	};
 
@@ -148,6 +150,18 @@ namespace Boom {
 		PrefabAsset() { type = AssetType::PREFAB; }
 	};
 
+	// New: Video asset type
+	struct VideoAsset : Asset {
+		// Runtime player instance (not serialized)
+		std::shared_ptr<class VideoPlayer> player = nullptr;
+
+		VideoAsset() { type = AssetType::VIDEO; }
+
+		XPROPERTY_DEF(
+			"VideoAsset", VideoAsset
+		)
+	};
+
 	struct AudioAsset : Asset {
 		AudioAsset() { type = AssetType::AUDIO; }
 
@@ -175,6 +189,7 @@ namespace Boom {
 			AddEmpty<SceneAsset>();
 			AddEmpty<PhysicsMeshAsset>();
 			AddEmpty<AudioAsset>();
+			AddEmpty<VideoAsset>();
 		}
 
 		//tries to get asset by its defined type
@@ -342,6 +357,14 @@ namespace Boom {
 			auto asset = std::make_shared<PhysicsMeshAsset>();
 			asset->type = AssetType::PHYSICS_MESH;
 			asset->cookedMeshPath = path;
+			Add(uid, path, asset);
+			return asset;
+		}
+
+		// NEW: Add video asset
+		BOOM_INLINE auto AddVideo(AssetID uid, std::string const& path) {
+			auto asset = std::make_shared<VideoAsset>();
+			asset->type = AssetType::VIDEO;
 			Add(uid, path, asset);
 			return asset;
 		}
