@@ -186,6 +186,21 @@ namespace Boom
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_SetScreenFadeAlpha(float alpha);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static bool Boom_API_HasSprite(ulong handle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_GetSpriteColor(ulong handle, out Vec4 color);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_SetSpriteColor(ulong handle, ref Vec4 color);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static float Boom_API_GetSpriteAlpha(ulong handle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_SetSpriteAlpha(ulong handle, float alpha);
     }
 
     // ========= DELEGATES =========
@@ -215,6 +230,11 @@ namespace Boom
         {
             X = x; Y = y; Z = z; W = w;
         }
+
+        public static Vec4 operator +(Vec4 a, Vec4 b) => new Vec4(a.X + b.X, a.Y + b.Y, a.Z + b.Z, a.W + b.W);
+        public static Vec4 operator -(Vec4 a, Vec4 b) => new Vec4(a.X - b.X, a.Y - b.Y, a.Z - b.Z, a.W - b.W);
+        public static Vec4 operator *(Vec4 a, float s) => new Vec4(a.X * s, a.Y * s, a.Z * s, a.W * s);
+        public static Vec4 operator /(Vec4 a, float s) => new Vec4(a.X / s, a.Y / s, a.Z / s, a.W / s);
     }
 
     // RENAMED to avoid conflict with the static class below
@@ -320,6 +340,44 @@ namespace Boom
                 return;
             }
             Native.Boom_API_SetRotation(h, ref r);
+        }
+
+        // ===== Rotation axis helpers =====
+        public static float GetRotationX(ulong h)
+        {
+            var r = GetRotation(h);   // uses Native.Boom_API_GetRotation
+            return r.X;
+        }
+
+        public static float GetRotationY(ulong h)
+        {
+            var r = GetRotation(h);
+            return r.Y;
+        }
+
+        public static float GetRotationZ(ulong h)
+        {
+            var r = GetRotation(h);
+            return r.Z;
+        }
+
+        public static void SetRotationX(ulong h, float pitchDegrees)
+        {
+            var r = GetRotation(h);
+            r.X = pitchDegrees;
+            SetRotation(h, r);        // uses Native.Boom_API_SetRotation
+        }
+
+        public static void SetRotationYDeg(ulong h, float yawDegrees)
+        {
+            SetRotationY(h, yawDegrees); // calls Native.Boom_API_SetRotationY
+        }
+
+        public static void SetRotationZ(ulong h, float rollDegrees)
+        {
+            var r = GetRotation(h);
+            r.Z = rollDegrees;
+            SetRotation(h, r);
         }
 
         public static TransformData GetTransform(ulong h)
@@ -539,6 +597,27 @@ namespace Boom
         public static void SetScreenFadeAlpha(float alpha)
         {
             Native.Boom_API_SetScreenFadeAlpha(alpha);
+        }
+
+        // ========= SPRITE COMPONENT METHODS =========
+        public static bool HasSprite(ulong entity) => Native.Boom_API_HasSprite(entity);
+
+        public static Vec4 GetSpriteColor(ulong entity)
+        {
+            Native.Boom_API_GetSpriteColor(entity, out Vec4 color);
+            return color;
+        }
+
+        public static void SetSpriteColor(ulong entity, Vec4 color)
+        {
+            Native.Boom_API_SetSpriteColor(entity, ref color);
+        }
+
+        public static float GetSpriteAlpha(ulong entity) => Native.Boom_API_GetSpriteAlpha(entity);
+
+        public static void SetSpriteAlpha(ulong entity, float alpha)
+        {
+            Native.Boom_API_SetSpriteAlpha(entity, alpha);
         }
 
         // ===== GLFW key codes =====

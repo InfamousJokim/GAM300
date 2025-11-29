@@ -555,7 +555,7 @@ namespace EditorUI {
 
                 // Color Picker - track when editing finishes
                 glm::vec4 oldColor = q.color;
-                if (ImGui::ColorEdit3("color", &q.color[0])) {
+                if (ImGui::ColorEdit4("color", &q.color[0])) {
                     // Color is being edited
                     if (!m_IsSpriteBeingEdited) {
                         m_SpriteBeforeEdit = spriteBeforeFrame;

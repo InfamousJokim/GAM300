@@ -44,6 +44,7 @@ namespace EditorUI {
         bool* showSaveDialog{ nullptr };
         bool* showLoadDialog{ nullptr };
         bool* showSavePrefabDialog{ nullptr };
+        bool* showExportDialog{ nullptr };
 
         // Selected entity handle (optional; used by Save/Delete Selected)
         entt::entity selectedEntity{ entt::null};

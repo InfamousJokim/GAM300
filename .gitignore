@@ -14,6 +14,18 @@
 *.ipdb
 Debug
 Release
+
+# Build output folders (exported games)
+Gam300/Build/
+Build/
+
+# Visual Studio build outputs
+Gam300/x64/
+x64/
+
+# Claude Code session documentation
+claude.md
+
 Gam300/conanbuild/cmakedeps_macros.cmake
 Gam300/conanbuild/CMakePresets.json
 Gam300/conanbuild/conan_glew.props

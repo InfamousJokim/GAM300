@@ -47,9 +47,10 @@ namespace EditorUI {
              //Dialog flags & helpers can also be wired here if Editor exposes them.
              m.showSaveDialog = &m_Owner->m_ShowSaveDialog;
              m.showLoadDialog = &m_Owner->m_ShowLoadDialog;
+             m.showExportDialog = &m_Owner->m_ShowExportDialog;
              m.sceneNameBuffer = m_Owner->m_SceneNameBuffer;
              m.sceneNameBufferSize = sizeof(m_Owner->m_SceneNameBuffer);
-             
+
              m.RefreshSceneList = [this](bool force){ m_Owner->RefreshSceneList(force); };
         }
     }
@@ -116,8 +117,14 @@ namespace EditorUI {
 
             if (ImGui::MenuItem("Load Scene", "Ctrl+O")) {
                 if (m.showLoadDialog) *m.showLoadDialog = true;
-           
+
                 if (m.RefreshSceneList) m.RefreshSceneList(false);
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Export Game...", "Ctrl+E")) {
+                if (m.showExportDialog) *m.showExportDialog = true;
             }
 
             ImGui::Separator();

@@ -71,16 +71,18 @@ namespace GameScripts
                 API.SetSoundVolume("sfx_key_pickup", 0.9f);
             }
 
-            // "Destroy" key: disable trigger and hide it
+            // "Destroy" key: unregister callbacks and hide it
             API.UnregisterTriggerCallbacks(inst.Entity);
-            API.SetTrigger(inst.Entity, false);
 
-            // Hide: scale to zero (visible off)
+            // *** REMOVE THIS LINE - Don't try to modify shared shape ***
+            // API.SetTrigger(inst.Entity, false);
+
+            // Hide: scale to zero (visual off)
             var t = API.GetTransform(inst.Entity);
             t.Scale = new Vec3(0f, 0f, 0f);
             API.SetTransform(inst.Entity, t);
 
-            API.Log($"[KeyPickup] Key collected and removed. Entity={inst.Entity}");
+            API.Log("[KeyPickup] Key collected! Total keys: " + PlayerInventory.GetKeyCount());
         }
 
         private static void OnTriggerExit(ulong triggerEntity, ulong otherEntity)

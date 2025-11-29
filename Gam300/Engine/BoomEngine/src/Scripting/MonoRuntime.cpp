@@ -31,11 +31,32 @@ namespace Boom {
         char exePath[MAX_PATH];
         GetModuleFileNameA(nullptr, exePath, MAX_PATH);
         std::filesystem::path exeDir = std::filesystem::path(exePath).parent_path();
-        std::filesystem::path repoRoot = exeDir.parent_path().parent_path().parent_path();
-        std::filesystem::path monoRoot = repoRoot / "mono";
 
-        std::filesystem::path monoLib = monoRoot / "lib";
-        std::filesystem::path monoEtc = monoRoot / "etc";
+        // Detect shipped mode vs development mode
+        // Shipped mode: etc/ and lib/ folders are next to the exe
+        // Development mode: mono/ folder is at repo root (../../../mono/)
+        std::filesystem::path monoLib;
+        std::filesystem::path monoEtc;
+
+        bool isShippedMode = std::filesystem::exists(exeDir / "etc") &&
+                            std::filesystem::exists(exeDir / "lib");
+
+        if (isShippedMode)
+        {
+            // SHIPPED MODE: Mono folders are next to exe
+            monoLib = exeDir / "lib";
+            monoEtc = exeDir / "etc";
+            BOOM_INFO("[Mono] Running in SHIPPED mode (mono runtime next to exe)");
+        }
+        else
+        {
+            // DEVELOPMENT MODE: Mono is at repo root
+            std::filesystem::path repoRoot = exeDir.parent_path().parent_path().parent_path();
+            std::filesystem::path monoRoot = repoRoot / "mono";
+            monoLib = monoRoot / "lib";
+            monoEtc = monoRoot / "etc";
+            BOOM_INFO("[Mono] Running in DEVELOPMENT mode (mono at repo root)");
+        }
 
         std::string libPath = std::filesystem::absolute(monoLib).string();
         std::string etcPath = std::filesystem::absolute(monoEtc).string();

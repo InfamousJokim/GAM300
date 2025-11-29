@@ -467,31 +467,40 @@ namespace Boom
  * @param scenePath Optional custom path for scene files (defaults to "Scenes/")
  * @return true if load was successful, false otherwise
  */
- BOOM_INLINE bool LoadScene(const std::string& sceneName, const std::string& scenePath = "Scenes/")
- {
-     DataSerializer serializer;
+  BOOM_INLINE bool LoadScene(const std::string& sceneName, const std::string& scenePath = "Scenes/")
+  {
+      DataSerializer serializer;
 
-     const std::string sceneFilePath = scenePath + sceneName + ".yaml";
-     //const std::string assetsFilePath = scenePath + sceneName + "_assets.yaml";
+      const std::string sceneFilePath = scenePath + sceneName + ".yaml";
 
-     BOOM_INFO("[Scene] Loading scene '{}' from '{}'", sceneName, sceneFilePath);
+      BOOM_INFO("[Scene] Loading scene '{}' from '{}'", sceneName, sceneFilePath);
 
          // Clean up current scene
          CleanupCurrentScene();
-            
+
+         // CRITICAL: Load all assets from assets.yaml BEFORE loading the scene
+         // This ensures textures, models, etc. are available when scene references them
+         BOOM_INFO("[Scene] Loading assets from Resources/assets.yaml");
+         serializer.DeserializeAsync(*m_Context->assets, "Resources/assets.yaml", m_Context->window->Handle().get());
+
          serializer.Deserialize(m_Context->scene, *m_Context->assets, sceneFilePath);
 
-        // Update tracking
-        strncpy_s(m_CurrentScenePath, sizeof(m_CurrentScenePath), sceneFilePath.c_str(), _TRUNCATE);
-        m_SceneLoaded = true;
-            
-        // Reinitialize systems that need it
-        ReinitializeSceneSystems();
-        m_NavInitialized = false;
-        ApplySceneNavmeshFromScene();
-        BOOM_INFO("[Scene] Successfully loaded scene '{}'", sceneName);
-        return true;
-    }
+      // *** ADD THIS LINE - Clear all trigger callbacks before loading new scene ***
+      Boom::ClearAllTriggerCallbacks();
+
+      serializer.Deserialize(m_Context->scene, *m_Context->assets, sceneFilePath);
+
+      // Update tracking
+      strncpy_s(m_CurrentScenePath, sizeof(m_CurrentScenePath), sceneFilePath.c_str(), _TRUNCATE);
+      m_SceneLoaded = true;
+
+      // Reinitialize systems that need it
+      ReinitializeSceneSystems();
+      m_NavInitialized = false;
+      ApplySceneNavmeshFromScene();
+      BOOM_INFO("[Scene] Successfully loaded scene '{}'", sceneName);
+      return true;
+  }
 
 
  BOOM_INLINE bool LoadSceneAdditive(const std::string& sceneName, const std::string& scenePath = "Scenes/")
@@ -944,58 +953,58 @@ namespace Boom
  */
  BOOM_INLINE void CleanupCurrentScene()
  {
- BOOM_INFO("[Scene] Cleaning up current scene...");
+     BOOM_INFO("[Scene] Cleaning up current scene...");
 
- // Destroy physics actors before clearing scene
- DestroyPhysicsActors();
+     // Destroy physics actors before clearing scene
+     DestroyPhysicsActors();
 
- // Clear trigger tracking
- m_ActiveTriggerPairs.clear();
+     // Clear trigger tracking
+     m_ActiveTriggerPairs.clear();
 
- // Clear the ECS scene
- m_Context->scene.clear();
+     // *** ADD THIS - Clear trigger callbacks to prevent stale delegates ***
+     Boom::ClearAllTriggerCallbacks();
 
- // PRESERVE PREFABS - but only those that exist on disk
- std::unordered_map<AssetID, std::shared_ptr<Asset>> savedPrefabs;
- auto& prefabMap = m_Context->assets->GetMap<PrefabAsset>();
- for (auto& [uid, asset] : prefabMap) {
- if (uid != EMPTY_ASSET) {
- // Check if the prefab file exists on disk
- std::string filepath = "Prefabs/" + asset->name + ".prefab";
- if (std::filesystem::exists(filepath)) {
- savedPrefabs[uid] = asset;
- }
- else {
- BOOM_INFO("[Scene] Skipping prefab '{}' - file not found on disk", asset->name);
- }
- }
- }
+     // Clear the ECS scene
+     m_Context->scene.clear();
+
+     // PRESERVE PREFABS - but only those that exist on disk
+     std::unordered_map<AssetID, std::shared_ptr<Asset>> savedPrefabs;
+     auto& prefabMap = m_Context->assets->GetMap<PrefabAsset>();
+     for (auto& [uid, asset] : prefabMap) {
+         if (uid != EMPTY_ASSET) {
+             // Check if the prefab file exists on disk
+             std::string filepath = "Prefabs/" + asset->name + ".prefab";
+             if (std::filesystem::exists(filepath)) {
+                 savedPrefabs[uid] = asset;
+             }
+             else {
+                 BOOM_INFO("[Scene] Skipping prefab '{}' - file not found on disk", asset->name);
+             }
+         }
+     }
 #if defined(_DEBUG)
- BOOM_INFO("[Scene] Preserved {} prefabs", savedPrefabs.size());
+     BOOM_INFO("[Scene] Preserved {} prefabs", savedPrefabs.size());
 #endif
 
- // Reset asset registry (keeping EMPTY_ASSET sentinels)
- //* m_Context->assets = AssetRegistry();
+     // Reset asset registry (keeping EMPTY_ASSET sentinels)
+     //* m_Context->assets = AssetRegistry();
 
-
-            // RESTORE PREFABS after registry reset
-            for (auto& [uid, asset] : savedPrefabs) {
-                m_Context->assets->GetMap<PrefabAsset>()[uid] = std::static_pointer_cast<PrefabAsset>(asset);
-            }
-            if (m_Nav) {
-                BOOM_INFO("[Nav] Releasing navmesh for previous scene");
-                m_Nav.reset();
-                m_NavInitialized = false;
-            }
+     // RESTORE PREFABS after registry reset
+     for (auto& [uid, asset] : savedPrefabs) {
+         m_Context->assets->GetMap<PrefabAsset>()[uid] = std::static_pointer_cast<PrefabAsset>(asset);
+     }
+     if (m_Nav) {
+         BOOM_INFO("[Nav] Releasing navmesh for previous scene");
+         m_Nav.reset();
+         m_NavInitialized = false;
+     }
 #if defined(_DEBUG)
- BOOM_INFO("[Scene] Restored {} prefabs", savedPrefabs.size());
+     BOOM_INFO("[Scene] Restored {} prefabs", savedPrefabs.size());
 #endif
 
- // Reset any scene-specific state
+     // Reset any scene-specific state
 
-
-
- BOOM_INFO("[Scene] Scene cleanup complete");
+     BOOM_INFO("[Scene] Scene cleanup complete");
  }
 
  /**
@@ -1003,36 +1012,46 @@ namespace Boom
  */
  BOOM_INLINE void ReinitializeSceneSystems()
  {
- BOOM_INFO("[Scene] Reinitializing scene systems...");
+     BOOM_INFO("[Scene] Reinitializing scene systems...");
 
- EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
- SkyboxAsset* skybox{ m_Context->assets->TryGet<SkyboxAsset>(comp.skyboxID) };
- if (skybox) {
- m_Context->renderer->InitSkybox(skybox->data, skybox->envMap, skybox->size);
- BOOM_INFO("[Scene] Reinitialized skybox");
- }
- });
+     EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
+         SkyboxAsset* skybox{ m_Context->assets->TryGet<SkyboxAsset>(comp.skyboxID) };
+         if (skybox) {
+             m_Context->renderer->InitSkybox(skybox->data, skybox->envMap, skybox->size);
+             BOOM_INFO("[Scene] Reinitialized skybox");
+         }
+         });
 
- // Only reinitialize physics
- EnttView<Entity, RigidBodyComponent>([this](auto entity, auto&) {
- m_Context->physics->AddRigidBody(entity, *m_Context->assets);
- });
+     // Reinitialize physics - BOTH RigidBodies AND Collider-Only (Triggers)
+     EnttView<Entity, RigidBodyComponent>([this](auto entity, auto&) {
+         m_Context->physics->AddRigidBody(entity, *m_Context->assets);
+         });
 
- // Creating a script instances 
-            int scriptsCreated = 0;
- EnttView<Entity, ScriptComponent>([this, &scriptsCreated](auto entity, ScriptComponent& sc) {
- if (m_Context->scriptingSystem->RecreateForEntity(entity, sc)) {
- scriptsCreated++;
- }
- });
+     // *** ADD THIS - Reinitialize collider-only entities (triggers) ***
+     EnttView<Entity, ColliderComponent>([this](auto entity, auto&) {
+         // Skip if it has a RigidBodyComponent (already handled above)
+         if (entity.Has<RigidBodyComponent>()) return;
 
-            if (scriptsCreated > 0) {
- BOOM_INFO("[Scene] Created {} script instances", scriptsCreated);
- }
+         m_Context->physics->AddColliderOnly(entity, *m_Context->assets);
+         BOOM_INFO("[Scene] Reinitialized collider-only actor for entity {}",
+             static_cast<uint32_t>(entity.ID()));
+         });
 
- m_Context->scriptingSystem->CallStart();
+     // Creating script instances 
+     int scriptsCreated = 0;
+     EnttView<Entity, ScriptComponent>([this, &scriptsCreated](auto entity, ScriptComponent& sc) {
+         if (m_Context->scriptingSystem->RecreateForEntity(entity, sc)) {
+             scriptsCreated++;
+         }
+         });
 
- BOOM_INFO("[Scene] Scene systems reinitialization complete");
+     if (scriptsCreated > 0) {
+         BOOM_INFO("[Scene] Created {} script instances", scriptsCreated);
+     }
+
+     m_Context->scriptingSystem->CallStart();
+
+     BOOM_INFO("[Scene] Scene systems reinitialization complete");
  }
 
  /**
@@ -1053,100 +1072,116 @@ namespace Boom
 
  BOOM_INLINE void RegisterEventCallbacks()
  {
- // Set physics event callback
- m_Context->physics->SetEventCallback([this](auto e)
- {
- // Handle TRIGGER events
- if (e.Event == PxEvent::TRIGGER)
- {
- BOOM_INFO("[Trigger] Trigger event detected");
+     // Set physics event callback
+     m_Context->physics->SetEventCallback([this](auto e)
+         {
+             // Handle TRIGGER events
+             if (e.Event == PxEvent::TRIGGER)
+             {
+                 BOOM_INFO("[Trigger] Trigger event detected");
 
- // Based on Callback.h, Entity1 is otherActor, Entity2 is triggerActor
-                        entt::entity triggerEntity = (entt::entity)e.Entity2;  // triggerActor
- entt::entity enteringEntity = (entt::entity)e.Entity1; // otherActor
+                 // Based on Callback.h, Entity1 is otherActor, Entity2 is triggerActor
+                 entt::entity triggerEntity = (entt::entity)e.Entity2;  // triggerActor
+                 entt::entity enteringEntity = (entt::entity)e.Entity1; // otherActor
 
- // Validate both entities exist
- if (!m_Context->scene.valid(triggerEntity) || !m_Context->scene.valid(enteringEntity))
- return;
+                 // *** ADD DETAILED LOGGING ***
+                 BOOM_INFO("[Trigger] Raw entity IDs - Trigger: {}, Entering: {}",
+                     static_cast<uint32_t>(triggerEntity), static_cast<uint32_t>(enteringEntity));
 
- // Log entity names for debugging
- std::string triggerName = "Unknown", enteringName = "Unknown";
- if (m_Context->scene.valid(triggerEntity) && m_Context->scene.all_of<InfoComponent>(triggerEntity))
- triggerName = m_Context->scene.get<InfoComponent>(triggerEntity).name;
- if (m_Context->scene.valid(enteringEntity) && m_Context->scene.all_of<InfoComponent>(enteringEntity))
- enteringName = m_Context->scene.get<InfoComponent>(enteringEntity).name;
+                 // *** CRITICAL FIX: Validate entities EXIST in the scene ***
+                 // This prevents processing stale events from old scene loads
+                 if (!m_Context->scene.valid(triggerEntity)) {
+                     BOOM_WARN("[Trigger] Ignoring stale event - Trigger entity {} no longer valid",
+                         static_cast<uint32_t>(triggerEntity));
+                     return; // ← Silently ignore stale events
+                 }
+                 if (!m_Context->scene.valid(enteringEntity)) {
+                     BOOM_WARN("[Trigger] Ignoring stale event - Entering entity {} no longer valid",
+                         static_cast<uint32_t>(enteringEntity));
+                     return; // ← Silently ignore stale events
+                 }
 
- // Convert to handles for script callbacks
- uint64_t triggerHandle = static_cast<uint64_t>(static_cast<uint32_t>(triggerEntity));
- uint64_t enteringHandle = static_cast<uint64_t>(static_cast<uint32_t>(enteringEntity));
+                 // Log entity names for debugging
+                 std::string triggerName = "Unknown", enteringName = "Unknown";
+                 if (m_Context->scene.all_of<InfoComponent>(triggerEntity))
+                     triggerName = m_Context->scene.get<InfoComponent>(triggerEntity).name;
+                 if (m_Context->scene.all_of<InfoComponent>(enteringEntity))
+                     enteringName = m_Context->scene.get<InfoComponent>(enteringEntity).name;
 
- // Create pair for tracking enter/exit state
- std::pair<uint32_t, uint32_t> triggerPair = {
- static_cast<uint32_t>(triggerEntity),
- static_cast<uint32_t>(enteringEntity)
- };
+                 BOOM_INFO("[Trigger] Trigger='{}' ({}), Entering='{}' ({})",
+                     triggerName, static_cast<uint32_t>(triggerEntity),
+                     enteringName, static_cast<uint32_t>(enteringEntity));
 
- // Determine if this is enter or exit based on our tracking
- bool wasAlreadyActive = (m_ActiveTriggerPairs.find(triggerPair) != m_ActiveTriggerPairs.end());
+                 // Convert to handles for script callbacks
+                 uint64_t triggerHandle = static_cast<uint64_t>(static_cast<uint32_t>(triggerEntity));
+                 uint64_t enteringHandle = static_cast<uint64_t>(static_cast<uint32_t>(enteringEntity));
 
- if (!wasAlreadyActive) {
- // This is an ENTER event
- m_ActiveTriggerPairs.insert(triggerPair);
+                 // Create pair for tracking enter/exit state
+                 std::pair<uint32_t, uint32_t> triggerPair = {
+                     static_cast<uint32_t>(triggerEntity),
+                     static_cast<uint32_t>(enteringEntity)
+                 };
 
- BOOM_INFO("[Trigger] '{}' ENTERED trigger '{}' - invoking callbacks", enteringName, triggerName);
+                 // Determine if this is enter or exit based on our tracking
+                 bool wasAlreadyActive = (m_ActiveTriggerPairs.find(triggerPair) != m_ActiveTriggerPairs.end());
 
- // Call enter callbacks with safety
- try {
- CallTriggerEnterCallbacks(triggerHandle, enteringHandle);
- }
- catch (...) {
- BOOM_ERROR("[Trigger] Exception in enter callback for trigger {} and entity {}",
- triggerHandle, enteringHandle);
- }
- }
- else {
- // This is an EXIT event - the pair was already active
- m_ActiveTriggerPairs.erase(triggerPair);
+                 BOOM_INFO("[Trigger] Pair tracking - wasAlreadyActive: {}", wasAlreadyActive);
 
- BOOM_INFO("[Trigger] '{}' EXITED trigger '{}' - invoking callbacks", enteringName, triggerName);
+                 if (!wasAlreadyActive) {
+                     // This is an ENTER event
+                     m_ActiveTriggerPairs.insert(triggerPair);
 
- // Call exit callbacks with safety
- try {
- CallTriggerExitCallbacks(triggerHandle, enteringHandle);
- }
- catch (...) {
- BOOM_ERROR("[Trigger] Exception in exit callback for trigger {} and entity {}",
- triggerHandle, enteringHandle);
- }
- }
- }
+                     BOOM_INFO("[Trigger] '{}' ENTERED trigger '{}' - invoking callbacks", enteringName, triggerName);
 
- // Handle CONTACT events (existing code is fine)
- else if (e.Event == PxEvent::CONTACT)
- {
- // Get both entities from the event payload
- entt::entity ent1 = (entt::entity)e.Entity1;
- entt::entity ent2 = (entt::entity)e.Entity2;
+                     // Call enter callbacks with safety
+                     try {
+                         CallTriggerEnterCallbacks(triggerHandle, enteringHandle);
+                     }
+                     catch (...) {
+                         BOOM_ERROR("[Trigger] Exception in enter callback for trigger {} and entity {}",
+                             triggerHandle, enteringHandle);
+                     }
+                 }
+                 else {
+                     // This is an EXIT event - the pair was already active
+                     m_ActiveTriggerPairs.erase(triggerPair);
 
-                        // Safely get the RigidBodyComponent for entity 1 and set its flag
- if (m_Context->scene.valid(ent1) && m_Context->scene.all_of<RigidBodyComponent>(ent1))
- {
- m_Context->scene.get<RigidBodyComponent>(ent1).RigidBody.isColliding = true;
- }
+                     BOOM_INFO("[Trigger] '{}' EXITED trigger '{}' - invoking callbacks", enteringName, triggerName);
 
-                        // Safely get the RigidBodyComponent for entity 2 and set its flag
- if (m_Context->scene.valid(ent2) && m_Context->scene.all_of<RigidBodyComponent>(ent2))
- {
- m_Context->scene.get<RigidBodyComponent>(ent2).RigidBody.isColliding = true;
- }
- }
- });
+                     // Call exit callbacks with safety
+                     try {
+                         CallTriggerExitCallbacks(triggerHandle, enteringHandle);
+                     }
+                     catch (...) {
+                         BOOM_ERROR("[Trigger] Exception in exit callback for trigger {} and entity {}",
+                             triggerHandle, enteringHandle);
+                     }
+                 }
+             }
 
- // Attach window resize event callback
- AttachCallback<WindowResizeEvent>([this](auto e)
- {
- m_Context->renderer->Resize(e.width, e.height);
- });
+             // Handle CONTACT events
+             else if (e.Event == PxEvent::CONTACT)
+             {
+                 entt::entity ent1 = (entt::entity)e.Entity1;
+                 entt::entity ent2 = (entt::entity)e.Entity2;
+
+                 if (m_Context->scene.valid(ent1) && m_Context->scene.all_of<RigidBodyComponent>(ent1))
+                 {
+                     m_Context->scene.get<RigidBodyComponent>(ent1).RigidBody.isColliding = true;
+                 }
+
+                 if (m_Context->scene.valid(ent2) && m_Context->scene.all_of<RigidBodyComponent>(ent2))
+                 {
+                     m_Context->scene.get<RigidBodyComponent>(ent2).RigidBody.isColliding = true;
+                 }
+             }
+         });
+
+     // Attach window resize event callback
+     AttachCallback<WindowResizeEvent>([this](auto e)
+         {
+             m_Context->renderer->Resize(e.width, e.height);
+         });
  }
 
  BOOM_INLINE void ComputeFrameDeltaTime()

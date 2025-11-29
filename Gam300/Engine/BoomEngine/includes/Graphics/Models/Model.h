@@ -136,26 +136,7 @@ namespace Boom {
 				ShadedVert vert;
 				vert.pos = AssimpToVec3(mesh->mVertices[i]);
 				vert.norm = AssimpToVec3(mesh->mNormals[i]);
-				if (mesh->HasTextureCoords(0)) {
-					float tilingX = 2.0f;
-					float tilingY = 10.0f;
-
-					// HACK: Check the name of the object. 
-					// If it's your floor, we multiply the UVs by 20 (or however big you need).
-					// Ask your artist what they named the mesh in Blender/Maya.
-					std::string meshName = mesh->mName.C_Str();
-
-					// Example: checks if the mesh name contains "Floor" or "Ground"
-					if (meshName.find("Floor") != std::string::npos || meshName.find("Ground") != std::string::npos) {
-						tilingX = 2.0f;
-						tilingY = 8.0f;
-					}
-
-					vert.uv = {
-						mesh->mTextureCoords[0][i].x * tilingX,
-						mesh->mTextureCoords[0][i].y * tilingY
-					};
-				}
+				if (mesh->HasTextureCoords(0)) vert.uv = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
 				if (mesh->HasTangentsAndBitangents()) {
 					vert.biTangent = glm::normalize(AssimpToVec3(mesh->mBitangents[i]));
 					vert.tangent = glm::normalize(AssimpToVec3(mesh->mTangents[i]));

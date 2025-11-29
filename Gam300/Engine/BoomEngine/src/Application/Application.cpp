@@ -8,51 +8,107 @@ namespace Boom
     void Application::RunContext(bool showFrame)
     {
         BOOM_INFO("[Application] RunContext started");
+
+        std::cout << "[RunContext] Loading scene MainMenu..." << std::endl;
+        std::cout.flush();
+
         //LoadScene("level");
         LoadScene("MainMenu");
 
+        std::cout << "[RunContext] Scene loaded successfully" << std::endl;
+        std::cout.flush();
 
         // -- LOADING in MONO --
         const std::string exeDir = GetExeDir();
 
+        std::cout << "[RunContext] Exe directory: " << exeDir << std::endl;
+        std::cout.flush();
 
-        std::filesystem::path repoRoot = std::filesystem::path(exeDir)
-            .parent_path()  // Debug -> x64
-            .parent_path()  // x64 -> Gam300
-            .parent_path(); // Gam300 -> GAM300
+        // Detect if running in shipped/exported mode (Scripts folder next to exe)
+        // vs development mode (complex folder structure)
+        std::filesystem::path scriptsFolder = std::filesystem::path(exeDir) / "Scripts";
+        bool isShippedMode = std::filesystem::exists(scriptsFolder);
 
-        const std::string monoBase = (repoRoot / "mono").string();
+        std::cout << "[RunContext] Shipped mode: " << (isShippedMode ? "YES" : "NO") << std::endl;
+        std::cout.flush();
+
+        std::string asmDir;
+        std::string monoBase;
+
+        if (isShippedMode)
+        {
+            // SHIPPED MODE: Everything is relative to exe
+            BOOM_INFO("[Application] Running in SHIPPED mode (exported game)");
+            asmDir = scriptsFolder.string();
+            monoBase = exeDir; // Mono DLLs are next to exe in shipped builds
+        }
+        else
+        {
+            // DEVELOPMENT MODE: Use repository structure
+            BOOM_INFO("[Application] Running in DEVELOPMENT mode");
+            std::filesystem::path repoRoot = std::filesystem::path(exeDir)
+                .parent_path()  // Debug -> x64
+                .parent_path()  // x64 -> Gam300
+                .parent_path(); // Gam300 -> GAM300
+
+            monoBase = (repoRoot / "mono").string();
 #if defined(_DEBUG)
-
-        const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Debug").string();
+            asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Debug").string();
 #else
-        const std::string asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Release").string();
+            asmDir = (repoRoot / "Gam300" / "GameScripts" / "bin" / "x64" / "Release").string();
 #endif
+        }
 
+        BOOM_INFO("[Application] Script directory: {}", asmDir);
+        std::cout << "[RunContext] Script directory: " << asmDir << std::endl;
+        std::cout.flush();
+
+        std::cout << "[RunContext] Initializing scripting system..." << std::endl;
+        std::cout.flush();
 
         if (!m_Context->scriptingSystem->Init(asmDir, m_Context))
         {
             BOOM_ERROR("[Scripting] Failed to initialize scripting system!");
+            std::cout << "[RunContext] ERROR: Failed to initialize scripting system!" << std::endl;
+            std::cout.flush();
         }
         else
         {
+            std::cout << "[RunContext] Scripting system initialized" << std::endl;
+            std::cout.flush();
 
             std::string dllPath = (std::filesystem::path(asmDir) / "GameScripts.dll").string();
+
+            std::cout << "[RunContext] Loading GameScripts.dll from: " << dllPath << std::endl;
+            std::cout.flush();
 
             if (!m_Context->scriptingSystem->LoadScriptsDll(dllPath))
             {
                 BOOM_ERROR("[Scripting] Failed to load GameScripts.dll");
+                std::cout << "[RunContext] ERROR: Failed to load GameScripts.dll" << std::endl;
+                std::cout.flush();
             }
             else
             {
+                std::cout << "[RunContext] GameScripts.dll loaded successfully" << std::endl;
+                std::cout.flush();
+
+                std::cout << "[RunContext] Enabling auto hot reload..." << std::endl;
+                std::cout.flush();
 
                 // Auto enabling of hot reload
                 m_Context->scriptingSystem->EnableAutoHotReload(true);
+
+                std::cout << "[RunContext] Calling GameScripts Entry:Start()..." << std::endl;
+                std::cout.flush();
 
                 if (!m_Context->scriptingSystem->CallStart())
                     BOOM_ERROR("[Scripting] GameScripts.Entry:Start() failed");
                 else
                     BOOM_INFO("[Scripting] GameScripts entry invoked.");
+
+                std::cout << "[RunContext] Entry:Start() completed, creating script instances..." << std::endl;
+                std::cout.flush();
 
                 int scriptsCreated = 0;
                 auto& registry = m_Context->scene;
@@ -68,9 +124,17 @@ namespace Boom
                 if (scriptsCreated > 0) {
                     BOOM_INFO("[Scripting] Created {} script instances after scene load", scriptsCreated);
                 }
+
+                std::cout << "[RunContext] Script instances created: " << scriptsCreated << std::endl;
+                std::cout.flush();
             }
         }
-        // --- END MONO INITIALIZE ---
+
+        std::cout << "[RunContext] Scripting initialization complete" << std::endl;
+        std::cout.flush();
+
+        std::cout << "[RunContext] Creating camera controller..." << std::endl;
+        std::cout.flush();
 
        // InitNavRuntime();
         //EnsureNinjaSeeksSamurai();
@@ -78,23 +142,70 @@ namespace Boom
             m_Context->window.get()
         );
 
+        std::cout << "[RunContext] Camera controller created, initializing skybox..." << std::endl;
+        std::cout.flush();
+
         ////init skybox
-        EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
-            SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
-            m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
-            return; //should stop after one skybox rendered
+        try {
+            EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
+                std::cout << "[RunContext] Found skybox component with ID: " << comp.skyboxID << std::endl;
+                std::cout.flush();
+
+                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+
+                std::cout << "[RunContext] Skybox asset retrieved" << std::endl;
+                std::cout << "[RunContext]   - Asset name: " << skybox.name << std::endl;
+                std::cout << "[RunContext]   - Asset source: " << skybox.source << std::endl;
+                std::cout << "[RunContext]   - Skybox size: " << skybox.size << std::endl;
+                std::cout << "[RunContext]   - EnvMap texture valid: " << (skybox.envMap ? "YES" : "NO") << std::endl;
+                std::cout.flush();
+
+                if (!skybox.envMap) {
+                    std::cout << "[RunContext] ERROR: Skybox envMap texture is null!" << std::endl;
+                    std::cout.flush();
+                    return;
+                }
+
+                std::cout << "[RunContext] Calling renderer->InitSkybox..." << std::endl;
+                std::cout.flush();
+
+                m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
+
+                std::cout << "[RunContext] InitSkybox completed successfully" << std::endl;
+                std::cout.flush();
+
+                return; //should stop after one skybox rendered
             });
+        }
+        catch (const std::exception& e) {
+            std::cout << "[RunContext] ERROR: Skybox initialization failed: " << e.what() << std::endl;
+            std::cout.flush();
+            BOOM_ERROR("[Application] Skybox initialization failed: {}", e.what());
+        }
+
+        std::cout << "[RunContext] Skybox initialization complete, creating debug lines shader..." << std::endl;
+        std::cout.flush();
 
         m_DebugLinesShader = std::make_unique<Boom::DebugLinesShader>("debug_lines.glsl");
+
+        std::cout << "[RunContext] Debug lines shader created, enabling physics debug..." << std::endl;
+        std::cout.flush();
+
         m_Context->physics->EnableDebugVisualization(m_PhysDebugViz, 1.0f);
+
+        std::cout << "[RunContext] Physics debug enabled, entering main game loop..." << std::endl;
+        std::cout.flush();
 
         //temp input for mouse motion
         glm::dvec2 curMP{};
         glm::dvec2 prevMP{};
+
         while (m_Context->window->PollEvents() && !m_ShouldExit)
         {
             std::shared_ptr<GLFWwindow> engineWindow = m_Context->window->Handle();
             SoundEngine::Instance().Update();
+
+            // Select main camera
             Camera3D* activeCam = nullptr;
             Transform3D camTransform{};
             EnttView<Entity, CameraComponent>([&](auto en, CameraComponent& comp) {
@@ -103,33 +214,21 @@ namespace Boom
                     activeCam = &comp.camera;
                 }
                 });
-            if (!activeCam) { // fallback: first camera
-            }
 
-            // 2) Attach BEFORE update so scroll/pan use this camera's FOV in this frame
             if (activeCam) camera.attachCamera(activeCam);
             glfwMakeContextCurrent(engineWindow.get());
 
-
-            //   F11 for testing change of rigid body type
+            // F11 toggle rigid body type (test)
             {
                 static bool prevF11 = false;
                 bool f11Pressed = glfwGetKey(engineWindow.get(), GLFW_KEY_F11) == GLFW_PRESS;
                 if (f11Pressed && !prevF11)
                 {
-                    // Find the "Sphere" entity to toggle its type
                     EnttView<Entity, InfoComponent, RigidBodyComponent>([this](auto entity, InfoComponent& info, RigidBodyComponent& rb) {
                         if (info.name == "Sphere") {
-                            // Determine the new type by flipping the current one
                             RigidBody3D::Type currentType = rb.RigidBody.type;
-                            RigidBody3D::Type newType = (currentType == RigidBody3D::DYNAMIC)
-                                ? RigidBody3D::STATIC
-                                : RigidBody3D::DYNAMIC;
-
-                            // Call the function to perform the switch!
+                            RigidBody3D::Type newType = (currentType == RigidBody3D::DYNAMIC) ? RigidBody3D::STATIC : RigidBody3D::DYNAMIC;
                             m_Context->physics->SetRigidBodyType(entity, newType);
-
-                            // Log the change to the console for confirmation
                             BOOM_INFO("[Test F11] Toggled Sphere rigid body to: {}", (newType == RigidBody3D::DYNAMIC) ? "DYNAMIC" : "STATIC");
                         }
                         });
@@ -137,11 +236,9 @@ namespace Boom
                 prevF11 = f11Pressed;
             }
 
-
-            // Always update delta time, but adjust for pause state
+            // Update scripting and gameplay
             ComputeFrameDeltaTime();
             if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
-                // InvokeStatic1Float("GameScripts", "Entry", "Update", static_cast<float>(m_Context->DeltaTime));
                 m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
                 if (m_Nav) {
                     m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
@@ -162,43 +259,32 @@ namespace Boom
                 }
             }
 
-            //compute camera position to colliders
-            //if (m_AppState == ApplicationState::RUNNING)
-               //m_Context->physics->ResolveThirdPersonCameraPosition(, camTransform.translate);
-
-            // ============ END NEW SECTION ============
+            // Frame begin
             m_Context->profiler.BeginFrame();
             m_Context->profiler.Start("Total Frame");
             m_Context->profiler.Start("Renderer Start Frame");
             std::apply(glClearColor, CONSTANTS::DEFAULT_BACKGROUND_COLOR);
-            //RenderShadowScene();
             m_Context->renderer->NewFrame();
             m_Context->profiler.End("Renderer Start Frame");
 
-            // Only update physics/gameplay when in play mode
+            // Sim/gameplay when playing
             if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
-                EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) {
-                    rb.RigidBody.isColliding = false;
-                    });
+                EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) { rb.RigidBody.isColliding = false; });
                 UpdateKinematicTransforms();
                 RunPhysicsSimulation();
-                //InitNavRuntime();
                 UpdateThirdPersonCameras();
-
-                // Update per-entity sound system (trigger/key/anim/movement based)
                 SoundSystem::Update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
             }
 
-
             LightsUpdate();
 
-            //temp input for mouse motion
+            // Flycam (edit mode only)
             glfwGetCursorPos(m_Context->window->Handle().get(), &curMP.x, &curMP.y);
-            // ONLY update the flycam controller if NOT in play mode (edit mode)
             if (!m_IsInPlayMode) {
                 camera.update(static_cast<float>(m_Context->DeltaTime));
             }
 
+            // Camera set + debug matrices
             glm::mat4 dbgView(1.0f);
             glm::mat4 dbgProj(1.0f);
             glm::vec3 dbgCamPos(0.0f);
@@ -206,10 +292,7 @@ namespace Boom
             EnttView<Entity, CameraComponent>([this, &curMP, &prevMP, &dbgView, &dbgProj, &dbgCamPos](auto entity, CameraComponent& comp) {
                 Transform3D& transform{ entity.template Get<TransformComponent>().transform };
 
-                // ONLY apply flycam logic if NOT in play mode (edit mode camera)
-                if (!m_IsInPlayMode)
-                {
-                    // This is the flycam logic, only run in edit mode
+                if (!m_IsInPlayMode) {
                     transform.rotate.x += m_Context->window->camRot.x;
                     transform.rotate.y += m_Context->window->camRot.y;
                     glm::quat quat{ glm::radians(transform.rotate) };
@@ -223,88 +306,84 @@ namespace Boom
                     }
                 }
 
-                // This part is needed by BOTH edit and play mode cameras
                 m_Context->renderer->SetCamera(comp.camera, transform);
                 dbgView = comp.camera.View(transform);
                 dbgProj = comp.camera.Projection(m_Context->renderer->Aspect());
                 dbgCamPos = transform.translate;
                 });
-            {
-                prevMP = curMP;
 
-                // 1. [EXISTING] Sync RigidBody -> Transform
-                EnttView<Entity, TransformComponent, RigidBodyComponent>([this](auto entity, TransformComponent& tc, RigidBodyComponent& rbc) {
-                    if (tc.transform.scale != rbc.RigidBody.previousScale)
-                    {
-                        m_Context->physics->UpdateColliderShape(entity, GetAssetRegistry());
-                        rbc.RigidBody.previousScale = tc.transform.scale;
+            // Skybox FIRST (so GUI blends against it)
+            EnttView<Entity, SkyboxComponent>([this](auto entity, SkyboxComponent& comp) {
+                Transform3D& transform{ entity.template Get<TransformComponent>().transform };
+                static AssetID prevSkyID{ comp.skyboxID };
+
+                if (prevSkyID != comp.skyboxID) {
+                    EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
+                        SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+                        m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
+                        return;
+                        });
+                }
+
+                prevSkyID = comp.skyboxID;
+                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
+                m_Context->renderer->DrawSkybox(skybox.data, transform);
+                return;
+                });
+
+            // Sync physics transforms
+            prevMP = curMP;
+            EnttView<Entity, TransformComponent, RigidBodyComponent>([this](auto entity, TransformComponent& tc, RigidBodyComponent& rbc) {
+                if (tc.transform.scale != rbc.RigidBody.previousScale) {
+                    m_Context->physics->UpdateColliderShape(entity, GetAssetRegistry());
+                    rbc.RigidBody.previousScale = tc.transform.scale;
+                }
+                if (!m_IsInPlayMode || rbc.RigidBody.type != RigidBody3D::DYNAMIC) {
+                    if (rbc.RigidBody.actor) {
+                        m_Context->physics->UpdateRigidBodyTransform(entity, tc.transform);
                     }
-                    if (!m_IsInPlayMode || rbc.RigidBody.type != RigidBody3D::DYNAMIC)
-                    {
-                        // Ensure actor pointer is valid before updating
-                        if (rbc.RigidBody.actor) {
-                            m_Context->physics->UpdateRigidBodyTransform(entity, tc.transform);
-                        }
+                }
+                });
+            EnttView<Entity, TransformComponent, ColliderComponent>([this](auto entity, TransformComponent& tc, ColliderComponent& cc) {
+                if (entity.template Has<RigidBodyComponent>()) return;
+                if (cc.Collider.Shape) {
+                    physx::PxRigidActor* actor = cc.Collider.Shape->getActor();
+                    if (actor) {
+                        glm::quat rot = glm::quat(glm::radians(tc.transform.rotate));
+                        physx::PxTransform pose(
+                            physx::PxVec3(tc.transform.translate.x, tc.transform.translate.y, tc.transform.translate.z),
+                            physx::PxQuat(rot.x, rot.y, rot.z, rot.w)
+                        );
+                        actor->setGlobalPose(pose);
                     }
-                    });
+                }
+                });
 
-                // 2. [MISSING - ADD THIS] Sync Collider-Only Entities (Triggers/Static)
-                EnttView<Entity, TransformComponent, ColliderComponent>([this](auto entity, TransformComponent& tc, ColliderComponent& cc) {
-                    // Skip if it has a RigidBody (already handled above)
-                    if (entity.template Has<RigidBodyComponent>()) return;
-
-                    // If it has a Shape, find the attached "Ghost" Actor and force it to move
-                    if (cc.Collider.Shape)
-                    {
-                        physx::PxRigidActor* actor = cc.Collider.Shape->getActor();
-                        if (actor)
-                        {
-                            glm::quat rot = glm::quat(glm::radians(tc.transform.rotate));
-                            physx::PxTransform pose(
-                                physx::PxVec3(tc.transform.translate.x, tc.transform.translate.y, tc.transform.translate.z),
-                                physx::PxQuat(rot.x, rot.y, rot.z, rot.w)
-                            );
-                            actor->setGlobalPose(pose);
-                        }
-                    }
-                    });
-            }
-
-
-
+            // World + GUI
             RenderScene();
-            //DrawDebugTPC();
-            if (m_PhysDebugViz && m_DebugLinesShader)
-            {
+
+            // Debug draws
+            if (m_PhysDebugViz && m_DebugLinesShader) {
                 m_Context->physics->CollectDebugLines(m_PhysLinesCPU);
-                if (!m_PhysLinesCPU.empty())
-                {
-                    // Build CPU line list
+                if (!m_PhysLinesCPU.empty()) {
                     std::vector<Boom::LineVert> lineVerts;
                     lineVerts.reserve(m_PhysLinesCPU.size() * 2);
-                    for (const auto& l : m_PhysLinesCPU)
-                    {
+                    for (const auto& l : m_PhysLinesCPU) {
                         lineVerts.push_back(Boom::LineVert{ l.p0, l.c0 });
                         lineVerts.push_back(Boom::LineVert{ l.p1, l.c1 });
                     }
 
-                    // Cull any segments within a small radius of the camera (fix �ball in face�)
                     std::vector<Boom::LineVert> filtered;
                     filtered.reserve(lineVerts.size());
                     const float camCullRadius = 0.6f;
 
-                    for (size_t i = 0; i + 1 < lineVerts.size(); i += 2)
-                    {
+                    for (size_t i = 0; i + 1 < lineVerts.size(); i += 2) {
                         const auto& a = lineVerts[i + 0];
                         const auto& b = lineVerts[i + 1];
-
                         const float segDist = DistancePointSegment(dbgCamPos, a.pos, b.pos);
                         const float endA = glm::distance(a.pos, dbgCamPos);
                         const float endB = glm::distance(b.pos, dbgCamPos);
-
-                        // Keep only segments not near the camera (endpoints and segment body)
-                        if (segDist >= camCullRadius && endA >= camCullRadius && endB >= camCullRadius)
-                        {
+                        if (segDist >= camCullRadius && endA >= camCullRadius && endB >= camCullRadius) {
                             filtered.push_back(a);
                             filtered.push_back(b);
                         }
@@ -314,46 +393,24 @@ namespace Boom
                         m_DebugLinesShader->Draw(dbgView, dbgProj, filtered, 50.5f);
                 }
             }
-            if (m_PhysDebugViz && m_DebugLinesShader)
-            {
+            if (m_PhysDebugViz && m_DebugLinesShader) {
                 DrawRigidBodiesDebugOnly(dbgView, dbgProj);
             }
             if (m_Context->ShowNavDebug && m_DebugLinesShader && m_Nav) {
-                // Draw navmesh edges & centroids near the camera. Tweak radius to taste.
-                const float navDrawRadius = 60.0f; // try 40�100 to see more/less
+                const float navDrawRadius = 60.0f;
                 m_Nav->DrawDetourNavMesh_Query(*m_DebugLinesShader, dbgView, dbgProj, dbgCamPos, navDrawRadius);
             }
 
-            //skybox ecs (should be drawn at the end)
-            EnttView<Entity, SkyboxComponent>([this](auto entity, SkyboxComponent& comp) {
-                Transform3D& transform{ entity.template Get<TransformComponent>().transform };
-                static AssetID prevSkyID{ comp.skyboxID };
+            // NOTE: removed the old "skybox ecs (should be drawn at the end)" block
 
-                //reinitialize skybox if different
-                if (prevSkyID != comp.skyboxID) {
-                    EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
-                        SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
-                        m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
-                        return; //should stop after one skybox rendered
-                        });
-                }
-
-                prevSkyID = comp.skyboxID;
-                SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
-                m_Context->renderer->DrawSkybox(skybox.data, transform);
-                return; //should stop after one skybox rendered
-                });
-
+            // Frame end
             m_Context->profiler.Start("Renderer End Frame");
             m_Context->renderer->EndFrame();
             m_Context->profiler.End("Renderer End Frame");
 
-            //draw the updated frame
             m_Context->renderer->ShowFrame(showFrame);
 
-
-            for (auto layer : m_Context->layers)
-            {
+            for (auto layer : m_Context->layers) {
                 layer->OnUpdate();
             }
 
@@ -580,6 +637,37 @@ namespace Boom
                 actor->release();
                 comp.RigidBody.actor = nullptr;
             });
+
+        // *** Also destroy collider-only actors (triggers) ***
+        EnttView<Entity, ColliderComponent>([this, pxScene](auto entity, auto& comp) {
+            // Skip if it has a RigidBodyComponent (already handled above)
+            if (entity.template Has<RigidBodyComponent>()) return;
+
+            auto* actor = comp.Collider.actor;
+            if (!actor) return;
+
+            // Clean up user data
+            if (actor->userData) {
+                EntityID* owner = static_cast<EntityID*>(actor->userData);
+                BOOM_DELETE(owner);
+                actor->userData = nullptr;
+            }
+
+            // Remove and release
+            pxScene->removeActor(*actor);
+            actor->release();
+            comp.Collider.actor = nullptr;
+            });
+
+        // *** FIX: Use a small positive deltaTime instead of 0.0f ***
+        if (pxScene) {
+            // Simulate with very small delta time to flush event queue
+            // PhysX requires deltaTime > 0
+            const float kMinDeltaTime = 0.0001f; // 0.1ms
+            pxScene->simulate(kMinDeltaTime);
+            pxScene->fetchResults(true); // Block until complete
+            BOOM_INFO("[Physics] Flushed physics event queue after destroying actors");
+        }
     }
 
     void Application::RunPhysicsSimulation()

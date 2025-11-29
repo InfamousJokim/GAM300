@@ -3,237 +3,166 @@ using System;
 
 namespace GameScripts
 {
-    /// <summary>
-    /// Enemy controller for NavMesh-patrolled enemies.
-    /// Automatically rotates enemy to face movement direction.
-    /// Vision follows the rotation for stealth gameplay.
-    /// </summary>
     public class PatrolEnemyController
     {
         public ulong Entity;
 
-        // Rotation parameters
-        private float _rotationSpeed = 360f; // Degrees per second (fast rotation)
-        private float _currentYaw = 0f;
-        private float _minMovementForRotation = 0.1f; // Minimum speed to trigger rotation
+        // ===== World convention =====
+        private const bool FORWARD_IS_NEG_Z = true;
 
-        // Vision system (follows rotation)
+        // ===== New options =====
+        private const bool INVERT_FACING = true;     // NEW: face the opposite direction
+        private const bool LOCK_IN_PLACE = true;     // NEW: keep XZ position fixed (walk-in-place)
+        private const float YAW_OFFSET_DEG = 180f;     // NEW: amount to rotate to invert
+
+        // ===== Rotation tuning =====
+        private float _rotationSpeedDeg = 360f;
+        private float _minSpeedToRotate = 0.15f;
+        private float _yaw;
+
+        // ===== Animator (optional) =====
+        private const bool DRIVE_SPEED_PARAM = true;
+        private const float SPEED_SMOOTH = 10f;
+        private double _smoothedSpeed = 0.0;
+
+        // ===== Vision =====
         private VisionComponent _vision;
+        private bool _isAlert;
+        private bool _hasDealtDamage;
+        private float _debugTimer;
 
-        // Alert state
-        private bool _isAlert = false;
-        private Vec3 _alertPosition;
-        private Vec3 _lastPosition;
+        // ===== Anchor to cancel root motion =====
+        private Vec3 _anchorPos;                        // NEW
 
-        // Detection tracking (prevent multiple damage per detection)
-        private bool _hasDealtDamage = false;
-
-        // Debug logging
-        private float _debugLogTimer = 0f;
-        private float _debugLogInterval = 1f; // Log every 1 second
-
-        public void OnStart(string jsonParams)
+        public void OnStart(string json)
         {
-            API.Log($"[PatrolEnemyController] OnStart() - Entity: {Entity}");
-
             if (!API.HasTransform(Entity))
             {
-                API.Log("[PatrolEnemyController] ERROR: Entity missing TransformComponent!");
+                API.Log("[PatrolEnemyController] Missing Transform.");
                 return;
             }
 
-            // Store initial rotation and position
-            _currentYaw = API.GetRotation(Entity).Y;
-            _lastPosition = API.GetPosition(Entity);
-            API.Log($"[PatrolEnemyController] Initial rotation: {_currentYaw} degrees");
+            _yaw = API.GetRotation(Entity).Y;
 
-            // Initialize vision system
+            if (API.HasAnimator(Entity))
+            {
+                API.AnimatorPlay(Entity, "walking");
+                if (DRIVE_SPEED_PARAM) API.AnimatorSetFloat(Entity, "Speed", 0f);
+            }
+
+            // Anchor current XZ so we can cancel drift if desired
+            _anchorPos = API.GetPosition(Entity);       // NEW
+
             _vision = new VisionComponent { Entity = Entity };
             _vision.OnTargetDetected += OnPlayerDetected;
             _vision.OnTargetLost += OnPlayerLost;
             _vision.OnTargetUpdated += OnPlayerTracking;
-            _vision.OnStart(jsonParams);
-
-            _vision.EnableDebugReasons(true);
-            _vision.EnableDebugLOS(true);
-
-            API.Log("[PatrolEnemyController] Initialized - Will rotate toward movement direction");
+            _vision.OnStart(json);
         }
 
         public void OnUpdate(float dt)
         {
-            if (!API.HasTransform(Entity)) return;
+            if (Entity == 0 || dt <= 0f) return;
 
-            // Debug logging
-            _debugLogTimer += dt;
-            if (_debugLogTimer >= _debugLogInterval)
-            {
-                _debugLogTimer = 0f;
-                Vec3 actualRot = API.GetRotation(Entity);
-                API.Log($"[PatrolEnemyController] Target Yaw: {_currentYaw:F1}°, Actual Y Rotation: {actualRot.Y:F1}°");
-            }
-
-            // Rotate toward movement direction (unless alert and tracking player)
             if (!_isAlert)
+                FaceVelocity(dt);
+
+            if (API.HasAnimator(Entity) && DRIVE_SPEED_PARAM)
             {
-                RotateTowardMovementDirection(dt);
+                var v = API.GetLinearVelocity(Entity);
+                float speedXZ = (float)Math.Sqrt(v.X * v.X + v.Z * v.Z);
+                _smoothedSpeed += (speedXZ - _smoothedSpeed) * Math.Min(1.0, SPEED_SMOOTH * dt);
+                API.AnimatorSetFloat(Entity, "Speed", (float)_smoothedSpeed);
             }
 
-            // Update vision system AFTER rotation
-            //_vision?.OnUpdate(dt);
-        }
-
-        /// <summary>
-        /// Calculates movement direction from position change and rotates enemy to face it
-        /// </summary>
-        private void RotateTowardMovementDirection(float dt)
-        {
-            Vec3 currentPos = API.GetPosition(Entity);
-
-            // Calculate movement direction from position delta
-            Vec3 movementDelta = new Vec3(
-                currentPos.X - _lastPosition.X,
-                0f,
-                currentPos.Z - _lastPosition.Z
-            );
-
-            float movementSpeed = (float)Math.Sqrt(
-                movementDelta.X * movementDelta.X +
-                movementDelta.Z * movementDelta.Z
-            ) / dt;
-
-            // Only rotate if moving fast enough (avoid jitter when stationary)
-            if (movementSpeed > _minMovementForRotation)
+            // === Keep walk in place (kill root motion / forward drift) ===
+            if (LOCK_IN_PLACE)
             {
-                // Calculate target yaw from movement direction
-                float targetYaw = (float)(Math.Atan2(movementDelta.X, movementDelta.Z) * 180.0 / Math.PI);
+                // Prevent animation from pushing enemy forward
+                var v = API.GetLinearVelocity(Entity);
+                API.SetLinearVelocity(Entity, new Vec3(0f, v.Y, 0f));
 
-                // Smoothly rotate toward target
-                float angleDifference = targetYaw - _currentYaw;
-
-                // Normalize angle difference to [-180, 180]
-                while (angleDifference > 180f) angleDifference -= 360f;
-                while (angleDifference < -180f) angleDifference += 360f;
-
-                // Apply rotation
-                float rotationStep = _rotationSpeed * dt;
-                if (Math.Abs(angleDifference) < rotationStep)
-                {
-                    _currentYaw = targetYaw;
-                }
-                else
-                {
-                    _currentYaw += Math.Sign(angleDifference) * rotationStep;
-                }
-
-                // Normalize yaw
-                while (_currentYaw >= 360f) _currentYaw -= 360f;
-                while (_currentYaw < 0f) _currentYaw += 360f;
-
-                // Use API.SetRotationY for rigid body rotation
-                API.SetRotationY(Entity, _currentYaw);
-
-                // VERIFY: Read back the rotation to confirm it was set
-                Vec3 verifyRot = API.GetRotation(Entity);
-                if (Math.Abs(verifyRot.Y - _currentYaw) > 1f)
-                {
-                    API.Log($"[PatrolEnemyController] WARNING: Rotation mismatch! Set {_currentYaw:F1}°, Got {verifyRot.Y:F1}°");
-                }
+                // Keep the enemy anchored in place (XZ locked)
+                var p = API.GetPosition(Entity);
+                API.SetPosition(Entity, new Vec3(_anchorPos.X, p.Y, _anchorPos.Z));
             }
 
-            // Store position for next frame
-            _lastPosition = currentPos;
+            _vision?.OnUpdate(dt);
+
+            _debugTimer += dt;
+            if (_debugTimer >= 1f)
+            {
+                _debugTimer = 0f;
+                var r = API.GetRotation(Entity);
+                API.Log($"[PatrolEnemyController] yaw={_yaw:F1}°, rot.Y={r.Y:F1}°");
+            }
         }
 
-        // === VISION EVENT HANDLERS ===
-        private void OnPlayerDetected(ulong target, Vec3 position)
+        // Rotate toward horizontal velocity
+        private void FaceVelocity(float dt)
         {
-            API.Log(">>> PATROL ENEMY ALERTED! PLAYER DETECTED! <<<");
+            var vel = API.GetLinearVelocity(Entity);
+            float vx = vel.X, vz = vel.Z;
+            float speedXZ = (float)Math.Sqrt(vx * vx + vz * vz);
+            if (speedXZ < _minSpeedToRotate) return;
+
+            // Facing from velocity, with optional inversion
+            float baseYaw = FORWARD_IS_NEG_Z
+                ? (float)(Math.Atan2(vx, -vz) * 180.0 / Math.PI)
+                : (float)(Math.Atan2(vx, vz) * 180.0 / Math.PI);
+
+            float targetYawDeg = baseYaw + (INVERT_FACING ? YAW_OFFSET_DEG : 0f); // NEW
+
+            float delta = Wrap180(targetYawDeg - _yaw);
+            float maxStep = _rotationSpeedDeg * dt;
+            _yaw = (Math.Abs(delta) <= maxStep) ? targetYawDeg : _yaw + Math.Sign(delta) * maxStep;
+            _yaw = Wrap360(_yaw);
+            API.SetRotationY(Entity, _yaw);
+        }
+
+        private void OnPlayerDetected(ulong target, Vec3 pos)
+        {
             _isAlert = true;
-            _alertPosition = position;
+            var self = API.GetPosition(Entity);
+            float dx = pos.X - self.X, dz = pos.Z - self.Z;
 
-            // Instantly rotate to face player
-            Vec3 currentPos = API.GetPosition(Entity);
-            Vec3 directionToPlayer = new Vec3(
-                position.X - currentPos.X,
-                0f,
-                position.Z - currentPos.Z
-            );
+            float baseYaw = FORWARD_IS_NEG_Z
+                ? (float)(Math.Atan2(dx, -dz) * 180.0 / Math.PI)
+                : (float)(Math.Atan2(dx, dz) * 180.0 / Math.PI);
 
-            float distToPlayer = (float)Math.Sqrt(
-                directionToPlayer.X * directionToPlayer.X +
-                directionToPlayer.Z * directionToPlayer.Z
-            );
+            _yaw = Wrap360(baseYaw + (INVERT_FACING ? YAW_OFFSET_DEG : 0f));      // NEW
+            API.SetRotationY(Entity, _yaw);
 
-            if (distToPlayer > 0f)
-            {
-                float lookAtYaw = (float)(Math.Atan2(directionToPlayer.X, directionToPlayer.Z) * 180.0 / Math.PI);
-                _currentYaw = lookAtYaw;
-
-                API.SetRotationY(Entity, _currentYaw);
-                API.Log($"[PatrolEnemyController] Rotated to face player at {_currentYaw:F1}°");
-            }
-
-            // Play alert sound
-            Vec3 enemyPos = API.GetPosition(Entity);
-            API.PlaySoundAt("enemy_alert", "Resources/Audio/playerPunch_1.wav", enemyPos, false);
-            API.SetSoundVolume("enemy_alert", 0.8f);
-
-            // Damage player (only once per detection)
             if (!_hasDealtDamage)
             {
                 _hasDealtDamage = true;
-                API.Log($"[PatrolEnemyController] Dealing damage to player!");
                 PlayerManager.NotifyPlayerCaught(Entity);
             }
         }
 
-        private void OnPlayerLost(ulong target, Vec3 lastKnownPosition)
+        private void OnPlayerLost(ulong target, Vec3 lastPos)
         {
-            API.Log("[PatrolEnemyController] Lost sight of player, resuming patrol...");
             _isAlert = false;
-
-            // Reset damage flag so player can be caught again
             _hasDealtDamage = false;
         }
 
-        private void OnPlayerTracking(ulong target, Vec3 position)
+        private void OnPlayerTracking(ulong target, Vec3 pos)
         {
-            _alertPosition = position;
+            var self = API.GetPosition(Entity);
+            float dx = pos.X - self.X, dz = pos.Z - self.Z;
 
-            // Keep facing player while tracking
-            Vec3 currentPos = API.GetPosition(Entity);
-            Vec3 directionToPlayer = new Vec3(
-                position.X - currentPos.X,
-                0f,
-                position.Z - currentPos.Z
-            );
+            float baseYaw = FORWARD_IS_NEG_Z
+                ? (float)(Math.Atan2(dx, -dz) * 180.0 / Math.PI)
+                : (float)(Math.Atan2(dx, dz) * 180.0 / Math.PI);
 
-            float distToPlayer = (float)Math.Sqrt(
-                directionToPlayer.X * directionToPlayer.X +
-                directionToPlayer.Z * directionToPlayer.Z
-            );
-
-            if (distToPlayer > 0f)
-            {
-                float lookAtYaw = (float)(Math.Atan2(directionToPlayer.X, directionToPlayer.Z) * 180.0 / Math.PI);
-                _currentYaw = lookAtYaw;
-
-                API.SetRotationY(Entity, _currentYaw);
-            }
+            _yaw = Wrap360(baseYaw + (INVERT_FACING ? YAW_OFFSET_DEG : 0f));      // NEW
+            API.SetRotationY(Entity, _yaw);
         }
 
-        // === PUBLIC CONFIGURATION ===
+        public void OnDestroy() { _vision?.OnDestroy(); }
 
-        public void SetRotationSpeed(float degreesPerSecond)
-        {
-            _rotationSpeed = degreesPerSecond;
-        }
-
-        public void OnDestroy()
-        {
-            _vision?.OnDestroy();
-            API.Log($"[PatrolEnemyController] OnDestroy() - Entity: {Entity}");
-        }
+        // helpers
+        private static float Wrap360(float a) { while (a >= 360f) a -= 360f; while (a < 0f) a += 360f; return a; }
+        private static float Wrap180(float a) { while (a > 180f) a -= 360f; while (a <= -180f) a += 360f; return a; }
     }
 }

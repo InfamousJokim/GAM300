@@ -3,7 +3,14 @@
     "allow": [
       "Bash(cat:*)",
       "Bash(find:*)",
-      "Bash(msbuild:*)"
+      "Bash(msbuild:*)",
+      "Bash(mkdir:*)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" /mnt/c/Users/amosh/Desktop/GAM300/Gam300/Runtime/Runtime.vcxproj -p:Configuration=Debug -p:Platform=x64 -v:minimal)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" Runtime/Runtime.vcxproj -p:Configuration=Debug -p:Platform=x64 -v:minimal)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" Gam300.sln -t:BoomEngine -p:Configuration=Debug -p:Platform=x64 -v:minimal)",
+      "Bash(taskkill:*)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" Runtime/Runtime.vcxproj -p:Configuration=Debug -p:Platform=x64 -p:BuildProjectReferences=false -v:minimal)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" Gam300.sln -t:Runtime -p:Configuration=Debug -p:Platform=x64 -p:BuildProjectReferences=false -v:minimal)"
     ],
     "deny": [],
     "ask": []

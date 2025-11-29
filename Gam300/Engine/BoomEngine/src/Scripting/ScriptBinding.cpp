@@ -665,6 +665,57 @@ namespace Boom {
         }
     }
 
+    // ========= SPRITE COMPONENT INTERNAL CALLS =========
+    static bool ICALL_API_HasSprite(uint64_t handle)
+    {
+        if (!s_Ctx) return false;
+        entt::entity e = static_cast<entt::entity>(static_cast<uint32_t>(handle));
+        return (e != entt::null && s_Ctx->scene.valid(e) && s_Ctx->scene.any_of<SpriteComponent>(e));
+    }
+
+    static void ICALL_API_GetSpriteColor(uint64_t handle, glm::vec4* outColor)
+    {
+        if (!outColor || !s_Ctx) return;
+        entt::entity e = static_cast<entt::entity>(static_cast<uint32_t>(handle));
+        if (e == entt::null || !s_Ctx->scene.valid(e) || !s_Ctx->scene.any_of<SpriteComponent>(e)) {
+            *outColor = glm::vec4(1.0f);
+            return;
+        }
+        *outColor = s_Ctx->scene.get<SpriteComponent>(e).color;
+    }
+
+    static void ICALL_API_SetSpriteColor(uint64_t handle, glm::vec4* color)
+    {
+        if (!color || !s_Ctx) return;
+        entt::entity e = static_cast<entt::entity>(static_cast<uint32_t>(handle));
+        if (e == entt::null || !s_Ctx->scene.valid(e) || !s_Ctx->scene.any_of<SpriteComponent>(e)) {
+            BOOM_WARN("[ScriptBinding] SetSpriteColor: Entity doesn't have SpriteComponent");
+            return;
+        }
+        s_Ctx->scene.get<SpriteComponent>(e).color = *color;
+    }
+
+    static float ICALL_API_GetSpriteAlpha(uint64_t handle)
+    {
+        if (!s_Ctx) return 1.0f;
+        entt::entity e = static_cast<entt::entity>(static_cast<uint32_t>(handle));
+        if (e == entt::null || !s_Ctx->scene.valid(e) || !s_Ctx->scene.any_of<SpriteComponent>(e)) {
+            return 1.0f;
+        }
+        return s_Ctx->scene.get<SpriteComponent>(e).color.a;
+    }
+
+    static void ICALL_API_SetSpriteAlpha(uint64_t handle, float alpha)
+    {
+        if (!s_Ctx) return;
+        entt::entity e = static_cast<entt::entity>(static_cast<uint32_t>(handle));
+        if (e == entt::null || !s_Ctx->scene.valid(e) || !s_Ctx->scene.any_of<SpriteComponent>(e)) {
+            BOOM_WARN("[ScriptBinding] SetSpriteAlpha: Entity doesn't have SpriteComponent");
+            return;
+        }
+        s_Ctx->scene.get<SpriteComponent>(e).color.a = glm::clamp(alpha, 0.0f, 1.0f);
+    }
+
     struct ScriptTransform {
         float posX, posY, posZ;
         float rotX, rotY, rotZ;
@@ -1208,5 +1259,12 @@ namespace Boom {
         mono_add_internal_call("Boom.Native::Boom_API_TeleportRigidBody", (void*)ICALL_API_TeleportRigidBody);
 
         mono_add_internal_call("Boom.Native::Boom_API_SetScreenFadeAlpha", (const void*)ICALL_API_SetScreenFadeAlpha);
+
+        // Sprite component internal calls
+        mono_add_internal_call("Boom.Native::Boom_API_HasSprite", (const void*)ICALL_API_HasSprite);
+        mono_add_internal_call("Boom.Native::Boom_API_GetSpriteColor", (const void*)ICALL_API_GetSpriteColor);
+        mono_add_internal_call("Boom.Native::Boom_API_SetSpriteColor", (const void*)ICALL_API_SetSpriteColor);
+        mono_add_internal_call("Boom.Native::Boom_API_GetSpriteAlpha", (const void*)ICALL_API_GetSpriteAlpha);
+        mono_add_internal_call("Boom.Native::Boom_API_SetSpriteAlpha", (const void*)ICALL_API_SetSpriteAlpha);
     }
 }

@@ -54,6 +54,7 @@
     <Compile Include="KeyPickup.cs" />
     <Compile Include="DoorTriggerLeft.cs" />
     <Compile Include="PlayerInventory.cs" />
+    <Compile Include="BloodOverlayController.cs" />
     <Compile Include="VisionComponent.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="MovementAnimator.cs" />

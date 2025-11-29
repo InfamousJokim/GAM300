@@ -83,18 +83,27 @@
     </Link>
   </ItemDefinitionGroup>
 
-  <!-- ===== Copy runtime DLLs for Editor only ===== -->
-  <ItemDefinitionGroup Condition="'$(MSBuildProjectName)'=='Editor'">
+  <!-- ===== Copy runtime DLLs for Editor and Runtime ===== -->
+  <ItemDefinitionGroup Condition="'$(MSBuildProjectName)'=='Editor' OR '$(MSBuildProjectName)'=='Runtime'">
 	<PreBuildEvent>
 		<Command>
 			REM --- Mono runtime (required by managed scripting) ---
 			xcopy /Y /D "$(MonoBinDir)\mono-2.0-sgen.dll" "$(OutDir)"
 			REM Optional helper (present in many Mono builds)
 			if exist "$(MonoBinDir)\MonoPosixHelper.dll" xcopy /Y /D "$(MonoBinDir)\MonoPosixHelper.dll" "$(OutDir)"
-			
+
 			REM --- FMOD runtime ---
 			xcopy /Y /D "$(FMODCoreLibDir)\fmod$(FMODDebugSuffix).dll" "$(OutDir)"
 			xcopy /Y /D "$(FMODStudioLibDir)\fmodstudio$(FMODDebugSuffix).dll" "$(OutDir)"
+
+			REM --- PhysX runtime (from Conan) ---
+			if exist "$(Conanphysx_physxcommonRootFolder)\bin" xcopy /Y /D "$(Conanphysx_physxcommonRootFolder)\bin\*.dll" "$(OutDir)"
+
+			REM --- GLFW runtime (from Conan) ---
+			if exist "$(ConanglfwRootFolder)\bin" xcopy /Y /D "$(ConanglfwRootFolder)\bin\*.dll" "$(OutDir)"
+
+			REM --- GLEW runtime (from Conan) ---
+			if exist "$(Conanglew_glewlibRootFolder)\bin" xcopy /Y /D "$(Conanglew_glewlibRootFolder)\bin\*.dll" "$(OutDir)"
 		</Command>
 	</PreBuildEvent>
     <PostBuildEvent>

@@ -554,6 +554,192 @@ namespace EditorUI {
 
             ImGui::EndPopup();
         }
+
+        // --- EXPORT GAME ---
+        static char exportPath[512] = "Build/Game";
+        static int exportConfig = 1; // 0 = Debug, 1 = Release
+
+        if (m_ShowExportDialog) {
+            ImGui::OpenPopup("Export Game");
+            m_ShowExportDialog = false;
+        }
+
+        if (ImGui::BeginPopupModal("Export Game", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::TextUnformatted("Export your game as a standalone application");
+            ImGui::Separator();
+
+            ImGui::TextUnformatted("Output Directory:");
+            ImGui::InputText("##export_path", exportPath, IM_ARRAYSIZE(exportPath));
+
+            ImGui::Separator();
+
+            ImGui::TextUnformatted("Configuration:");
+            ImGui::RadioButton("Debug", &exportConfig, 0); ImGui::SameLine();
+            ImGui::RadioButton("Release", &exportConfig, 1);
+
+            ImGui::Separator();
+            ImGui::TextWrapped("This will copy the Runtime executable, engine DLLs, assets, scenes, and scripts to the output directory.");
+            ImGui::Separator();
+
+            if (ImGui::Button("Export", ImVec2(120, 0)))
+            {
+                try {
+                    const std::string configName = (exportConfig == 0) ? "Debug" : "Release";
+
+                    // Get solution directory (parent of Editor folder)
+                    // Current path is typically x64/Debug when running Editor.exe
+                    fs::path solutionDir = fs::current_path();
+                    // Navigate up to solution root (handle both running from IDE and from exe)
+                    if (solutionDir.filename() == "Debug" || solutionDir.filename() == "Release") {
+                        solutionDir = solutionDir.parent_path().parent_path(); // x64/Debug -> Gam300
+                    } else if (solutionDir.filename() == "Editor") {
+                        solutionDir = solutionDir.parent_path(); // Editor -> Gam300
+                    }
+
+                    const fs::path buildDir = solutionDir / "x64" / configName;
+
+                    // Make output path relative to solution directory
+                    fs::path outputDir = fs::path(exportPath);
+                    if (outputDir.is_relative()) {
+                        outputDir = solutionDir / outputDir;
+                    }
+
+                    BOOM_INFO("[Export] Starting game export to: {}", outputDir.string());
+                    BOOM_INFO("[Export] Configuration: {}", configName);
+                    BOOM_INFO("[Export] Solution directory: {}", solutionDir.string());
+                    BOOM_INFO("[Export] Build directory: {}", buildDir.string());
+
+                    // Create output directory
+                    fs::create_directories(outputDir);
+
+                    // Check if build directory exists
+                    if (!fs::exists(buildDir)) {
+                        BOOM_ERROR("[Export] Build directory not found: {}", buildDir.string());
+                        BOOM_ERROR("[Export] Please build Runtime in {} configuration first!", configName);
+                        ImGui::CloseCurrentPopup();
+                        throw std::runtime_error("Build directory not found. Build Runtime in " + configName + " configuration first.");
+                    }
+
+                    // Copy Runtime executable
+                    const fs::path runtimeExe = buildDir / "Runtime.exe";
+                    if (!fs::exists(runtimeExe)) {
+                        BOOM_ERROR("[Export] Runtime.exe not found at: {}", runtimeExe.string());
+                        BOOM_ERROR("[Export] Please build the Runtime project in {} configuration!", configName);
+                        ImGui::CloseCurrentPopup();
+                        throw std::runtime_error("Runtime.exe not found. Build Runtime project first.");
+                    }
+
+                    fs::copy_file(runtimeExe, outputDir / "Deathless.exe",
+                        fs::copy_options::overwrite_existing);
+                    BOOM_INFO("[Export] Copied Runtime.exe -> Deathless.exe");
+
+                    // Copy ALL DLLs from the build directory (BoomEngine + all dependencies)
+                    // This includes PhysX, FMOD, GLFW, Mono, etc.
+                    int dllCount = 0;
+                    if (fs::exists(buildDir) && fs::is_directory(buildDir)) {
+                        for (const auto& entry : fs::directory_iterator(buildDir)) {
+                            if (entry.path().extension() == ".dll") {
+                                try {
+                                    fs::copy_file(entry.path(),
+                                        outputDir / entry.path().filename(),
+                                        fs::copy_options::overwrite_existing);
+                                    dllCount++;
+                                    BOOM_INFO("[Export] Copied {}", entry.path().filename().string());
+                                } catch (const std::exception& e) {
+                                    BOOM_WARN("[Export] Failed to copy {}: {}",
+                                        entry.path().filename().string(), e.what());
+                                }
+                            }
+                        }
+                    }
+                    BOOM_INFO("[Export] Copied {} DLL files", dllCount);
+
+                    // Copy Resources directory
+                    const fs::path resourcesDir = solutionDir / "Editor" / "Resources";
+                    const fs::path outputResources = outputDir / "Resources";
+                    if (fs::exists(resourcesDir)) {
+                        fs::create_directories(outputResources);
+                        fs::copy(resourcesDir, outputResources,
+                            fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+                        BOOM_INFO("[Export] Copied Resources directory");
+                    }
+
+                    // Copy Scenes directory
+                    const fs::path scenesDir = solutionDir / "Editor" / "Scenes";
+                    const fs::path outputScenes = outputDir / "Scenes";
+                    if (fs::exists(scenesDir)) {
+                        fs::create_directories(outputScenes);
+                        fs::copy(scenesDir, outputScenes,
+                            fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+                        BOOM_INFO("[Export] Copied Scenes directory");
+                    }
+
+                    // Copy assets.yaml (asset registry - CRITICAL for runtime!)
+                    const fs::path assetsYaml = solutionDir / "Editor" / "AssetsProp" / "assets.yaml";
+                    const fs::path outputAssets = outputDir / "Resources" / "assets.yaml";
+                    if (fs::exists(assetsYaml)) {
+                        fs::create_directories(outputDir / "Resources");
+                        fs::copy_file(assetsYaml, outputAssets, fs::copy_options::overwrite_existing);
+                        BOOM_INFO("[Export] Copied assets.yaml (asset registry)");
+                    }
+                    else {
+                        BOOM_ERROR("[Export] WARNING: assets.yaml not found at {}", assetsYaml.string());
+                    }
+
+                    // Copy GameScripts.dll
+                    const std::string scriptConfig = (exportConfig == 0) ? "Debug" : "Release";
+                    const fs::path scriptsDir = solutionDir / "GameScripts" / "bin" / "x64" / scriptConfig;
+                    const fs::path scriptsDll = scriptsDir / "GameScripts.dll";
+                    const fs::path outputScriptsDir = outputDir / "Scripts";
+                    if (fs::exists(scriptsDll)) {
+                        fs::create_directories(outputScriptsDir);
+                        fs::copy_file(scriptsDll, outputScriptsDir / "GameScripts.dll",
+                            fs::copy_options::overwrite_existing);
+                        BOOM_INFO("[Export] Copied GameScripts.dll");
+                    }
+
+                    // Copy Mono runtime folders (CRITICAL for standalone execution!)
+                    // Mono needs etc/ for config and lib/ for base assemblies
+                    const fs::path monoRoot = solutionDir.parent_path() / "mono";
+                    if (fs::exists(monoRoot)) {
+                        // Copy etc/ folder (Mono configuration)
+                        const fs::path monoEtc = monoRoot / "etc";
+                        const fs::path outputEtc = outputDir / "etc";
+                        if (fs::exists(monoEtc)) {
+                            fs::copy(monoEtc, outputEtc,
+                                fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+                            BOOM_INFO("[Export] Copied Mono etc/ folder");
+                        }
+
+                        // Copy lib/ folder (Mono assemblies)
+                        const fs::path monoLib = monoRoot / "lib";
+                        const fs::path outputLib = outputDir / "lib";
+                        if (fs::exists(monoLib)) {
+                            fs::copy(monoLib, outputLib,
+                                fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+                            BOOM_INFO("[Export] Copied Mono lib/ folder");
+                        }
+                    }
+                    else {
+                        BOOM_ERROR("[Export] WARNING: Mono runtime not found at {}", monoRoot.string());
+                    }
+
+                    BOOM_INFO("[Export] Export completed successfully to: {}", outputDir.string());
+                    ImGui::CloseCurrentPopup();
+                }
+                catch (const std::exception& e) {
+                    BOOM_ERROR("[Export] Export failed: {}", e.what());
+                    std::cerr << "Export failed: " << e.what() << std::endl;
+                }
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
     }
 
 

@@ -273,6 +273,23 @@ ASSETS:
       OcclusionMapID: 0
       EmissiveMapID: 0
   - Type: MATERIAL
+    UID: 5064145407616579494
+    Name: TextureTerrain
+    Source: TextureTerrain
+    Properties:
+      Data:
+        emissive: [0, 0, 0]
+        albedo: [1, 1, 1]
+        roughness: 1
+        metallic: 0
+        occlusion: 0.639999986
+      AlbedoMapID: 13725429989173629243
+      NormalMapID: 8080306587810410516
+      RoughnessMapID: 0
+      MetallicMapID: 0
+      OcclusionMapID: 0
+      EmissiveMapID: 0
+  - Type: MATERIAL
     UID: 15937630629384441243
     Name: Zen Wall Texture
     Source: Zen Wall Texture
@@ -341,6 +358,23 @@ ASSETS:
       OcclusionMapID: 0
       EmissiveMapID: 0
   - Type: MATERIAL
+    UID: 7210221651131134645
+    Name: Stone Statue (Thick) Texture
+    Source: Stone Statue (Thick) Texture
+    Properties:
+      Data:
+        emissive: [0, 0, 0]
+        albedo: [1, 1, 1]
+        roughness: 0.400000006
+        metallic: 0.5
+        occlusion: 1
+      AlbedoMapID: 82665125486564339
+      NormalMapID: 0
+      RoughnessMapID: 0
+      MetallicMapID: 0
+      OcclusionMapID: 0
+      EmissiveMapID: 0
+  - Type: MATERIAL
     UID: 16051879611138255440
     Name: Roof Texture
     Source: Roof Texture
@@ -387,6 +421,23 @@ ASSETS:
         occlusion: 1
       AlbedoMapID: 8189347454469401464
       NormalMapID: 0
+      RoughnessMapID: 0
+      MetallicMapID: 0
+      OcclusionMapID: 0
+      EmissiveMapID: 0
+  - Type: MATERIAL
+    UID: 11381204713328203699
+    Name: Terrain
+    Source: Terrain
+    Properties:
+      Data:
+        emissive: [0, 0, 0]
+        albedo: [1, 1, 1]
+        roughness: 1
+        metallic: 0
+        occlusion: 0.699999988
+      AlbedoMapID: 13725429989173629243
+      NormalMapID: 8080306587810410516
       RoughnessMapID: 0
       MetallicMapID: 0
       OcclusionMapID: 0
@@ -1238,6 +1289,17 @@ ASSETS:
     UID: 2335343751038784486
     Name: HEIGHT MAPseamless sand zen garden texture_Outdoor
     Source: Resources/Textures/Floor Texture/HEIGHT MAPseamless sand zen garden texture_Outdoor.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.949999988
+        alphaThreshold: 127
+        mipLevel: 0
+        isGamma: false
+  - Type: TEXTURE
+    UID: 8078124372590329184
+    Name: 4th life
+    Source: Resources/Textures/PlayerUI/4th life.png
     Properties:
       Data:
         CompileAsCompressed: true
@@ -2125,6 +2187,39 @@ ASSETS:
         alphaThreshold: 127
         mipLevel: 0
         isGamma: false
+  - Type: TEXTURE
+    UID: 9978758564026709928
+    Name: 2nd life
+    Source: Resources/Textures/PlayerUI/2nd life.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.949999988
+        alphaThreshold: 127
+        mipLevel: 0
+        isGamma: false
+  - Type: TEXTURE
+    UID: 14611654011234671873
+    Name: 3rd life
+    Source: Resources/Textures/PlayerUI/3rd life.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.949999988
+        alphaThreshold: 127
+        mipLevel: 0
+        isGamma: false
+  - Type: TEXTURE
+    UID: 15398575817850185585
+    Name: 5th life
+    Source: Resources/Textures/PlayerUI/5th life.png
+    Properties:
+      Data:
+        CompileAsCompressed: true
+        quality: 0.949999988
+        alphaThreshold: 127
+        mipLevel: 0
+        isGamma: false
   - Type: SKYBOX
     UID: 4245843529762785392
     Name: NightSkyHDRI003_8K_HDR
@@ -2297,6 +2392,17 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
+  - Type: MODEL
+    UID: 13476211349726698154
+    Name: Stand To Roll (1)
+    Source: Resources/Stand To Roll (1).fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
   - Type: MODEL
     UID: 11479122689655157238
     Name: Hanging Idle
@@ -2902,6 +3008,17 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
+  - Type: MODEL
+    UID: 266716137393134784
+    Name: Stand To Roll
+    Source: Resources/Stand To Roll.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
   - Type: MODEL
     UID: 12488520825890969207
     Name: Untitled
@@ -3573,6 +3690,72 @@ ASSETS:
           Rotate: [0, 0, 0]
           Scale: [1, 1, 1]
       HasJoints: false
+  - Type: MODEL
+    UID: 10375281322457629410
+    Name: Scissors Walk
+    Source: Resources/Models/Scissors Walk.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 17103110655317518176
+    Name: Rock_Ninja
+    Source: Resources/Models/Enemy/Rock_Ninja.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 7095786456408826199
+    Name: Walking in place ninja (1)
+    Source: Resources/Walking in place ninja (1).fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 7474465525244815593
+    Name: Walking in place ninja
+    Source: Resources/Walking in place ninja.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 9292382977354757558
+    Name: Walking S Ninja
+    Source: Resources/Walking S Ninja.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
+  - Type: MODEL
+    UID: 2097877395305611020
+    Name: Samurai new Idle
+    Source: Resources/Models/Samurai new Idle.fbx
+    Properties:
+      Model Transform:
+        transform:
+          Translate: [0, 0, 0]
+          Rotate: [0, 0, 0]
+          Scale: [1, 1, 1]
+      HasJoints: true
   - Type: MODEL
     UID: 2088400025698853957
     Name: Scissor Ninja Idle (2)

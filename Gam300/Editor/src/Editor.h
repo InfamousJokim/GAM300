@@ -84,6 +84,7 @@ namespace EditorUI {
         bool m_ShowSaveDialog = false;
         bool m_ShowLoadDialog = false;
         bool m_ShowSavePrefabDialog = false;
+        bool m_ShowExportDialog = false;
         std::unique_ptr<MenuBarPanel>           m_MenuBar;
         std::unique_ptr<HierarchyPanel>         m_Hierarchy;
         std::unique_ptr<InspectorPanel>         m_Inspector;
