@@ -387,6 +387,32 @@ namespace EditorUI {
                 ImGui::Spacing();
                 ImGui::Separator();
                 ImGui::Spacing();
+
+                // === Skeleton Debug Visualization ===
+                ImGui::TextColored(ImVec4(0.7f, 1.0f, 0.7f, 1.0f), "Debug Visualization");
+                ImGui::Spacing();
+
+                ImGui::Checkbox("Show Skeleton", &ctx->ShowSkeleton);
+                if (ImGui::IsItemHovered()) {
+                    ImGui::SetTooltip("Visualize bone hierarchy as colored lines");
+                }
+
+                if (ctx->ShowSkeleton) {
+                    ImGui::Indent(12.0f);
+
+                    ImGui::Checkbox("Show Bone Names", &ctx->ShowBoneNames);
+                    if (ImGui::IsItemHovered()) {
+                        ImGui::SetTooltip("Display bone names in 3D space (coming soon)");
+                    }
+
+                    ImGui::ColorEdit4("Bone Color", &ctx->BoneColor.x);
+
+                    ImGui::SliderFloat("Line Width", &ctx->BoneLineWidth, 0.5f, 10.0f, "%.1f");
+
+                    ImGui::Unindent(12.0f);
+                }
+
+                ImGui::Spacing();
             }
             else {
                 ImGui::TextDisabled("No animator available.");

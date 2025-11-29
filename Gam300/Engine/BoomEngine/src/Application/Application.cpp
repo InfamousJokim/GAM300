@@ -136,8 +136,8 @@ namespace Boom
         std::cout << "[RunContext] Creating camera controller..." << std::endl;
         std::cout.flush();
 
-       // InitNavRuntime();
-        //EnsureNinjaSeeksSamurai();
+        // InitNavRuntime();
+         //EnsureNinjaSeeksSamurai();
         CameraController camera(
             m_Context->window.get()
         );

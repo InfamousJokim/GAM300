@@ -50,6 +50,12 @@ namespace Boom
 		EntityRegistry scene;
 		bool ShowNavDebug = false;
 		bool ShowNavCorridor = false;
+
+		// Skeleton visualization settings
+		bool ShowSkeleton = false;
+		bool ShowBoneNames = false;
+		glm::vec4 BoneColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f); // Red by default
+		float BoneLineWidth = 2.0f;
 	};
 }// namespace Boom
 

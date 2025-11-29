@@ -129,235 +129,15 @@ ENTITIES:
   - {}
   - {}
   - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
   - InfoComponent:
       Parent: 0
-      Name: Player
-      UID: 18299148976802030936
+      Name: WallBack
+      UID: 1518808387232098787
     TransformComponent:
       Transform:
-        Translate: [0, 1.23532224, 0]
+        Translate: [0, 10, -20]
         Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    ModelComponent:
-      ModelID: 9625104056789884581
-      MaterialID: 11573253777835523025
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-    AnimatorComponent:
-      Clips:
-        - name: mixamo.com
-          filePath: ""
-      States:
-        []
-      FloatParams:
-        {}
-      BoolParams:
-        {}
-      CurrentStateIndex: 0
-  - {}
-  - {}
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Ball 2
-      UID: 6042260349840611439
-    TransformComponent:
-      Transform:
-        Translate: [-0.244383037, 0.569547296, 1.88206768]
-        Rotate: [0, 0, 0]
-        Scale: [0.5, 0.5, 0.5]
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 11573253777835523025
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Skybox
-      UID: 3009173759421305309
-    TransformComponent:
-      Transform:
-        Translate: [0, 0, 0]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    SkyboxComponent:
-      SkyboxID: 10427935764841817814
-  - InfoComponent:
-      Parent: 0
-      Name: Camera
-      UID: 9201024860084647067
-    TransformComponent:
-      Transform:
-        Translate: [-0.0222550929, 3.22613192, 4.05554438]
-        Rotate: [-28.1274986, 5.125, 0]
-        Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        NearPlane: 0.300000012
-        FarPlane: 1000
-        FOV: 90.3600006
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Point Light
-      UID: 5315588240363654174
-    TransformComponent:
-      Transform:
-        Translate: [0.0286144018, 3.57283306, 0.0343911648]
-        Rotate: [0, 0, 0]
-        Scale: [0.150000006, 0.150000006, 0.150000006]
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 8803557448742180096
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-    PointLightComponent:
-      Light:
-        Radiance: [1, 0.899999976, 0.699999988]
-        Intensity: 17.5200005
-        Range: 0
-  - InfoComponent:
-      Parent: 0
-      Name: Directional Light
-      UID: 16395980114807373968
-    TransformComponent:
-      Transform:
-        Translate: [0, 0, 0]
-        Rotate: [-1.88499999, -0.685000002, -0.312999994]
-        Scale: [1, 1, 1]
-    DirectLightComponent:
-      Light:
-        Radiance: [1, 1, 1]
-        Intensity: 0.769999981
-  - InfoComponent:
-      Parent: 0
-      Name: Spot Light
-      UID: 12363776012929465708
-    TransformComponent:
-      Transform:
-        Translate: [-0.499514699, 1.51802635, 1.51343977]
-        Rotate: [0.31400001, -0.68599999, -1.57000005]
-        Scale: [0.100000001, 0.100000001, 0.100000001]
-    SpotLightComponent:
-      Light:
-        Radiance: [1, 1, 1]
-        Intensity: 3.79999995
-        FallOff: 0.730000019
-        CutOff: 0.499000013
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Ball 1
-      UID: 6042260349840611439
-    TransformComponent:
-      Transform:
-        Translate: [1.55796421, 2.40282512, -0.22980988]
-        Rotate: [0, 0, 0]
-        Scale: [1, 1, 1]
-    ModelComponent:
-      ModelID: 11565258723769024311
-      MaterialID: 2930779482462285987
-      ModelName: sphere
-      MaterialName: ""
-      ModelSource: Resources/Models/walking.fbx
-      MaterialSource: Marble
-  - InfoComponent:
-      Parent: 0
-      Name: Ground
-      UID: 10000000000000000002
-    TransformComponent:
-      Transform:
-        Translate: [0, 0, 0]
-        Rotate: [0, 0, 0]
-        Scale: [50, 0.100000001, 50]
-    ModelComponent:
-      ModelID: 7633162898494281895
-      MaterialID: 5966106834849932234
-      ModelName: Cube
-      MaterialName: ""
-      ModelSource: Resources/Models/Cube.fbx
-      MaterialSource: Marble
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - InfoComponent:
-      Parent: 0
-      Name: Wallleft
-      UID: 8478804335282847307
-    TransformComponent:
-      Transform:
-        Translate: [-25, 10, 0]
-        Rotate: [0, 0, 0]
-        Scale: [0.600000024, 20, 50]
-    ModelComponent:
-      ModelID: 7633162898494281895
-      MaterialID: 0
-      ModelName: ""
-      MaterialName: ""
-      ModelSource: ""
-      MaterialSource: ""
-  - InfoComponent:
-      Parent: 0
-      Name: WallRight
-      UID: 10015718374993321793
-    TransformComponent:
-      Transform:
-        Translate: [25, 10, 0]
-        Rotate: [0, 0, 0]
-        Scale: [1, 20, 50]
+        Scale: [50, 20, 1]
     ModelComponent:
       ModelID: 7633162898494281895
       MaterialID: 0
@@ -383,13 +163,13 @@ ENTITIES:
       MaterialSource: ""
   - InfoComponent:
       Parent: 0
-      Name: WallBack
-      UID: 1518808387232098787
+      Name: WallRight
+      UID: 10015718374993321793
     TransformComponent:
       Transform:
-        Translate: [0, 10, -20]
+        Translate: [25, 10, 0]
         Rotate: [0, 0, 0]
-        Scale: [50, 20, 1]
+        Scale: [1, 20, 50]
     ModelComponent:
       ModelID: 7633162898494281895
       MaterialID: 0
@@ -397,4 +177,378 @@ ENTITIES:
       MaterialName: ""
       ModelSource: ""
       MaterialSource: ""
+  - InfoComponent:
+      Parent: 0
+      Name: Wallleft
+      UID: 8478804335282847307
+    TransformComponent:
+      Transform:
+        Translate: [-25, 10, 0]
+        Rotate: [0, 0, 0]
+        Scale: [0.600000024, 20, 50]
+    ModelComponent:
+      ModelID: 7633162898494281895
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Ground
+      UID: 10000000000000000002
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, 0, 0]
+        Scale: [50, 0.100000001, 50]
+    ModelComponent:
+      ModelID: 7633162898494281895
+      MaterialID: 5966106834849932234
+      ModelName: Cube
+      MaterialName: ""
+      ModelSource: Resources/Models/Cube.fbx
+      MaterialSource: Marble
+  - InfoComponent:
+      Parent: 0
+      Name: Ball 1
+      UID: 6042260349840611439
+    TransformComponent:
+      Transform:
+        Translate: [1.55796421, 2.40282512, -0.22980988]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 2930779482462285987
+      ModelName: sphere
+      MaterialName: ""
+      ModelSource: Resources/Models/walking.fbx
+      MaterialSource: Marble
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Spot Light
+      UID: 12363776012929465708
+    TransformComponent:
+      Transform:
+        Translate: [-0.499514699, 1.51802635, 1.51343977]
+        Rotate: [0.31400001, -0.68599999, -1.57000005]
+        Scale: [0.100000001, 0.100000001, 0.100000001]
+    SpotLightComponent:
+      Light:
+        Radiance: [1, 1, 1]
+        Intensity: 3.79999995
+        FallOff: 0.730000019
+        CutOff: 0.499000013
+  - InfoComponent:
+      Parent: 0
+      Name: Directional Light
+      UID: 16395980114807373968
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [-1.88499999, -0.685000002, -0.312999994]
+        Scale: [1, 1, 1]
+    DirectLightComponent:
+      Light:
+        Radiance: [1, 1, 1]
+        Intensity: 0.769999981
+  - InfoComponent:
+      Parent: 0
+      Name: Point Light
+      UID: 5315588240363654174
+    TransformComponent:
+      Transform:
+        Translate: [0.0286144018, 3.57283306, 0.0343911648]
+        Rotate: [0, 0, 0]
+        Scale: [0.150000006, 0.150000006, 0.150000006]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 8803557448742180096
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+    PointLightComponent:
+      Light:
+        Radiance: [1, 0.899999976, 0.699999988]
+        Intensity: 17.5200005
+        Range: 0
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Camera
+      UID: 9201024860084647067
+    TransformComponent:
+      Transform:
+        Translate: [-0.0222550929, 3.22613192, 4.05554438]
+        Rotate: [-28.1274986, 5.125, 0]
+        Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        NearPlane: 0.300000012
+        FarPlane: 1000
+        FOV: 90.3600006
+  - InfoComponent:
+      Parent: 0
+      Name: Skybox
+      UID: 3009173759421305309
+    TransformComponent:
+      Transform:
+        Translate: [0, 0, 0]
+        Rotate: [0, 0, 0]
+        Scale: [1, 1, 1]
+    SkyboxComponent:
+      SkyboxID: 10427935764841817814
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Ball 2
+      UID: 6042260349840611439
+    TransformComponent:
+      Transform:
+        Translate: [-0.244383037, 0.569547296, 1.88206768]
+        Rotate: [0, 0, 0]
+        Scale: [0.5, 0.5, 0.5]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 11573253777835523025
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Player
+      UID: 18299148976802030936
+    TransformComponent:
+      Transform:
+        Translate: [0, 1.23532224, 0]
+        Rotate: [0, 0, 0]
+        Scale: [0.00999999978, 0.00999999978, 0.00999999978]
+    ModelComponent:
+      ModelID: 5190089082055736376
+      MaterialID: 11573253777835523025
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+    AnimatorComponent:
+      Clips:
+        - name: mixamo.com
+          filePath: ""
+        - name: Samurai New Walk
+          filePath: Resources/Samurai New Walk.fbx
+        - name: Samurai Idle (1)
+          filePath: Resources/Samurai Idle (1).fbx
+      States:
+        - name: dance
+          clipIndex: 0
+          speed: 1
+          loop: true
+          transitions:
+            []
+        - name: walk
+          clipIndex: 1
+          speed: 1
+          loop: true
+          transitions:
+            []
+        - name: Idle
+          clipIndex: 2
+          speed: 1
+          loop: true
+          transitions:
+            []
+      FloatParams:
+        {}
+      BoolParams:
+        {}
+      CurrentStateIndex: 1
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
   - {}

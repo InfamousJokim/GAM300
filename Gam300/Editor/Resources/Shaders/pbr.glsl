@@ -84,9 +84,9 @@ layout (location=0) out vec4 out_fragment;
 layout(location=1) out vec4 out_brightness; //for bloom
 const vec3 BLOOM_THRESHOLD = vec3(0.2126, 0.7152, 0.0722) ;
 
-#define MAX_POINT_LIGHTS 128
+#define MAX_POINT_LIGHTS 32
 #define MAX_DIR_LIGHTS   32
-#define MAX_SPOT_LIGHTS  32
+#define MAX_SPOT_LIGHTS  128
 
 // GPU-friendly packed structs (std140-friendly: only vec4)
 struct GPUPointLight {

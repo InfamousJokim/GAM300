@@ -68,7 +68,7 @@ namespace Boom {
             }
 
             // Lines render fine with the scene depth. You can disable depth for overlay effect.
-            // glDisable(GL_DEPTH_TEST);
+            glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
             glLineWidth(lineWidth);
             glDrawArrays(GL_LINES, 0, static_cast<GLint>(verts.size()));

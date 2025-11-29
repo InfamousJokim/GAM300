@@ -377,8 +377,17 @@ namespace EditorUI {
                             // (Your SkeletalModel should expose GetAnimator() or similar.)
                             auto skeletalModel = std::dynamic_pointer_cast<Boom::SkeletalModel>(modelAsset.data);
                             if (skeletalModel && skeletalModel->GetAnimator()) {
-                                // Only auto-add if it doesn't exist (don't overwrite existing animator setup!)
-                                if (!selected.Has<Boom::AnimatorComponent>()) {
+                                if (selected.Has<Boom::AnimatorComponent>()) {
+                                    // Update skeleton but preserve states/clips/parameters
+                                    auto& animComp = selected.Get<Boom::AnimatorComponent>();
+                                    if (animComp.animator) {
+                                        animComp.animator->UpdateSkeletonFrom(*skeletalModel->GetAnimator());
+                                        BOOM_INFO("Updated skeleton (preserved states/clips).");
+                                    } else {
+                                        animComp.animator = skeletalModel->GetAnimator()->Clone();
+                                        BOOM_INFO("Created new animator.");
+                                    }
+                                } else {
                                     auto& animComp = selected.Attach<Boom::AnimatorComponent>();
                                     animComp.animator = skeletalModel->GetAnimator()->Clone();
                                     BOOM_INFO("Auto-added AnimatorComponent for skeletal model.");
