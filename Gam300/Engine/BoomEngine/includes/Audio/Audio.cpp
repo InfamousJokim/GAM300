@@ -153,15 +153,15 @@ BOOM_API float SoundEngine::GetGroupVolume(const std::string& groupName) const
 BOOM_API void SoundEngine::Update() {
     if (mSystem) mSystem->update();
 
-    // Optional debug: print listener + channel 3D info
+    // Always get listener position for attenuation calculations (not just debug mode!)
     FMOD_VECTOR listenerPos = {0,0,0};
-    if (mDebug3D && mSystem) {
+    if (mSystem) {
         FMOD_VECTOR lpos, lvel, lforward, lup;
         if (mSystem->get3DListenerAttributes(0, &lpos, &lvel, &lforward, &lup) == FMOD_OK) {
             listenerPos = lpos;
-            std::cerr << "[SoundEngine] Listener pos(" << lpos.x << "," << lpos.y << "," << lpos.z << ") forward(" << lforward.x << "," << lforward.y << "," << lforward.z << ")\n";
-        } else {
-            std::cerr << "[SoundEngine] Failed to get listener attributes\n";
+            if (mDebug3D) {
+                std::cerr << "[SoundEngine] Listener pos(" << lpos.x << "," << lpos.y << "," << lpos.z << ") forward(" << lforward.x << "," << lforward.y << "," << lforward.z << ")\n";
+            }
         }
     }
 
@@ -242,15 +242,13 @@ BOOM_API void SoundEngine::Update() {
             bool channelIs3D = false;
             if (ch->getMode(&chMode) == FMOD_OK) channelIs3D = (chMode & FMOD_3D) != 0;
 
-            // Only apply manual attenuation for non-3D channels (FMOD will handle 3D rolloff)
+            // Apply manual attenuation for all channels based on distance
             float appliedVol = vol;
-            if (!channelIs3D) {
-                float estimated = vol;
-                if (maxDist > minDist && maxDist > 0.0f) {
-                    if (distance <= minDist) estimated = 1.0f;
-                    else if (distance >= maxDist) estimated = 0.0f;
-                    else estimated = 1.0f - ((distance - minDist) / (maxDist - minDist));
-                }
+            if (maxDist > minDist && maxDist > 0.0f) {
+                float estimated = 1.0f;
+                if (distance <= minDist) estimated = 1.0f;
+                else if (distance >= maxDist) estimated = 0.0f;
+                else estimated = 1.0f - ((distance - minDist) / (maxDist - minDist));
 
                 float baseVol = 1.0f;
                 auto baseIt = baseVolumeSnapshot.find(name);
@@ -259,7 +257,39 @@ BOOM_API void SoundEngine::Update() {
                 ch->setVolume(appliedVol);
             }
 
-            std::cerr << "[SoundEngine] Channel '" << name << "' pos(" << pos.x << "," << pos.y << "," << pos.z << ") dist=" << distance << " min=" << minDist << " max=" << maxDist << " vol=" << vol << " applied=" << appliedVol << " playing=" << isPlaying << "\n";
+            std::cerr << "[SoundEngine] Channel '" << name << "' pos(" << pos.x << "," << pos.y << "," << pos.z << ") dist=" << distance << " min=" << minDist << " max=" << maxDist << " vol=" << vol << " applied=" << appliedVol << " playing=" << isPlaying << " 3D=" << channelIs3D << "\n";
+        } else if (ch && !mDebug3D) {
+            // Apply attenuation even when not in debug mode
+            FMOD_VECTOR pos = {0}, vel = {0};
+            ch->get3DAttributes(&pos, &vel);
+
+            // Get associated sound min/max if available
+            FMOD::Sound* curSound = nullptr;
+            float minDist = 0.0f, maxDist = 0.0f;
+            if (ch->getCurrentSound(&curSound) == FMOD_OK && curSound) {
+                if (curSound->get3DMinMaxDistance(&minDist, &maxDist) != FMOD_OK) {
+                    minDist = 0.0f; maxDist = 0.0f;
+                }
+            }
+
+            // Compute distance and apply attenuation
+            float dx = pos.x - listenerPos.x;
+            float dy = pos.y - listenerPos.y;
+            float dz = pos.z - listenerPos.z;
+            float distance = std::sqrt(dx*dx + dy*dy + dz*dz);
+
+            if (maxDist > minDist && maxDist > 0.0f) {
+                float estimated = 1.0f;
+                if (distance <= minDist) estimated = 1.0f;
+                else if (distance >= maxDist) estimated = 0.0f;
+                else estimated = 1.0f - ((distance - minDist) / (maxDist - minDist));
+
+                float baseVol = 1.0f;
+                auto baseIt = baseVolumeSnapshot.find(name);
+                if (baseIt != baseVolumeSnapshot.end()) baseVol = baseIt->second;
+                float appliedVol = baseVol * estimated;
+                ch->setVolume(appliedVol);
+            }
         }
 
         if (!isPlaying) stoppedNames.push_back(name);
@@ -332,7 +362,7 @@ BOOM_API void SoundEngine::Shutdown() {
 
     sMusicGroup = nullptr;
     sSFXGroup = nullptr;
-    sMasterGroup = nullptr; 
+    sMasterGroup = nullptr;
 
 
     if (mSystem) 
@@ -572,7 +602,54 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
 
     std::cout << "[SoundEngine] PlaySoundAt: " << name << " -> " << filePath << " pos(" << position.x << "," << position.y << "," << position.z << ")\n";
 
+    // For looped audio (BGM/ambient), play as 2D so it's always audible
+    // For one-shot audio (SFX), play as 3D with positional attenuation
+    if (loop) {
+        // BGM: use regular 2D PlaySound but track the entity position for consistency
+        if (mSounds.find(name) == mSounds.end()) {
+            FMOD_MODE mode = static_cast<FMOD_MODE>(FMOD_DEFAULT | FMOD_2D);
+            mode = static_cast<FMOD_MODE>(mode | FMOD_LOOP_NORMAL);
+            FMOD::Sound* sound = nullptr;
+
+            FMOD_RESULT result = mSystem->createSound(filePath.c_str(), mode, nullptr, &sound);
+            if (result != FMOD_OK || !sound) {
+                std::cerr << "FMOD failed to load (BGM) " << filePath << " error: " << result << std::endl;
+                return;
+            }
+
+            mSounds[name] = sound;
+        }
+
+        FMOD::Channel* channel = nullptr;
+        FMOD_RESULT result = mSystem->playSound(mSounds[name], nullptr, false, &channel);
+        if (result != FMOD_OK || !channel) {
+            std::cerr << "FMOD failed to play (BGM) " << name << " error: " << result << std::endl;
+            return;
+        }
+
+        // Route to Music group
+        FMOD::ChannelGroup* targetGroup = nullptr;
+        {
+            std::scoped_lock lock(mMutex);
+            auto it = mChannelGroups.find("Music");
+            if (it != mChannelGroups.end()) targetGroup = it->second;
+        }
+        if (channel && targetGroup) channel->setChannelGroup(targetGroup);
+
+        if (channel) {
+            channel->setVolume(1.0f);
+            channel->setPaused(false);
+            {
+                std::scoped_lock lock(mMutex);
+                mChannels[name] = channel;
+                mChannelBaseVolume[name] = 1.0f;
+            }
+        }
+        return;
+    }
+
     // Use a distinct key for 3D sounds so 2D and 3D variants don't collide.
+    // SFX: Use 3D positional audio with distance attenuation
     const std::string soundKey = name + "|3D";
 
     // Ensure sound loaded (3D mode)
@@ -599,7 +676,8 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
         if (needCreate) {
             // Use linear rolloff so attenuation follows min/max distances predictably
             FMOD_MODE mode = static_cast<FMOD_MODE>(FMOD_DEFAULT | FMOD_3D | FMOD_3D_LINEARROLLOFF);
-            mode = static_cast<FMOD_MODE>(mode | (loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));
+            mode = static_cast<FMOD_MODE>(mode | FMOD_LOOP_OFF);
+
             FMOD::Sound* sound = nullptr;
             FMOD_RESULT result = mSystem->createSound(filePath.c_str(), mode, nullptr, &sound);
             if (result != FMOD_OK || !sound) {
@@ -607,21 +685,16 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
                 return;
             }
 
-            // Set reasonable 3D min/max distances so FMOD applies attenuation over game-appropriate ranges.
-            // For looped ambient/BGM sounds, use larger distances so they don't fade when player moves
-            // For one-shot SFX, use tighter distances for better positional accuracy
-            if (loop) {
-                sound->set3DMinMaxDistance(5.0f, 500.0f);  // BGM/ambient music stays audible across large areas
-            } else {
-                sound->set3DMinMaxDistance(1.0f, 100.0f);  // SFX fade appropriately with distance
-            }
+            // Set reasonable 3D min/max distances for one-shot SFX
+            // Reduced from (1.0, 100.0) to (0.5, 30.0) for more aggressive falloff
+            sound->set3DMinMaxDistance(0.5f, 30.0f);
 
             mSounds[soundKey] = sound;
 
             // Debug: verify mode
             FMOD_MODE verifyMode = FMOD_DEFAULT;
             if (sound->getMode(&verifyMode) == FMOD_OK) {
-                if (verifyMode & FMOD_3D) std::cerr << "[SoundEngine] Loaded sound as 3D: " << soundKey << "\n";
+                if (verifyMode & FMOD_3D) std::cerr << "[SoundEngine] Loaded sound as 3D SFX: " << soundKey << "\n";
                 else std::cerr << "[SoundEngine] WARNING: sound not 3D after create: " << soundKey << "\n";
             }
         }
@@ -654,6 +727,7 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
     }
 
     // route to group: fallback heuristic (loop->Music, else SFX) but prefer named groups if present
+    // Route to SFX group
     FMOD::ChannelGroup* targetGroup = nullptr;
     {
         std::scoped_lock lock(mMutex);
@@ -679,18 +753,6 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
             }
         }
 
-        // Make attenuation more obvious for testing by tightening max distance
-        // (change back to larger values in production)
-        auto itSound = mSounds.find(soundKey);
-        if (itSound != mSounds.end() && itSound->second) {
-            itSound->second->set3DMinMaxDistance(0.5f, 20.0f);
-        }
-
-        // Also set per-channel min/max to ensure attenuation is applied even if sound defaults are ignored
-        if (channel->set3DMinMaxDistance(0.5f, 20.0f) != FMOD_OK) {
-            std::cerr << "[SoundEngine] Warning: failed to set channel 3D min/max distance for " << name << "\n";
-        }
-
         channel->setVolume(1.0f);
         channel->setPaused(false);
         {
@@ -699,8 +761,6 @@ BOOM_API void SoundEngine::PlaySoundAt(const std::string& name, const std::strin
             // Initialize base volume and let FMOD handle 3D attenuation
             mChannelBaseVolume[name] = 1.0f;
         }
-
-        // Removed manual attenuation fallback here so FMOD's 3D rolloff is authoritative.
     }
 }
 
@@ -712,33 +772,16 @@ BOOM_API void SoundEngine::SetSoundPosition(const std::string& name, const glm::
 
     FMOD::Channel* channel = it->second;
     FMOD_VECTOR fpos = { position.x, position.y, position.z };
-    FMOD_VECTOR fvel = {0.0f,0.0f,0.0f };
+    FMOD_VECTOR fvel = { 0.0f, 0.0f, 0.0f };
     channel->set3DAttributes(&fpos, &fvel);
 }
 
 BOOM_API void SoundEngine::SetListenerAttributes(const glm::vec3& pos, const glm::vec3& vel, const glm::vec3& forward, const glm::vec3& up)
 {
-	if (!mSystem) return;
-	FMOD_VECTOR p = { pos.x, pos.y, pos.z };
-	FMOD_VECTOR v = { vel.x, vel.y, vel.z };
-	FMOD_VECTOR f = { forward.x, forward.y, forward.z };
-	FMOD_VECTOR u = { up.x, up.y, up.z };
-	mSystem->set3DListenerAttributes(0, &p, &v, &f, &u);
-}
-
-BOOM_API bool SoundEngine::HasChannelGroup(const std::string& groupName) const
-{
-	std::scoped_lock lock(mMutex);
-	return mChannelGroups.find(groupName) != mChannelGroups.end();
-}
-
-BOOM_API std::vector<std::string> SoundEngine::GetChannelGroupNames() const
-{
-    std::vector<std::string> names;
-    std::scoped_lock lock(mMutex);
-    names.reserve(mChannelGroups.size());
-    for (auto& [k, v] : mChannelGroups) {
-        names.push_back(k);
-    }
-    return names;
+    if (!mSystem) return;
+    FMOD_VECTOR p = { pos.x, pos.y, pos.z };
+    FMOD_VECTOR v = { vel.x, vel.y, vel.z };
+    FMOD_VECTOR f = { forward.x, forward.y, forward.z };
+    FMOD_VECTOR u = { up.x, up.y, up.z };
+    mSystem->set3DListenerAttributes(0, &p, &v, &f, &u);
 }
