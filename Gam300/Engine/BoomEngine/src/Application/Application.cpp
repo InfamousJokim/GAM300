@@ -285,6 +285,9 @@ namespace Boom
                 SoundSystem::Update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
             }
 
+            // Update FMOD sound engine (must be done after listener & PlaySoundAt calls)
+            SoundEngine::Instance().Update();
+
             LightsUpdate();
 
             // Flycam (edit mode only)
