@@ -225,6 +225,8 @@ if exist "$(glew_BIN_DIRS)" xcopy /y /i "$(glew_BIN_DIRS)\*.dll" "$(TargetDir)"<
     <ClCompile Include="src\Panels\PrefabBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\PropertiesImgui.cpp" />
     <ClCompile Include="src\Panels\ResourcePanel.cpp" />
+    <ClCompile Include="src\Panels\SceneViewportPanel.cpp" />
+    <ClCompile Include="src\Panels\GameViewportPanel.cpp" />
     <ClCompile Include="src\Panels\ViewportPanel.cpp" />
     <ClCompile Include="src\Recast\RecastBaker.cpp" />
     <ClCompile Include="src\Vendors\imGuizmo\GraphEditor.cpp">
@@ -262,6 +264,7 @@ if exist "$(glew_BIN_DIRS)" xcopy /y /i "$(glew_BIN_DIRS)\*.dll" "$(TargetDir)"<
     <ClInclude Include="src\Panels\AudioPanel.h" />
     <ClInclude Include="src\Panels\ConsolePanel.h" />
     <ClInclude Include="src\Panels\DirectoryPanel.h" />
+    <ClInclude Include="src\Panels\GameViewportPanel.h" />
     <ClInclude Include="src\Panels\HierarchyPanel.h" />
     <ClInclude Include="src\Panels\Inspector\InspectorPanel.h" />
     <ClInclude Include="src\Panels\MenuBarPanel.h" />
@@ -271,6 +274,7 @@ if exist "$(glew_BIN_DIRS)" xcopy /y /i "$(glew_BIN_DIRS)\*.dll" "$(TargetDir)"<
     <ClInclude Include="src\Panels\PrefabBrowserPanel.h" />
     <ClInclude Include="src\Panels\PropertiesImgui.h" />
     <ClInclude Include="src\Panels\ResourcePanel.h" />
+    <ClInclude Include="src\Panels\SceneViewportPanel.h" />
     <ClInclude Include="src\Panels\ViewportPanel.h" />
     <ClInclude Include="src\Recast\RecastBaker.h" />
     <ClInclude Include="src\Vendors\FA.h" />

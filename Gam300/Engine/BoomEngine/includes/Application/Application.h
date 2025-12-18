@@ -81,6 +81,12 @@ namespace Boom
 		STOPPED
 	};
 
+	// NEW: Viewport type enumeration
+	enum class ViewportType
+	{
+		SCENE,  // Free camera (editor view)
+		GAME    // Main game camera
+	};
 	/**
 	* @class Application
 	* @brief Core application that owns the context and drives all layers.
@@ -1033,6 +1039,23 @@ namespace Boom
 		entt::entity                           m_PlayerE = entt::null;
 		entt::entity                           m_AgentE = entt::null;
 
+		// ---------------------- Free Camera (Scene View) ----------------------
+		// =====================================================
+	// DUAL VIEWPORT SYSTEM
+	// =====================================================
+		struct FreeCameraState {
+			glm::vec3 position{ 0.0f, 5.0f, 10.0f };
+			glm::vec3 rotation{ -30.0f, 0.0f, 0.0f }; // pitch, yaw, roll
+			float moveSpeed = 5.0f;
+			float rotateSpeed = 0.15f;
+		};
+
+		FreeCameraState m_FreeCamera;
+		ViewportType m_ActiveViewport = ViewportType::SCENE;
+		bool m_SceneViewportFocused = false;
+		bool m_GameViewportFocused = false;
+
+
 		BOOM_INLINE void EnsureNinjaSeeksSamurai()
 		{
 			auto& reg = m_Context->scene;
@@ -1549,6 +1572,91 @@ namespace Boom
 				}
 			}
 		}
+
+		public:
+			// =====================================================
+			// VIEWPORT MANAGEMENT
+			// =====================================================
+
+			BOOM_INLINE void SetActiveViewport(ViewportType type) {
+				m_ActiveViewport = type;
+			}
+
+			BOOM_INLINE ViewportType GetActiveViewport() const {
+				return m_ActiveViewport;
+			}
+
+			BOOM_INLINE void UpdateFreeCamera(float deltaTime) {
+				if (!m_SceneViewportFocused) return; // Only update when Scene viewport is focused
+
+				auto* win = m_Context->window.get();
+
+				// Calculate movement vectors
+				glm::vec3 forward, right, up = glm::vec3(0, 1, 0);
+
+				float yawRad = glm::radians(m_FreeCamera.rotation.y);
+				float pitchRad = glm::radians(m_FreeCamera.rotation.x);
+
+				forward.x = cos(pitchRad) * sin(yawRad);
+				forward.y = sin(pitchRad);
+				forward.z = cos(pitchRad) * cos(yawRad);
+				forward = glm::normalize(forward);
+
+				right = glm::normalize(glm::cross(forward, up));
+
+				// WASD movement (only in Scene view)
+				if (win->input.keyDown(GLFW_KEY_W))
+					m_FreeCamera.position += forward * m_FreeCamera.moveSpeed * deltaTime;
+				if (win->input.keyDown(GLFW_KEY_S))
+					m_FreeCamera.position -= forward * m_FreeCamera.moveSpeed * deltaTime;
+				if (win->input.keyDown(GLFW_KEY_D))
+					m_FreeCamera.position += right * m_FreeCamera.moveSpeed * deltaTime;
+				if (win->input.keyDown(GLFW_KEY_A))
+					m_FreeCamera.position -= right * m_FreeCamera.moveSpeed * deltaTime;
+				if (win->input.keyDown(GLFW_KEY_E))
+					m_FreeCamera.position += up * m_FreeCamera.moveSpeed * deltaTime;
+				if (win->input.keyDown(GLFW_KEY_Q))
+					m_FreeCamera.position -= up * m_FreeCamera.moveSpeed * deltaTime;
+
+				// Mouse rotation (only when right-click is held)
+				if (win->input.mouseDown(GLFW_MOUSE_BUTTON_RIGHT)) {
+					glm::vec2 mouseDelta = win->input.mouseDeltaLast();
+					m_FreeCamera.rotation.y += mouseDelta.x * m_FreeCamera.rotateSpeed;
+					m_FreeCamera.rotation.x -= mouseDelta.y * m_FreeCamera.rotateSpeed;
+
+					// Clamp pitch
+					m_FreeCamera.rotation.x = glm::clamp(m_FreeCamera.rotation.x, -89.0f, 89.0f);
+				}
+
+				// Speed boost with Shift
+				if (win->input.keyDown(GLFW_KEY_LEFT_SHIFT)) {
+					m_FreeCamera.moveSpeed = 10.0f;
+				}
+				else {
+					m_FreeCamera.moveSpeed = 5.0f;
+				}
+			}
+
+			BOOM_INLINE Transform3D GetFreeCameraTransform() const {
+				Transform3D transform;
+				transform.translate = m_FreeCamera.position;
+				transform.rotate = m_FreeCamera.rotation;
+				transform.scale = glm::vec3(1.0f);
+				return transform;
+			}
+
+			BOOM_INLINE Camera3D GetFreeCameraObject() const {
+				Camera3D cam;
+				cam.FOV = 60.0f;
+				cam.nearPlane = 0.1f;
+				cam.farPlane = 1000.0f;
+				cam.cameraType = Camera3D::CameraType::Sub;
+				return cam;
+			}
+
+			// Called by ViewportPanel to notify which viewport is focused
+			BOOM_INLINE void SetSceneViewportFocused(bool focused) { m_SceneViewportFocused = focused; }
+			BOOM_INLINE void SetGameViewportFocused(bool focused) { m_GameViewportFocused = focused; }
 
 	};
 

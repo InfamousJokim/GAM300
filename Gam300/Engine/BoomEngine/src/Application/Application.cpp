@@ -1,10 +1,9 @@
 #include "Core.h"
 #include "Application/Application.h"
-#include "Audio/SoundSystem.hpp" // <-- added for per-entity sound updates
+#include "Audio/SoundSystem.hpp"
 
 namespace Boom
 {
-
     void Application::RunContext(bool showFrame)
     {
         BOOM_INFO("[Application] RunContext started");
@@ -15,53 +14,33 @@ namespace Boom
         std::cout << "[RunContext] Loading scene MainMenu..." << std::endl;
         std::cout.flush();
 
-        if (!showFrame) { //for runtime game.exe
+        if (!showFrame) {
             DataSerializer serializer;
             serializer.DeserializeAsync(*m_Context->assets, "Resources/assets.yaml", GetWindowHandle().get());
         }
 
-        //LoadScene("level");
         LoadScene("MainMenu");
-        
 
         std::cout << "[RunContext] Scene loaded successfully" << std::endl;
         std::cout.flush();
 
         // -- LOADING in MONO --
         const std::string exeDir = GetExeDir();
-
-        std::cout << "[RunContext] Exe directory: " << exeDir << std::endl;
-        std::cout.flush();
-
-        // Detect if running in shipped/exported mode (Scripts folder next to exe)
-        // vs development mode (complex folder structure)
         std::filesystem::path scriptsFolder = std::filesystem::path(exeDir) / "Scripts";
         bool isShippedMode = std::filesystem::exists(scriptsFolder);
-
-        std::cout << "[RunContext] Shipped mode: " << (isShippedMode ? "YES" : "NO") << std::endl;
-        std::cout.flush();
 
         std::string asmDir;
         std::string monoBase;
 
-        if (isShippedMode)
-        {
-            // SHIPPED MODE: Everything is relative to exe
+        if (isShippedMode) {
             BOOM_INFO("[Application] Running in SHIPPED mode (exported game)");
             asmDir = scriptsFolder.string();
-            monoBase = exeDir; // Mono DLLs are next to exe in shipped builds
-
-
+            monoBase = exeDir;
         }
-        else
-        {
-            // DEVELOPMENT MODE: Use repository structure
+        else {
             BOOM_INFO("[Application] Running in DEVELOPMENT mode");
             std::filesystem::path repoRoot = std::filesystem::path(exeDir)
-                .parent_path()  // Debug -> x64
-                .parent_path()  // x64 -> Gam300
-                .parent_path(); // Gam300 -> GAM300
-
+                .parent_path().parent_path().parent_path();
 
             monoBase = (repoRoot / "mono").string();
 #if defined(_DEBUG)
@@ -73,65 +52,31 @@ namespace Boom
             if (m_Context->scriptingSystem) {
                 m_Context->scriptingSystem->EnableAutoHotReload(true);
             }
-
-            std::cout << "[RunContext] Script directory: " << asmDir << std::endl;
-            std::cout << "[RunContext] Mono base: " << monoBase << std::endl;
-            std::cout.flush();
         }
-
-
 
         if (!std::filesystem::exists(asmDir)) {
             BOOM_ERROR("[Scripting] Script directory does not exist: {}", asmDir);
-            std::cout << "[RunContext] ERROR: Script directory not found!" << std::endl;
-            std::cout.flush();
         }
 
-        std::cout << "[RunContext] Initializing scripting system..." << std::endl;
-        std::cout.flush();
-
-        if (!m_Context->scriptingSystem->Init(asmDir, m_Context))
-        {
+        // Initialize scripting system
+        if (!m_Context->scriptingSystem->Init(asmDir, m_Context)) {
             BOOM_ERROR("[Scripting] Failed to initialize scripting system!");
-            std::cout << "[RunContext] ERROR: Failed to initialize scripting system!" << std::endl;
-            std::cout.flush();
         }
-        else
-        {
-
+        else {
             if (isShippedMode) {
                 m_Context->scriptingSystem->EnableAutoHotReload(false);
-                BOOM_INFO("[Scripting] Hot-reload DISABLED (shipped mode)");
             }
             else {
                 m_Context->scriptingSystem->EnableAutoHotReload(true);
-                BOOM_INFO("[Scripting] Hot-reload ENABLED (development mode)");
             }
-
 
             RegisterScriptInternalCalls(m_Context);
-            std::cout << "[RunContext] Scripting system initialized" << std::endl;
-            std::cout.flush();
-
             std::string dllPath = (std::filesystem::path(asmDir) / "GameScripts.dll").string();
 
-            std::cout << "[RunContext] Loading GameScripts.dll from: " << dllPath << std::endl;
-            std::cout.flush();
-
-            if (!m_Context->scriptingSystem->LoadScriptsDll(dllPath))
-            {
+            if (!m_Context->scriptingSystem->LoadScriptsDll(dllPath)) {
                 BOOM_ERROR("[Scripting] Failed to load GameScripts.dll");
-                std::cout << "[RunContext] ERROR: Failed to load GameScripts.dll" << std::endl;
-                std::cout.flush();
             }
-            else
-            {
-                std::cout << "[RunContext] GameScripts.dll loaded successfully" << std::endl;
-                std::cout.flush();
-
-                std::cout << "[RunContext] Calling GameScripts Entry:Start()..." << std::endl;
-                std::cout.flush();
-
+            else {
                 if (!m_Context->scriptingSystem->CallStart()) {
                     BOOM_ERROR("[Scripting] GameScripts.Entry:Start() failed");
                 }
@@ -146,80 +91,33 @@ namespace Boom
                         }
                     }
                     BOOM_INFO("[Scripting] Created {} script instances", scriptsCreated);
-                    std::cout << "[RunContext] Script instances created: " << scriptsCreated << std::endl;
-                    std::cout.flush();
                 }
-                
             }
         }
 
-        std::cout << "[RunContext] Scripting initialization complete" << std::endl;
-        std::cout.flush();
+        // Camera controller (for legacy flycam support in edit mode)
+        CameraController camera(m_Context->window.get());
 
-        std::cout << "[RunContext] Creating camera controller..." << std::endl;
-        std::cout.flush();
-
-       // InitNavRuntime();
-        //EnsureNinjaSeeksSamurai();
-        CameraController camera(
-            m_Context->window.get()
-        );
-
-        std::cout << "[RunContext] Camera controller created, initializing skybox..." << std::endl;
-        std::cout.flush();
-
-        ////init skybox
+        // Initialize skybox
         try {
             EnttView<Entity, SkyboxComponent>([this](auto, auto& comp) {
-                std::cout << "[RunContext] Found skybox component with ID: " << comp.skyboxID << std::endl;
-                std::cout.flush();
-
                 SkyboxAsset& skybox{ m_Context->assets->Get<SkyboxAsset>(comp.skyboxID) };
-
-                std::cout << "[RunContext] Skybox asset retrieved" << std::endl;
-                std::cout << "[RunContext]   - Asset name: " << skybox.name << std::endl;
-                std::cout << "[RunContext]   - Asset source: " << skybox.source << std::endl;
-                std::cout << "[RunContext]   - Skybox size: " << skybox.size << std::endl;
-                std::cout << "[RunContext]   - EnvMap texture valid: " << (skybox.envMap ? "YES" : "NO") << std::endl;
-                std::cout.flush();
-
-                if (!skybox.envMap) {
-                    std::cout << "[RunContext] ERROR: Skybox envMap texture is null!" << std::endl;
-                    std::cout.flush();
-                    return;
+                if (skybox.envMap) {
+                    m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
                 }
-
-                std::cout << "[RunContext] Calling renderer->InitSkybox..." << std::endl;
-                std::cout.flush();
-
-                m_Context->renderer->InitSkybox(skybox.data, skybox.envMap, skybox.size);
-
-                std::cout << "[RunContext] InitSkybox completed successfully" << std::endl;
-                std::cout.flush();
-
-                return; //should stop after one skybox rendered
-            });
+                return;
+                });
         }
         catch (const std::exception& e) {
-            std::cout << "[RunContext] ERROR: Skybox initialization failed: " << e.what() << std::endl;
-            std::cout.flush();
             BOOM_ERROR("[Application] Skybox initialization failed: {}", e.what());
         }
 
-        std::cout << "[RunContext] Skybox initialization complete, creating debug lines shader..." << std::endl;
-        std::cout.flush();
-
         m_DebugLinesShader = std::make_unique<Boom::DebugLinesShader>("debug_lines.glsl");
-
-        std::cout << "[RunContext] Debug lines shader created, enabling physics debug..." << std::endl;
-        std::cout.flush();
-
         m_Context->physics->EnableDebugVisualization(m_PhysDebugViz, 1.0f);
 
-        std::cout << "[RunContext] Physics debug enabled, entering main game loop..." << std::endl;
-        std::cout.flush();
-
-        //temp input for mouse motion
+        // =====================================================
+        // MAIN GAME LOOP
+        // =====================================================
         glm::dvec2 curMP{};
         glm::dvec2 prevMP{};
 
@@ -228,25 +126,55 @@ namespace Boom
             std::shared_ptr<GLFWwindow> engineWindow = m_Context->window->Handle();
             SoundEngine::Instance().Update();
 
-            // Select main camera
-            Camera3D* activeCam = nullptr;
-            Transform3D camTransform{};
+            // =====================================================
+            // DUAL VIEWPORT CAMERA SELECTION
+            // =====================================================
+            Camera3D* sceneCamera = nullptr;
+            Transform3D sceneCameraTransform{};
+
+            Camera3D* gameCamera = nullptr;
+            Transform3D gameCameraTransform{};
+
+            // 1. Get FREE CAMERA (Scene view)
+            Camera3D freeCamObj = GetFreeCameraObject();
+            sceneCameraTransform = GetFreeCameraTransform();
+            sceneCamera = &freeCamObj;
+
+            // Update free camera controls (only when Scene viewport is focused)
+            UpdateFreeCamera(static_cast<float>(m_Context->DeltaTime));
+
+            // 2. Get GAME CAMERA (Game view)
             EnttView<Entity, CameraComponent>([&](auto en, CameraComponent& comp) {
-                if (!activeCam && comp.camera.cameraType == Camera3D::CameraType::Main) {
-                    camTransform = en.Get<TransformComponent>().transform;
-                    activeCam = &comp.camera;
+                if (comp.camera.cameraType == Camera3D::CameraType::Main) {
+                    gameCameraTransform = en.Get<TransformComponent>().transform;
+                    gameCamera = &comp.camera;
                 }
                 });
 
-            if (activeCam) camera.attachCamera(activeCam);
+            // 3. Determine which camera to use for RENDERING (based on active viewport)
+            Camera3D* activeCam = nullptr;
+            Transform3D activeCamTransform{};
+
+            if (m_ActiveViewport == ViewportType::SCENE) {
+                activeCam = sceneCamera;
+                activeCamTransform = sceneCameraTransform;
+            }
+            else {
+                activeCam = gameCamera;
+                activeCamTransform = gameCameraTransform;
+            }
+
+            if (activeCam) {
+                m_Context->renderer->SetCamera(*activeCam, activeCamTransform);
+            }
+
             glfwMakeContextCurrent(engineWindow.get());
 
             // F11 toggle rigid body type (test)
             {
                 static bool prevF11 = false;
                 bool f11Pressed = glfwGetKey(engineWindow.get(), GLFW_KEY_F11) == GLFW_PRESS;
-                if (f11Pressed && !prevF11)
-                {
+                if (f11Pressed && !prevF11) {
                     EnttView<Entity, InfoComponent, RigidBodyComponent>([this](auto entity, InfoComponent& info, RigidBodyComponent& rb) {
                         if (info.name == "Sphere") {
                             RigidBody3D::Type currentType = rb.RigidBody.type;
@@ -259,13 +187,12 @@ namespace Boom
                 prevF11 = f11Pressed;
             }
 
-
             ComputeFrameDeltaTime();
-            // Always run file watcher
             m_Context->scriptingSystem->UpdateFileWatcher();
 
-            // Always run Entry.cs. This will set our new m_IsGameLogicPaused flag.
-            // Frame begin
+            // =====================================================
+            // STEP 2: FRAME BEGIN
+            // =====================================================
             m_Context->profiler.BeginFrame();
             m_Context->profiler.Start("Total Frame");
             m_Context->profiler.Start("Renderer Start Frame");
@@ -273,83 +200,101 @@ namespace Boom
             m_Context->renderer->NewFrame();
             m_Context->profiler.End("Renderer Start Frame");
 
+            // =====================================================
+            // STEP 3: GAME LOGIC UPDATE
+            // =====================================================
             float dt = static_cast<float>(m_Context->DeltaTime);
-            if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING)
-            {
+            if (m_IsInPlayMode && m_AppState == ApplicationState::RUNNING) {
                 m_Context->scriptingSystem->CallUpdate(dt);
 
-                // Individual Scripts Logic (TickEntity)
                 auto& registry = m_Context->scene;
                 auto scriptView = registry.view<Boom::ScriptComponent>();
                 for (auto entity : scriptView) {
                     auto& sc = scriptView.get<Boom::ScriptComponent>(entity);
                     bool isPauseMenuObject = registry.any_of<PauseMenuTagComponent>(entity);
-                    if (!m_IsGameLogicPaused || isPauseMenuObject)
-                    {
+                    if (!m_IsGameLogicPaused || isPauseMenuObject) {
                         m_Context->scriptingSystem->TickEntity(entity, sc, dt);
                     }
                 }
 
-                // --- RUN ALL GAME LOGIC ---
                 if (!m_IsGameLogicPaused) {
-                    // AI Logic
-                    m_AIagents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
+                    m_AIagents.update(m_Context->scene, dt);
                     if (m_Nav) {
-                        m_NavAgents.update(m_Context->scene, static_cast<float>(m_Context->DeltaTime), *m_Nav);
+                        m_NavAgents.update(m_Context->scene, dt, *m_Nav);
                     }
 
-                    // Physics Logic
-                    EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) { rb.RigidBody.isColliding = false; });
+                    EnttView<Entity, RigidBodyComponent>([](auto, RigidBodyComponent& rb) {
+                        rb.RigidBody.isColliding = false;
+                        });
                     UpdateKinematicTransforms();
                     RunPhysicsSimulation();
                     UpdateThirdPersonCameras();
-                    SoundSystem::Update(m_Context->scene, static_cast<float>(m_Context->DeltaTime));
+                    SoundSystem::Update(m_Context->scene, dt);
                 }
             }
 
             SoundEngine::Instance().Update();
-
             LightsUpdate();
 
-            // Flycam (edit mode only)
+            // =====================================================
+            // STEP 4: SET CAMERA FOR RENDERING
+            // =====================================================
             glfwGetCursorPos(m_Context->window->Handle().get(), &curMP.x, &curMP.y);
-            if (!m_IsInPlayMode) {
+
+            // Legacy flycam support (edit mode only)
+            if (!m_IsInPlayMode && m_ActiveViewport == ViewportType::GAME) {
                 camera.update(static_cast<float>(m_Context->DeltaTime));
             }
 
-            // Camera set + debug matrices
+            // Set camera for rendering
             glm::mat4 dbgView(1.0f);
             glm::mat4 dbgProj(1.0f);
             glm::vec3 dbgCamPos(0.0f);
 
             Camera3D* mainCam{};
             Transform3D mainCamT{};
-            EnttView<Entity, CameraComponent>([this, &curMP, &prevMP, &dbgView, &dbgProj, &dbgCamPos, &mainCam, &mainCamT](auto entity, CameraComponent& comp) {
-                Transform3D& transform{ entity.template Get<TransformComponent>().transform };
 
-                if (!m_IsInPlayMode) {
-                    transform.rotate.x += m_Context->window->camRot.x;
-                    transform.rotate.y += m_Context->window->camRot.y;
-                    glm::quat quat{ glm::radians(transform.rotate) };
-                    glm::vec3 dir{ quat * m_Context->window->camMoveDir };
-                    transform.translate += dir;
-
-                    if (curMP == prevMP) {
-                        m_Context->window->camRot = {};
-                        if (m_Context->window->isMiddleClickDown)
-                            m_Context->window->camMoveDir = {};
-                    }
+            if (activeCam) {
+                // Set the active camera based on viewport type
+                if (!m_IsInPlayMode && m_ActiveViewport == ViewportType::SCENE) {
+                    // Free camera (Scene view)
+                    m_Context->renderer->SetCamera(*activeCam, activeCamTransform);
+                    dbgView = activeCam->View(activeCamTransform);
+                    dbgProj = activeCam->Projection(m_Context->renderer->AspectRatio());
+                    dbgCamPos = activeCamTransform.translate;
                 }
+                else {
+                    // Game camera (Game view or Play mode)
+                    EnttView<Entity, CameraComponent>([this, &curMP, &prevMP, &dbgView, &dbgProj, &dbgCamPos, &mainCam, &mainCamT](auto entity, CameraComponent& comp) {
+                        Transform3D& transform{ entity.template Get<TransformComponent>().transform };
 
-                mainCam = &comp.camera;
-                mainCamT = transform;
-                m_Context->renderer->SetCamera(comp.camera, transform);
-                dbgView = comp.camera.View(transform);
-                dbgProj = comp.camera.Projection(m_Context->renderer->Aspect());
-                dbgCamPos = transform.translate;
-                });
+                        if (!m_IsInPlayMode) {
+                            transform.rotate.x += m_Context->window->camRot.x;
+                            transform.rotate.y += m_Context->window->camRot.y;
+                            glm::quat quat{ glm::radians(transform.rotate) };
+                            glm::vec3 dir{ quat * m_Context->window->camMoveDir };
+                            transform.translate += dir;
 
-            // Skybox FIRST (so GUI blends against it)
+                            if (curMP == prevMP) {
+                                m_Context->window->camRot = {};
+                                if (m_Context->window->isMiddleClickDown)
+                                    m_Context->window->camMoveDir = {};
+                            }
+                        }
+
+                        mainCam = &comp.camera;
+                        mainCamT = transform;
+                        m_Context->renderer->SetCamera(comp.camera, transform);
+                        dbgView = comp.camera.View(transform);
+                        dbgProj = comp.camera.Projection(m_Context->renderer->AspectRatio());
+                        dbgCamPos = transform.translate;
+                        });
+                }
+            }
+
+            // =====================================================
+            // STEP 5: RENDER SKYBOX
+            // =====================================================
             EnttView<Entity, SkyboxComponent>([this](auto entity, SkyboxComponent& comp) {
                 Transform3D& transform{ entity.template Get<TransformComponent>().transform };
                 static AssetID prevSkyID{ comp.skyboxID };
@@ -368,7 +313,9 @@ namespace Boom
                 return;
                 });
 
-            // Sync physics transforms
+            // =====================================================
+            // STEP 6: SYNC PHYSICS TRANSFORMS
+            // =====================================================
             prevMP = curMP;
             EnttView<Entity, TransformComponent, RigidBodyComponent>([this](auto entity, TransformComponent& tc, RigidBodyComponent& rbc) {
                 if (tc.transform.scale != rbc.RigidBody.previousScale) {
@@ -381,6 +328,7 @@ namespace Boom
                     }
                 }
                 });
+
             EnttView<Entity, TransformComponent, ColliderComponent>([this](auto entity, TransformComponent& tc, ColliderComponent& cc) {
                 if (entity.template Has<RigidBodyComponent>()) return;
                 if (cc.Collider.Shape) {
@@ -396,10 +344,14 @@ namespace Boom
                 }
                 });
 
-            // World + GUI
+            // =====================================================
+            // STEP 7: RENDER SCENE
+            // =====================================================
             RenderScene();
 
-            // Debug draws
+            // =====================================================
+            // STEP 8: DEBUG VISUALIZATION
+            // =====================================================
             if (m_PhysDebugViz && m_DebugLinesShader) {
                 m_Context->physics->CollectDebugLines(m_PhysLinesCPU);
                 if (!m_PhysLinesCPU.empty()) {
@@ -430,24 +382,26 @@ namespace Boom
                         m_DebugLinesShader->Draw(dbgView, dbgProj, filtered, 50.5f);
                 }
             }
+
             if (m_PhysDebugViz && m_DebugLinesShader) {
                 DrawRigidBodiesDebugOnly(dbgView, dbgProj);
             }
+
             if (m_Context->ShowNavDebug && m_DebugLinesShader && m_Nav) {
                 const float navDrawRadius = 60.0f;
                 m_Nav->DrawDetourNavMesh_Query(*m_DebugLinesShader, dbgView, dbgProj, dbgCamPos, navDrawRadius);
             }
 
-            // NOTE: removed the old "skybox ecs (should be drawn at the end)" block
-
-            // Frame end
+            // =====================================================
+            // STEP 9: FINALIZE FRAME
+            // =====================================================
             m_Context->profiler.Start("Renderer End Frame");
             m_Context->renderer->EndFrame();
             m_Context->profiler.End("Renderer End Frame");
 
-            //picking logic
+            // Picking logic
             m_Context->renderer->StartPickFrame();
-            m_Context->renderer->SetPickCamera(*mainCam, mainCamT);
+            m_Context->renderer->SetPickCamera(*activeCam, activeCamTransform);
             RenderScene(true);
             m_Context->renderer->EndPickFrame();
 

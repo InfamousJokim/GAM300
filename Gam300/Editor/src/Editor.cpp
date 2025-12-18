@@ -18,6 +18,8 @@
 #include "Panels/PlaybackControlsPanel.h"
 #include "Panels/NavMeshPanel.h"
 #include "Panels/AnimatorGraphPanel.h"
+#include "Panels/SceneViewportPanel.h"   // ADD THIS
+#include "Panels/GameViewportPanel.h"    // ADD THIS
 #include "BoomEngine.h"
 
 // Undo/Redo
@@ -135,11 +137,9 @@ namespace EditorUI {
         { //load assets - using multithreaded loading for faster startup
             DataSerializer serializer;
             serializer.DeserializeAsync(*m_Context->assets, "AssetsProp/assets.yaml", m_App->GetWindowHandle().get());
-            // Note: Pass 0 as numThreads to auto-detect CPU cores, or specify a number like 4 or 8
         }
 
         // Construct panels here; they persist across frames.
-        // We pass `this` so panels can call owner->GetContext() etc.
         m_MenuBar = std::make_unique<MenuBarPanel>(this);
         m_Inspector = std::make_unique<InspectorPanel>(this);
         m_Hierarchy = std::make_unique<HierarchyPanel>(this);
@@ -148,14 +148,16 @@ namespace EditorUI {
         m_Directory = std::make_unique<DirectoryPanel>(this);
         m_Audio = std::make_unique<AudioPanel>(this);
         m_PrefabBrowser = std::make_unique<PrefabBrowserPanel>(this);
-        m_Viewport = std::make_unique<ViewportPanel>(this);
+        m_Viewport = std::make_unique<ViewportPanel>(this);  // Keep old one (optional)
+        m_SceneViewport = std::make_unique<SceneViewportPanel>(this);  // NEW
+        m_GameViewport = std::make_unique<GameViewportPanel>(this);   // NEW
         m_Performance = std::make_unique<PerformancePanel>(this);
         m_Playback = std::make_unique<PlaybackControlsPanel>(this, m_App);
-		m_Navmesh = std::make_unique<NavmeshPanel>(this);
+        m_Navmesh = std::make_unique<NavmeshPanel>(this);
         m_AnimatorGraph = std::make_unique<AnimatorGraphPanel>(this);
 
         // Initialize Undo/Redo system
-        m_CommandHistory = std::make_unique<CommandHistory>(100); // Max 100 undo levels
+        m_CommandHistory = std::make_unique<CommandHistory>(100);
 
         // Panel-specific init
         if (m_Directory) m_Directory->Init();
@@ -201,7 +203,9 @@ namespace EditorUI {
         // --- Panels (menu first, then windows) ---
         if (m_MenuBar)        m_MenuBar->Render();
         RenderSceneDialogs();
-        if (m_ShowViewport && m_Viewport)      m_Viewport->Render();
+        //if (m_ShowViewport && m_Viewport)      m_Viewport->Render();
+        if (m_ShowViewport && m_SceneViewport) m_SceneViewport->Render();
+        if (m_ShowViewport && m_GameViewport)  m_GameViewport->Render();
         if (m_ShowHierarchy && m_Hierarchy)     m_Hierarchy->Render();
         if (m_ShowInspector && m_Inspector)     m_Inspector->Render();
         if (m_ShowResources && m_Resources)     m_Resources->OnShow();   

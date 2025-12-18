@@ -1,4 +1,4 @@
-﻿// ViewportPanel.cpp - WITH RAY CASTING
+﻿// ViewportPanel.cpp - WITH DUAL VIEWPORT SUPPORT (Scene + Game)
 #include "Panels/ViewportPanel.h"
 #include "Editor.h"
 #include "Context/Context.h"
@@ -33,7 +33,6 @@ namespace {
 
         glm::mat3 rotationMatrix(col0, col1, col2);
 
-        // Extract rotation in radians
         rotation.y = asin(-rotationMatrix[0][2]);
 
         if (cos(rotation.y) != 0) {
@@ -45,7 +44,6 @@ namespace {
             rotation.z = 0;
         }
 
-        // Convert rotation from radians to degrees (engine expects degrees)
         rotation = glm::degrees(rotation);
     }
 }
@@ -72,162 +70,150 @@ namespace EditorUI {
     {
         if (!m_ShowViewport) return;
 
-        if (ImGui::Begin(ICON_FA_IMAGE "\tViewport", &m_ShowViewport))
+        auto* app = static_cast<Boom::Application*>(m_Ctx->app);
+        if (!app) return;
+
+        // =====================================================
+        // DUAL VIEWPORT CONTAINER
+        // =====================================================
+        ImGui::Begin("Viewports", &m_ShowViewport, ImGuiWindowFlags_NoScrollbar);
+
+        ImVec2 availableSpace = ImGui::GetContentRegionAvail();
+        float sceneWidth = availableSpace.x * 0.6f; // 60% for Scene
+        float gameWidth = availableSpace.x - sceneWidth - 8.0f; // 40% for Game
+
+        // =====================================================
+        // SCENE VIEWPORT (Free Camera)
+        // =====================================================
+        ImGui::BeginChild("SceneViewport", ImVec2(sceneWidth, availableSpace.y),
+            ImGuiChildFlags_Border | ImGuiChildFlags_ResizeX);
         {
-            ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-            m_Viewport = viewportSize;
+            ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "SCENE VIEW");
+            ImGui::Separator();
 
-            const uint32_t frameTexture = QuerySceneFrame();
+            ImVec2 sceneViewportSize = ImGui::GetContentRegionAvail();
 
-            if (frameTexture > 0 && viewportSize.x > 1.0f && viewportSize.y > 1.0f)
+            if (sceneViewportSize.x > 50.0f && sceneViewportSize.y > 50.0f)
             {
-                ImVec2 cursorPos = ImGui::GetCursorScreenPos();
-                ImGui::GetWindowDrawList()->AddImage(
-                    (ImTextureID)(uintptr_t)frameTexture,
-                    cursorPos,
-                    ImVec2(cursorPos.x + viewportSize.x, cursorPos.y + viewportSize.y),
-                    ImVec2(0, 1),
-                    ImVec2(1, 0)
-                );
+                const uint32_t frameTexture = QuerySceneFrame();
 
-                ImGui::Dummy(viewportSize);
-
-                // Get viewport bounds FIRST
-                const ImVec2 itemMin = ImGui::GetItemRectMin();
-                const ImVec2 itemMax = ImGui::GetItemRectMax();
-                const ImVec2 rectSz = ImVec2(itemMax.x - itemMin.x, itemMax.y - itemMin.y);
-                const bool hovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
-                const bool viewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
-
-                // Handle gizmo shortcuts when viewport is focused (no need to check WantCaptureKeyboard)
-                // These shortcuts consume the key press, preventing camera movement
-                bool gizmoShortcutPressed = false;
-                if (viewportFocused && hovered)
+                if (frameTexture > 0)
                 {
-                    if (ImGui::IsKeyPressed(ImGuiKey_W, false)) {
-                        m_GizmoOperation = ImGuizmo::TRANSLATE;
-                        gizmoShortcutPressed = true;
-                        BOOM_INFO("[Gizmo] Switched to TRANSLATE mode");
+                    // Check if this viewport is focused/hovered
+                    bool isHovered = ImGui::IsWindowHovered();
+                    bool isFocused = ImGui::IsWindowFocused();
+
+                    // Notify application which viewport is active
+                    if (isFocused || isHovered) {
+                        app->SetActiveViewport(Boom::ViewportType::SCENE);
+                        app->SetSceneViewportFocused(true);
+                        app->SetGameViewportFocused(false);
                     }
-                    if (ImGui::IsKeyPressed(ImGuiKey_E, false)) {
-                        m_GizmoOperation = ImGuizmo::ROTATE;
-                        gizmoShortcutPressed = true;
-                        BOOM_INFO("[Gizmo] Switched to ROTATE mode");
-                    }
-                    if (ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-                        m_GizmoOperation = ImGuizmo::SCALE;
-                        gizmoShortcutPressed = true;
-                        BOOM_INFO("[Gizmo] Switched to SCALE mode");
-                    }
-                    if (ImGui::IsKeyPressed(ImGuiKey_T, false)) {
-                        m_GizmoMode = (m_GizmoMode == ImGuizmo::WORLD) ? ImGuizmo::LOCAL : ImGuizmo::WORLD;
-                        gizmoShortcutPressed = true;
-                        BOOM_INFO("[Gizmo] Toggled to {} mode", m_GizmoMode == ImGuizmo::WORLD ? "WORLD" : "LOCAL");
-                    }
-                }
 
-                // Get gizmo state BEFORE handling mouse clicks
-                bool gizmoWantsInput = false;
-                if (m_Ctx)
-                {
-                    auto camView = m_Ctx->scene.view<Boom::CameraComponent, Boom::TransformComponent>();
-                    if (camView.begin() != camView.end())
-                    {
-                        auto eid = *camView.begin();
-                        auto& camComp = camView.get<Boom::CameraComponent>(eid);
-                        auto& trans = camView.get<Boom::TransformComponent>(eid);
-
-                        glm::mat4 view = camComp.camera.View(trans.transform);
-                        const glm::mat4 proj = camComp.camera.Projection(m_Ctx->renderer->AspectRatio());
-
-                        // Store camera data for ray casting
-                        m_CurrentViewMatrix = view;
-                        m_CurrentProjectionMatrix = proj;
-                        m_CurrentViewportSize = glm::vec2(viewportSize.x, viewportSize.y);
-                        m_CurrentCameraPosition = trans.transform.translate;
-
-                        entt::entity selectedEntity = m_App->SelectedEntity();
-                        if (selectedEntity != entt::null && m_Ctx->scene.valid(selectedEntity))
-                        {
-                            if (m_Ctx->scene.all_of<Boom::TransformComponent>(selectedEntity))
-                            {
-                                if (m_Ctx->scene.all_of<Boom::SpriteComponent>(selectedEntity) &&
-                                    m_Ctx->scene.get<Boom::SpriteComponent>(selectedEntity).uiOverlay)
-                                    DrawGuizmo2D(itemMin, rectSz, gizmoWantsInput);
-                                else DrawGuizmo3D(itemMin, rectSz, view, proj, gizmoWantsInput);
-                            }
-                        }
-                    }
-                }
-
-                // Handle mouse clicks for entity selection - ONLY if gizmo is not being used
-                if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !gizmoWantsInput) {
-                    ImVec2 displayedSize = ImGui::GetItemRectSize();
-                    ImVec2 displayedPos = ImGui::GetItemRectMin();
-                    ImVec2 mousePos = ImGui::GetMousePos();
-
-                    // Relative position inside the displayed image (0..1 range)
-                    float u = (mousePos.x - displayedPos.x) / displayedSize.x;
-                    float v = (mousePos.y - displayedPos.y) / displayedSize.y;
-
-                    if (u >= 0.f && u <= 1.f && v >= 0.f && v <= 1.f) {
-                        // Map to picking framebuffer pixel coordinates
-                        auto const& fbSize{ m_Ctx->renderer->GetPickSize() };
-                        int pickX = (int)(u * fbSize.first);
-                        int pickY = (int)(v * fbSize.second);
-
-                        // Now flip Y because OpenGL framebuffer has origin at bottom-left
-                        int glY = fbSize.second - pickY - 1;
-
-                        HandleMouseClick(m_Ctx->renderer->GetFrameEnttID(pickX, glY));
-                    }
-                }
-
-                const bool focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && hovered;
-
-                const ImVec2 mainPos = ImGui::GetMainViewport()->Pos;
-                const double localX = double(itemMin.x - mainPos.x);
-                const double localY = double(itemMin.y - mainPos.y);
-                const double localW = double(rectSz.x);
-                const double localH = double(rectSz.y);
-
-                if (m_Ctx && m_Ctx->window)
-                {
-                    // Allow camera mouse input if viewport is focused and gizmo isn't being used
-                    const bool allowCameraInput = hovered && focused && !gizmoWantsInput;
-                    m_Ctx->window->SetCameraInputRegion(localX, localY, localW, localH, allowCameraInput);
-
-                    // Allow keyboard input for camera when viewport is focused and not using gizmo
-                    // Block keyboard on frames where gizmo shortcuts were pressed to prevent camera movement
-                    const bool allowKeyboard = focused && !gizmoWantsInput && !gizmoShortcutPressed;
-                    m_Ctx->window->SetViewportKeyboardFocus(allowKeyboard);
-                }
-
-                if (hovered) ImGui::SetTooltip("Engine Viewport - Scene render output");
-            }
-            else {
-                // Fallback UI when no frame is available
-                ImGui::Text("Frame Texture ID: %u", frameTexture);
-                ImGui::Text("Viewport Size: %.0fx%.0f", viewportSize.x, viewportSize.y);
-                ImGui::Text("Waiting for engine frame data...");
-
-                if (viewportSize.x > 50 && viewportSize.y > 50) {
-                    ImDrawList* drawList = ImGui::GetWindowDrawList();
-                    ImVec2 canvasPos = ImGui::GetCursorScreenPos();
-                    drawList->AddRectFilled(
-                        canvasPos,
-                        ImVec2(canvasPos.x + viewportSize.x, canvasPos.y + viewportSize.y),
-                        IM_COL32(64, 64, 64, 255)
+                    ImVec2 cursorPos = ImGui::GetCursorScreenPos();
+                    ImGui::GetWindowDrawList()->AddImage(
+                        (ImTextureID)(uintptr_t)frameTexture,
+                        cursorPos,
+                        ImVec2(cursorPos.x + sceneViewportSize.x,
+                            cursorPos.y + sceneViewportSize.y),
+                        ImVec2(0, 1), ImVec2(1, 0)
                     );
-                    drawList->AddText(
-                        ImVec2(canvasPos.x + 10, canvasPos.y + 10),
-                        IM_COL32(255, 255, 255, 255),
-                        "Engine Viewport"
-                    );
+
+                    ImGui::Dummy(sceneViewportSize);
+
+                    // Camera input region setup
+                    const ImVec2 itemMin = ImGui::GetItemRectMin();
+                    const ImVec2 itemMax = ImGui::GetItemRectMax();
+                    const ImVec2 mainPos = ImGui::GetMainViewport()->Pos;
+
+                    double localX = itemMin.x - mainPos.x;
+                    double localY = itemMin.y - mainPos.y;
+                    double localW = itemMax.x - itemMin.x;
+                    double localH = itemMax.y - itemMin.y;
+
+                    if (m_Ctx && m_Ctx->window) {
+                        bool allowInput = isHovered && isFocused;
+                        m_Ctx->window->SetCameraInputRegion(localX, localY, localW, localH, allowInput);
+                        m_Ctx->window->SetViewportKeyboardFocus(allowInput);
+                    }
+
+                    // Tooltip
+                    if (isHovered) {
+                        ImGui::SetTooltip(
+                            "Scene View - Free Camera\n"
+                            "Right-Click + Drag: Rotate\n"
+                            "WASD: Move | Q/E: Up/Down | Shift: Speed Boost"
+                        );
+                    }
                 }
             }
-
         }
+        ImGui::EndChild();
+
+        ImGui::SameLine();
+
+        // =====================================================
+        // GAME VIEWPORT (Main Camera)
+        // =====================================================
+        ImGui::BeginChild("GameViewport", ImVec2(gameWidth, availableSpace.y),
+            ImGuiChildFlags_Border);
+        {
+            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "GAME VIEW");
+            ImGui::Separator();
+
+            ImVec2 gameViewportSize = ImGui::GetContentRegionAvail();
+
+            if (gameViewportSize.x > 50.0f && gameViewportSize.y > 50.0f)
+            {
+                const uint32_t frameTexture = QuerySceneFrame();
+
+                if (frameTexture > 0)
+                {
+                    bool isHovered = ImGui::IsWindowHovered();
+                    bool isFocused = ImGui::IsWindowFocused();
+
+                    // Notify application which viewport is active
+                    if (isFocused || isHovered) {
+                        app->SetActiveViewport(Boom::ViewportType::GAME);
+                        app->SetGameViewportFocused(true);
+                        app->SetSceneViewportFocused(false);
+                    }
+
+                    ImVec2 cursorPos = ImGui::GetCursorScreenPos();
+                    ImGui::GetWindowDrawList()->AddImage(
+                        (ImTextureID)(uintptr_t)frameTexture,
+                        cursorPos,
+                        ImVec2(cursorPos.x + gameViewportSize.x,
+                            cursorPos.y + gameViewportSize.y),
+                        ImVec2(0, 1), ImVec2(1, 0)
+                    );
+
+                    ImGui::Dummy(gameViewportSize);
+
+                    // Display play mode status
+                    ImVec2 textPos = cursorPos;
+                    textPos.y += 10;
+                    textPos.x += 10;
+
+                    if (app->IsPlaying()) {
+                        ImGui::GetWindowDrawList()->AddText(
+                            textPos, IM_COL32(0, 255, 0, 255), "PLAYING"
+                        );
+                    }
+                    else {
+                        ImGui::GetWindowDrawList()->AddText(
+                            textPos, IM_COL32(255, 0, 0, 255), "STOPPED"
+                        );
+                    }
+
+                    if (isHovered) {
+                        ImGui::SetTooltip("Game View - Main Camera\nShows what the player sees");
+                    }
+                }
+            }
+        }
+        ImGui::EndChild();
+
         ImGui::End();
     }
 

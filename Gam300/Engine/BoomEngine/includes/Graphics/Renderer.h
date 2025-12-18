@@ -75,6 +75,34 @@ namespace Boom {
 
         BOOM_INLINE ~GraphicsRenderer() {}
 
+    public: // ---------------------- Multi-Viewport Support ----------------------
+        enum class ViewportType {
+            GAME,      // Main game camera
+            SCENE      // Free editor camera
+        };
+
+        // NEW: Render a specific viewport
+        BOOM_INLINE void RenderViewport(ViewportType type, Camera3D& cam, Transform3D& camTransform) {
+            if (type == ViewportType::SCENE) {
+                // Use scene camera for free camera viewport
+                const float aspect = (m_AspectOverride > 0.0f) ? m_AspectOverride : frame->Ratio();
+                pbrShader->SetCamera(cam, camTransform, aspect);
+                skyBoxShader->SetCamera(cam, camTransform, aspect);
+                color3DShader->SetCamera(cam, camTransform, aspect);
+            }
+            else {
+                // Use game camera for game viewport (existing logic)
+                SetCamera(cam, camTransform);
+            }
+        }
+
+        // NEW: Get the current active framebuffer texture for a viewport
+        BOOM_INLINE uint32_t GetViewportTexture(ViewportType type) const {
+            // Both viewports currently share the same framebuffer
+            // You could extend this to use separate framebuffers if needed
+            return GetFrame();
+        }
+    
     public: // ----------------------- Lights -----------------------
         // The PBR shader will ignore lights above MAX_LIGHTS (in-shader define)
         BOOM_INLINE void InitLightUBOs() {

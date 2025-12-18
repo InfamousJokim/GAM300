@@ -23,6 +23,8 @@ namespace EditorUI {
     class AudioPanel;
     class PrefabBrowserPanel;
     class ViewportPanel;
+    class SceneViewportPanel;  // ADD THIS
+    class GameViewportPanel;   // ADD THIS
     class PerformancePanel;
     class PlaybackControlsPanel;
 	class NavmeshPanel;
@@ -94,6 +96,8 @@ namespace EditorUI {
         std::unique_ptr<AudioPanel>             m_Audio;
         std::unique_ptr<PrefabBrowserPanel>     m_PrefabBrowser;
         std::unique_ptr<ViewportPanel>          m_Viewport;
+        std::unique_ptr<SceneViewportPanel>     m_SceneViewport;  // ADD THIS
+        std::unique_ptr<GameViewportPanel>      m_GameViewport;   // ADD THIS
         std::unique_ptr<PerformancePanel>       m_Performance;
         std::unique_ptr<PlaybackControlsPanel>  m_Playback;
 		std::unique_ptr<NavmeshPanel>            m_Navmesh;
