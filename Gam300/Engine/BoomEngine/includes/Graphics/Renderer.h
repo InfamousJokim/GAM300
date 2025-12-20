@@ -177,7 +177,7 @@ namespace Boom {
         }
         BOOM_INLINE void DrawSkybox(Skybox const& sky, Transform3D const& transform) {
             skyBoxShader->Draw(skyboxMesh, sky.cubeMap, transform);
-            //pbrShader->SetEnvMaps(0, 0, 0, shadowShader->GetDepthMap());
+            pbrShader->SetEnvMaps(0, 0, 0, shadowShader->GetDepthMap());
         }
 
     public: // -------------------- Animator (skinning) -------------
