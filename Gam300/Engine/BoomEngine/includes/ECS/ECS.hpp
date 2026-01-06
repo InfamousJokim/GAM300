@@ -24,6 +24,7 @@ namespace Boom {
  AI_COMPONENT,
  SPRITE,
  PAUSE_MENU_TAG,
+ DEACTIVATED_TAG,
  COUNT
  };
  constexpr std::string_view COMPONENT_NAMES[]{
@@ -43,7 +44,8 @@ namespace Boom {
  "Nav Agent Component",  //13
  "AI Component",         //14
  "Sprite",               //15
- "Pause Menu Tag"        //16
+ "Pause Menu Tag",       //16
+ "Deactived Tag"         //17
  };
 
  // transform component
@@ -224,12 +226,31 @@ namespace Boom {
         if (!reg.valid(parent) || !reg.all_of<InfoComponent>(parent)) return children;
 
         AssetID parentUID = reg.get<InfoComponent>(parent).uid;
+
+        // Collect children with their UIDs for sorting
+        struct ChildEntity {
+            entt::entity entity;
+            AssetID uid;
+        };
+        std::vector<ChildEntity> childrenWithUID;
+
         auto view = reg.view<InfoComponent>();
         for (auto [e, info] : view.each()) {
             if (info.parent == parentUID) {
-                children.push_back(e);
+                childrenWithUID.push_back({e, info.uid});
             }
         }
+
+        // Sort by UID to maintain consistent order across scene reloads
+        std::sort(childrenWithUID.begin(), childrenWithUID.end(),
+                 [](const ChildEntity& a, const ChildEntity& b) { return a.uid < b.uid; });
+
+        // Extract sorted entities
+        children.reserve(childrenWithUID.size());
+        for (const auto& child : childrenWithUID) {
+            children.push_back(child.entity);
+        }
+
         return children;
     }
 
@@ -518,6 +539,10 @@ namespace Boom {
  // Animation trigger name (e.g. "Footstep")
  std::string animTrigger;
 
+ // 3D Audio settings
+ float minDistance = 1.0f;   // Distance at which sound is at full volume
+ float maxDistance = 50.0f;  // Distance at which sound is silent
+
  void serialize(nlohmann::json& j) const {
     j["name"] = name;
  // If filePaths present, write as array; otherwise write legacy filePath
@@ -535,6 +560,8 @@ namespace Boom {
         j["moveThreshold"] = moveThreshold;
         j["repeatInterval"] = repeatInterval;
         if (!animTrigger.empty()) j["animTrigger"] = animTrigger;
+        j["minDistance"] = minDistance;
+        j["maxDistance"] = maxDistance;
  }
  void deserialize(const nlohmann::json& j) {
         if (j.contains("name")) j.at("name").get_to(name);
@@ -560,6 +587,8 @@ namespace Boom {
  if (j.contains("moveThreshold")) j.at("moveThreshold").get_to(moveThreshold);
  if (j.contains("repeatInterval")) j.at("repeatInterval").get_to(repeatInterval);
  if (j.contains("animTrigger")) j.at("animTrigger").get_to(animTrigger);
+ if (j.contains("minDistance")) j.at("minDistance").get_to(minDistance);
+ if (j.contains("maxDistance")) j.at("maxDistance").get_to(maxDistance);
     }
  };
 
@@ -718,10 +747,22 @@ obj_member<"Scroll Sensitivity", &ThirdPersonCameraComponent::scrollSensitivity>
             "PauseMenuTagComponent", PauseMenuTagComponent
         )
     };
+
     struct SceneNavmeshComponent {
         std::string navmeshFile;   // e.g. "Resources/NavData/level1.bin"
         XPROPERTY_DEF("SceneNavmeshComponent", SceneNavmeshComponent,
             obj_member<"NavmeshFile", &SceneNavmeshComponent::navmeshFile>)
+    };
+
+    struct DeactivatedComponent {
+        BOOM_INLINE DeactivatedComponent(const DeactivatedComponent&) = default;
+        BOOM_INLINE DeactivatedComponent() = default;
+
+        bool isTag = true;
+
+        XPROPERTY_DEF(
+            "DeactivatedComponent", DeactivatedComponent
+        )
     };
    
     struct Entity
@@ -976,6 +1017,11 @@ obj_member<"Scroll Sensitivity", &ThirdPersonCameraComponent::scrollSensitivity>
             reg.emplace<PauseMenuTagComponent>(duplicate);
         }
 
+        // Copy DeactivatedComponent
+        if (reg.all_of<DeactivatedComponent>(source)) {
+            reg.emplace<DeactivatedComponent>(duplicate);
+        }
+
         BOOM_INFO("[DuplicateEntity] Duplicated '{}' -> '{}'",
                  reg.get<InfoComponent>(source).name,
                  reg.get<InfoComponent>(duplicate).name);
@@ -1001,8 +1047,9 @@ obj_member<"Scroll Sensitivity", &ThirdPersonCameraComponent::scrollSensitivity>
     BOOM_INLINE entt::entity GetOrCreateSceneSettings(entt::registry& reg)
     {
         auto view = reg.view<SceneNavmeshComponent>();
-        for (auto e : view) {
-            return e;                  // first one
+        if (!view.empty())
+        {
+            return *view.begin();
         }
 
         // Otherwise create + attach component

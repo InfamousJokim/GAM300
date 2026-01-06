@@ -31,11 +31,18 @@ namespace Boom
             // Entities
             emitter << YAML::Key << "ENTITIES" << YAML::Value << YAML::BeginSeq;
 
+            size_t serializedCount = 0;
             for (auto entt : scene.view<entt::entity>())
             {
+                // Skip orphaned entities (no components)
+                // EnTT orphan() returns true if entity has NO components attached
+                if (scene.orphan(entt))
+                    continue;
+
                 emitter << YAML::BeginMap;
                 SerializationRegistry::Instance().SerializeAllComponents(emitter, scene, entt);
                 emitter << YAML::EndMap;
+                serializedCount++;
             }
 
             emitter << YAML::EndSeq;
@@ -52,7 +59,7 @@ namespace Boom
             file << emitter.c_str();
             file.close();
 
-            BOOM_INFO("[DataSerializer] Serialized entities to: {}", path);
+            BOOM_INFO("[DataSerializer] Serialized {} entities to: {}", serializedCount, path);
         }
 
         void Deserialize(EntityRegistry& scene, AssetRegistry& assets, const std::string& path)

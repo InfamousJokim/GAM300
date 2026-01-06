@@ -82,6 +82,10 @@ namespace Boom {
 			std::apply(glClearColor, CONSTANTS::DEFAULT_BACKGROUND_COLOR);
 
 			glfwGetCursorPos(windowPtr.get(), &prevMousePos.x, &prevMousePos.y);
+
+			//init
+			camRegionW = width;
+			camRegionH = height;
 		}
 		BOOM_INLINE ~AppWindow() {}
 
@@ -118,6 +122,8 @@ namespace Boom {
 			AppWindow* self{ GetUserData(win) };
 			if (!self->isEditor) {
 				self->dispatcher->PostEvent<WindowResizeEvent>(w, h);
+				self->camRegionW = w; 
+				self->camRegionH = h;
 			}
 		}
 		BOOM_INLINE static void OnIconify(GLFWwindow* win, int32_t action) {
@@ -184,10 +190,10 @@ namespace Boom {
 			auto* self = GetUserData(win);
 			if (!self) return;
 
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-				glfwSetWindowShouldClose(win, GLFW_TRUE);
-				return;
-			}
+			//if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+				//glfwSetWindowShouldClose(win, GLFW_TRUE);
+				//return;
+			//}
 
 			self->input.onKey(key, sc, action, mods);
 

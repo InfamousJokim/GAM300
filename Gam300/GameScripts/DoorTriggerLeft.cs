@@ -36,6 +36,12 @@ namespace GameScripts
         private bool _closing = false;
         private float _closeTimer = 0f;
 
+        private bool _kWasDown = false;
+
+        // Constants (GLFW)
+        private const int KEY_K = 75;          // GLFW_KEY_K
+        private const int KEY_LEFT_SHIFT = 340;
+
         public void OnStart(string jsonParams)
         {
             s_instances[Entity] = this;
@@ -67,7 +73,7 @@ namespace GameScripts
                 // Forward = (sin(yaw), cos(yaw)); Left (CCW) = (-cos(yaw), sin(yaw))
                 float fx = (float)Math.Sin(yawRad);
                 float fz = (float)Math.Cos(yawRad);
-                _leftDir = new Vec3(-fz, 0f, fx); // unit left vector in XZ
+                _leftDir = new Vec3(fz, 0f, -fx); // unit left vector in XZ
 
                 // Target position = base + left * distance
                 _targetPos = new Vec3(
@@ -124,6 +130,36 @@ namespace GameScripts
                     API.Log("[DoorTriggerLeft] Door returned (closed).");
                 }
             }
+
+            bool kDown = API.IsKeyDown(KEY_K);
+            if (kDown && !_kWasDown)
+            {
+                if (_door != 0)
+                {
+                    bool shift = API.IsKeyDown(KEY_LEFT_SHIFT);
+                    if (shift)
+                    {
+                        // 3D positional version (subject to distance & mono asset rules)
+                        var pos = API.GetPosition(_door);
+                        API.PlaySoundAt("sfx_door_slide_open_3d", "Resources/Audio/unlock.wav", pos, false);
+                        API.SetSoundVolume("sfx_door_slide_open_3d", 1.0f);
+                        API.Set3DMinMaxDistance("sfx_door_slide_open_3d", 1.5f, 35.0f);  // Door sounds heard from good distance
+                        API.Log("[DoorTriggerLeft] Shift+K: played 3D positional door SFX.");
+                    }
+                    else
+                    {
+                        // 2D guaranteed-audible fallback (no attenuation)
+                        API.PlaySound("sfx_door_slide_open_2d", "Resources/Audio/unlock.wav", false);
+                        API.SetSoundVolume("sfx_door_slide_open_2d", 1.0f);
+                        API.Log("[DoorTriggerLeft] K: played 2D door SFX (always audible).");
+                    }
+                }
+                else
+                {
+                    API.Log("[DoorTriggerLeft] K pressed but door not resolved.");
+                }
+            }
+            _kWasDown = kDown;
         }
 
         public void OnDestroy()
@@ -158,10 +194,9 @@ namespace GameScripts
             inst._closing = false;
 
             var pos = API.GetPosition(inst._door);
-            API.PlaySoundAt("sfx_door_slide_open", "Resources/Audio/playerPunch_1.wav", pos, false);
-            API.SetSoundVolume("sfx_door_slide_open", 0.85f);
-
-            API.Log("[DoorTriggerLeft] Sliding door to the left.");
+            API.PlaySound("sfx_door_slide_open_2d", "Resources/Audio/unlock.wav", false);
+            API.SetSoundVolume("sfx_door_slide_open_2d", 1.0f);
+            API.Log("[DoorTriggerLeft] K: played 2D door SFX (always audible).");
         }
 
         private static void OnTriggerExit(ulong triggerEntity, ulong otherEntity)

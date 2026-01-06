@@ -61,6 +61,8 @@ void SoundSystem::Update(Boom::EntityRegistry& registry, float dt)
 				SoundEngine::Instance().PlaySoundAt(instanceName, chosen, tf.transform.translate, entry.loop);
 				// Apply configured volume
 				SoundEngine::Instance().SetVolume(instanceName, entry.volume);
+				// Apply 3D audio distance settings
+				SoundEngine::Instance().Set3DMinMaxDistance(instanceName, entry.minDistance, entry.maxDistance);
 
 				instances.push_back(instanceName);
 				s_lastPos[uid] = tf.transform.translate;
@@ -106,6 +108,8 @@ void SoundSystem::Update(Boom::EntityRegistry& registry, float dt)
 					SoundEngine::Instance().PlaySoundAt(playName, chosen, tf.transform.translate, false);
 					// Apply configured volume for this transient instance
 					SoundEngine::Instance().SetVolume(playName, entry.volume);
+					// Apply 3D audio distance settings for this transient instance
+					SoundEngine::Instance().Set3DMinMaxDistance(playName, entry.minDistance, entry.maxDistance);
 					// track this playing temporary instance so it can be cleaned up later
 					instances.push_back(playName);
 					lastTimes[playName] = now;

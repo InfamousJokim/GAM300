@@ -272,6 +272,21 @@ namespace EditorUI {
                     }
                     m_IsTransformBeingEdited = false;
                 }
+                ImGui::Spacing();
+                ImGui::SeparatorText("Utilities");
+
+                // We use -1 width to make the buttons span the whole panel
+                if (ImGui::Button("Snap to Floor", ImVec2(-1, 0))) {
+                    SnapEntity(selected, glm::vec3(0.0f, -1.0f, 0.0f));
+                }
+
+                if (ImGui::Button("Snap to Wall (Left)", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f - 4, 0))) {
+                    SnapEntity(selected, glm::vec3(-1.0f, 0.0f, 0.0f));
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Snap to Wall (Right)", ImVec2(-1, 0))) {
+                    SnapEntity(selected, glm::vec3(1.0f, 0.0f, 0.0f));
+                }
             }
         }
 
@@ -377,8 +392,17 @@ namespace EditorUI {
                             // (Your SkeletalModel should expose GetAnimator() or similar.)
                             auto skeletalModel = std::dynamic_pointer_cast<Boom::SkeletalModel>(modelAsset.data);
                             if (skeletalModel && skeletalModel->GetAnimator()) {
-                                // Only auto-add if it doesn't exist (don't overwrite existing animator setup!)
-                                if (!selected.Has<Boom::AnimatorComponent>()) {
+                                if (selected.Has<Boom::AnimatorComponent>()) {
+                                    // Update skeleton but preserve states/clips/parameters
+                                    auto& animComp = selected.Get<Boom::AnimatorComponent>();
+                                    if (animComp.animator) {
+                                        animComp.animator->UpdateSkeletonFrom(*skeletalModel->GetAnimator());
+                                        BOOM_INFO("Updated skeleton (preserved states/clips).");
+                                    } else {
+                                        animComp.animator = skeletalModel->GetAnimator()->Clone();
+                                        BOOM_INFO("Created new animator.");
+                                    }
+                                } else {
                                     auto& animComp = selected.Attach<Boom::AnimatorComponent>();
                                     animComp.animator = skeletalModel->GetAnimator()->Clone();
                                     BOOM_INFO("Auto-added AnimatorComponent for skeletal model.");
@@ -555,7 +579,7 @@ namespace EditorUI {
 
                 // Color Picker - track when editing finishes
                 glm::vec4 oldColor = q.color;
-                if (ImGui::ColorEdit3("color", &q.color[0])) {
+                if (ImGui::ColorEdit4("color", &q.color[0])) {
                     // Color is being edited
                     if (!m_IsSpriteBeingEdited) {
                         m_SpriteBeforeEdit = spriteBeforeFrame;
@@ -774,6 +798,47 @@ namespace EditorUI {
 #endif
                         if (ImGui::InputText("Anim Trigger", animBuf, sizeof(animBuf))) {
                             entry.animTrigger = std::string(animBuf);
+                        }
+
+                        ImGui::Separator();
+                        ImGui::Text("3D Audio Settings");
+
+                        // Min/Max Distance sliders with tooltips
+                        ImGui::SliderFloat("Min Distance", &entry.minDistance, 0.1f, 100.0f, "%.1f");
+                        if (ImGui::IsItemHovered()) {
+                            ImGui::SetTooltip("Distance at which sound is at full volume (in world units)");
+                        }
+
+                        ImGui::SliderFloat("Max Distance", &entry.maxDistance, 1.0f, 200.0f, "%.1f");
+                        if (ImGui::IsItemHovered()) {
+                            ImGui::SetTooltip("Distance at which sound becomes silent (in world units)");
+                        }
+
+                        // Validation: ensure min < max
+                        if (entry.minDistance >= entry.maxDistance) {
+                            entry.minDistance = entry.maxDistance - 0.1f;
+                        }
+
+                        // Quick presets
+                        ImGui::Text("Quick Presets:");
+                        if (ImGui::SmallButton("Footsteps")) {
+                            entry.minDistance = 0.5f;
+                            entry.maxDistance = 10.0f;
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::SmallButton("Dialogue")) {
+                            entry.minDistance = 1.0f;
+                            entry.maxDistance = 30.0f;
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::SmallButton("Environment")) {
+                            entry.minDistance = 2.0f;
+                            entry.maxDistance = 100.0f;
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::SmallButton("Ambient")) {
+                            entry.minDistance = 5.0f;
+                            entry.maxDistance = 200.0f;
                         }
 
                         ImGui::TreePop();
@@ -1511,7 +1576,7 @@ namespace EditorUI {
         if (selected.Has<DirectLightComponent>()) {
             auto& dl = selected.Get<DirectLightComponent>();
             DrawComponentSection(
-                "Point Light",
+                "Direct Light",
                 &dl,
                 [&](void* p) -> const xproperty::type::object*
                 {
@@ -1546,7 +1611,7 @@ namespace EditorUI {
         if (selected.Has<SpotLightComponent>()) {
             auto& sl = selected.Get<SpotLightComponent>();
             DrawComponentSection(
-                "Point Light",
+                "Spot Light",
                 &sl,
                 [&](void* p) -> const xproperty::type::object*
                 {
@@ -1585,11 +1650,18 @@ namespace EditorUI {
                 [&]() { ctx->scene.remove<Boom::PauseMenuTagComponent>(m_App->SelectedEntity()); });
         }
 
+        if (selected.Has<Boom::DeactivatedComponent>()) {
+            static Boom::DeactivatedComponent fakeTagInstance;
+
+            DrawComponentSection("Deactivated Tag", &fakeTagInstance, [](void*) { return nullptr; }, true,
+                [&]() { ctx->scene.remove<Boom::DeactivatedComponent>(m_App->SelectedEntity()); });
+        }
+
         if (selected.Has<Boom::ScriptComponent>()) {
             ImGui::PushID("Script");
             auto& sc = selected.Get<Boom::ScriptComponent>();
 
-            // Collapsing header + settings ("..." to remove)
+            // Collapsing header + settings
             bool isOpen = ImGui::CollapsingHeader("Script",
                 ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 
@@ -1618,12 +1690,24 @@ namespace EditorUI {
 
                 // ===== Context / scripting system pointer =====
                 auto* appCtx = m_Owner ? m_Owner->GetContext() : nullptr;
-
-                // Get raw pointer from unique_ptr (or nullptr if missing)
                 auto* scripting = (appCtx && appCtx->scriptingSystem)
                     ? appCtx->scriptingSystem.get()
                     : nullptr;
                 entt::entity currentEntity = m_App->SelectedEntity();
+
+                // *** FIX: Detect and fix "dead" script instances ***
+                bool needsRecreation = false;
+                if (sc.InstanceId == 0 && sc.Enabled && !sc.TypeName.empty()) {
+                    // Script should be alive but isn't - show warning
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.6f, 0.0f, 1.0f));
+                    ImGui::TextWrapped("WARNING: Script instance is missing (InstanceId=0)");
+                    ImGui::PopStyleColor();
+
+                    if (ImGui::Button("Fix: Recreate Instance", ImVec2(-1, 0))) {
+                        needsRecreation = true;
+                    }
+                    ImGui::Separator();
+                }
 
                 // Track if we need to recreate the instance this frame
                 bool enabledChanged = false;
@@ -1645,12 +1729,10 @@ namespace EditorUI {
                     availableTypes = scripting->GetAvailableScriptTypes();
                 }
 
-                // Current selection or "None"
                 const char* currentPreview = sc.TypeName.empty()
                     ? "None"
                     : sc.TypeName.c_str();
 
-                // If scripting system isn't ready, we still show the combo but empty
                 if (ImGui::BeginCombo("##ScriptTypeDropdown", currentPreview)) {
                     // "None" option
                     bool isNoneSelected = sc.TypeName.empty();
@@ -1679,10 +1761,11 @@ namespace EditorUI {
                     ImGui::EndCombo();
                 }
 
-                // Auto-recreate instance if TypeName or Enabled changed
-                if ((typeNameChanged || enabledChanged) && scripting) {
+                // Auto-recreate instance if TypeName, Enabled changed, or manual fix requested
+                if ((typeNameChanged || enabledChanged || needsRecreation) && scripting) {
                     scripting->RecreateForEntity(currentEntity, sc);
-                    BOOM_INFO("[Inspector] Auto-reloaded script due to changes");
+                    BOOM_INFO("[Inspector] Recreated script instance (Enabled={}, TypeName={})",
+                        sc.Enabled, sc.TypeName);
                 }
 
                 // ----- Params (JSON) -----
@@ -1695,7 +1778,7 @@ namespace EditorUI {
                 static entt::entity lastJsonEntity = entt::null;
 
                 if (currentEntity != lastJsonEntity) {
-                    std::string initial = sc.Params.dump(2); // pretty JSON
+                    std::string initial = sc.Params.dump(2);
 #ifdef _MSC_VER
                     strncpy_s(paramsBuf, sizeof(paramsBuf), initial.c_str(), sizeof(paramsBuf) - 1);
 #else
@@ -1711,7 +1794,6 @@ namespace EditorUI {
                     ImVec2(-1, 120),
                     ImGuiInputTextFlags_AllowTabInput))
                 {
-                    // Try parse back into JSON whenever text changes
                     try {
                         sc.Params = nlohmann::json::parse(paramsBuf);
                     }
@@ -1726,14 +1808,26 @@ namespace EditorUI {
                 ImGui::TextDisabled("Runtime Info");
                 ImGui::Text("Instance ID: %llu", (unsigned long long)sc.InstanceId);
 
+                // Enhanced status display
                 if (sc.InstanceId != 0 && sc.Enabled) {
-                    ImGui::TextColored(ImVec4(0, 1, 0, 1), "Active");
+                    ImGui::TextColored(ImVec4(0, 1, 0, 1), "[OK] Active");
                 }
-                else if (sc.InstanceId == 0 && sc.Enabled) {
-                    ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "Waiting for creation");
+                else if (sc.InstanceId == 0 && sc.Enabled && !sc.TypeName.empty()) {
+                    // This is the problematic state - should be active but isn't
+                    ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "[!] Instance Missing");
+                    ImGui::SameLine();
+                    ImGui::TextDisabled("(?)");
+                    if (ImGui::IsItemHovered()) {
+                        ImGui::SetTooltip("Script is enabled but has no instance.\n"
+                            "This happens after exiting play mode.\n"
+                            "Click 'Fix: Recreate Instance' or enter play mode.");
+                    }
+                }
+                else if (sc.InstanceId == 0 && sc.Enabled && sc.TypeName.empty()) {
+                    ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "[!] No Type Selected");
                 }
                 else {
-                    ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1), "Disabled");
+                    ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1), "[ ] Disabled");
                 }
 
                 // ----- Reload buttons -----
@@ -1761,10 +1855,7 @@ namespace EditorUI {
             ImGui::PopID();
 
             if (removed) {
-                // Destroy the script instance before removing component
                 auto* appCtx = m_Owner ? m_Owner->GetContext() : nullptr;
-
-                // Get raw pointer from unique_ptr (or nullptr if missing)
                 auto* scripting = (appCtx && appCtx->scriptingSystem)
                     ? appCtx->scriptingSystem.get()
                     : nullptr;
@@ -2041,11 +2132,71 @@ namespace EditorUI {
                     UpdateComponent<Boom::ThirdPersonCameraComponent>(Boom::ComponentID::THIRD_PERSON_CAMERA, selected);
 					UpdateComponent<Boom::SpriteComponent>(Boom::ComponentID::SPRITE, selected);
                     UpdateComponent<Boom::PauseMenuTagComponent>(Boom::ComponentID::PAUSE_MENU_TAG, selected);
+                    UpdateComponent<Boom::DeactivatedComponent>(Boom::ComponentID::DEACTIVATED_TAG, selected);
                     ImGui::EndTable();
                 }
             }
             ImGui::EndChild();
             ImGui::EndPopup();
+        }
+    }
+
+    void InspectorPanel::SnapEntity(Boom::Entity& entity, glm::vec3 direction) {
+        if (!entity.Has<Boom::TransformComponent>() || !entity.Has<Boom::ColliderComponent>()) {
+            BOOM_WARN("Cannot snap: Entity needs both Transform and Collider");
+            return;
+        }
+
+        auto& tc = entity.Get<Boom::TransformComponent>();
+        auto& col = entity.Get<Boom::ColliderComponent>().Collider;
+        auto& phys = m_App->GetPhysicsContext();
+
+        // 1. Calculate the extent (offset) based on the collider type
+        // This prevents the object from being buried halfway into the surface
+        float extent = 0.0f;
+        glm::vec3 worldScale = tc.transform.scale * col.localScale;
+
+        if (col.type == Boom::Collider3D::BOX) {
+            extent = glm::abs(glm::dot(direction, worldScale * 0.5f));
+        }
+        else if (col.type == Boom::Collider3D::SPHERE) {
+            extent = (worldScale.x * 0.5f);
+        }
+        else {
+            // Fallback for complex meshes/capsules
+            extent = (glm::abs(direction.y) > 0.9f) ? (worldScale.y * 0.5f) : (worldScale.x * 0.5f);
+        }
+
+        // 2. Perform the raycast using your existing physics system
+        // We start slightly above/inside the object to ensure we hit the floor beneath it
+        glm::vec3 rayOrigin = tc.transform.translate;
+        auto hit = phys.Raycast(rayOrigin, direction, 100.0f);
+
+        if (hit.hitFound) {
+            // 3. Move the object to the hit point, adjusted by the extent
+            glm::vec3 newPos = hit.position - (direction * extent);
+
+            // Use an undo command so you can revert the snap
+            auto* history = m_Owner->GetCommandHistory();
+            if (history) {
+                Boom::Transform3D oldTransform = tc.transform;
+                tc.transform.translate = newPos;
+
+                auto command = std::make_unique<TransformCommand>(
+                    &GetContext()->scene,
+                    entity.ID(),
+                    oldTransform,
+                    tc.transform,
+                    "Snap to Surface"
+                );
+                history->Execute(std::move(command));
+            }
+            else {
+                tc.transform.translate = newPos;
+            }
+
+            // 4. Sync physics actor immediately
+            phys.UpdateRigidBodyTransform(entity, tc.transform);
         }
     }
 

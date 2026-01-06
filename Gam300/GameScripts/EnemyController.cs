@@ -15,7 +15,10 @@ namespace GameScripts
         private float _targetYRotation = 0f;
         private float _rotationSpeed = 90f; // Degrees per second for smooth rotation
         private bool _isRotating = false;
-
+        private const string TURN_SOUND_ID = "enemy_turn";
+        private const string TURN_SOUND_PATH = "Resources/Audio/StatueTurn_01.wav";
+        private const string TURN_SOUND_PATH2 = "Resources/Audio/StatueTurn_02.wav";
+        private const string TURN_SOUND_PATH3 = "Resources/Audio/StatueTurn_03.wav";
         // Vision system
         private VisionComponent _vision;
 
@@ -54,7 +57,7 @@ namespace GameScripts
             if (!API.HasTransform(Entity)) return;
 
             // Update vision system
-            //_vision?.OnUpdate(dt);
+            _vision?.OnUpdate(dt);
 
             // Handle rotation (only when not alert)
             if (_vision?.GetState() != VisionComponent.VisionState.Alert)
@@ -83,6 +86,46 @@ namespace GameScripts
 
                     _isRotating = true;
                     API.Log($"[EnemyController] Starting rotation to {_targetYRotation}°");
+
+                    try
+                    {
+                        // --- Pick a pseudo-random index based on time ---
+                        // Ticks changes every frame, so this will bounce between 0,1,2
+                        long ticks = DateTime.UtcNow.Ticks;
+                        int index = (int)(ticks % 3); // 0,1,2
+
+                        string clipPath;
+                        string soundId;
+
+                        switch (index)
+                        {
+                            case 0:
+                                clipPath = TURN_SOUND_PATH;
+                                soundId = TURN_SOUND_ID + "_0";
+                                break;
+                            case 1:
+                                clipPath = TURN_SOUND_PATH2;
+                                soundId = TURN_SOUND_ID + "_1";
+                                break;
+                            case 2:
+                            default:
+                                clipPath = TURN_SOUND_PATH3;
+                                soundId = TURN_SOUND_ID + "_2";
+                                break;
+                        }
+
+                        Vec3 enemyPos = API.GetPosition(Entity);
+                        API.Log($"[EnemyController] Playing turn sound {index} at {enemyPos} ({clipPath})");
+
+                        API.PlaySoundAt(soundId, clipPath, enemyPos, false);
+                        API.SetSoundVolume(soundId, 0.5f);
+                        // Set 3D audio distance - enemy sounds shouldn't travel through floors
+                        API.Set3DMinMaxDistance(soundId, 1.0f, 25.0f);
+                    }
+                    catch (Exception ex)
+                    {
+                        API.Log($"[EnemyController] ERROR while playing rotation sound: {ex.Message}");
+                    }
                 }
             }
 
@@ -96,33 +139,28 @@ namespace GameScripts
                 while (angleDifference > 180f) angleDifference -= 360f;
                 while (angleDifference < -180f) angleDifference += 360f;
 
-                // Calculate rotation step for this frame
                 float rotationStep = _rotationSpeed * dt;
 
-                // Check if we're close enough to snap to target
                 if (Math.Abs(angleDifference) <= rotationStep)
                 {
-                    // Snap to target and stop rotating
                     _currentYRotation = _targetYRotation;
                     _isRotating = false;
                     API.Log($"[EnemyController] Completed rotation at {_currentYRotation}°");
                 }
                 else
                 {
-                    // Smoothly rotate toward target
                     _currentYRotation += Math.Sign(angleDifference) * rotationStep;
 
-                    // Normalize current rotation to [0, 360) range
                     while (_currentYRotation >= 360f) _currentYRotation -= 360f;
                     while (_currentYRotation < 0f) _currentYRotation += 360f;
                 }
 
-                // Apply the smoothed rotation to the entity
                 Vec3 rot = API.GetRotation(Entity);
                 rot.Y = _currentYRotation;
                 API.SetRotation(Entity, rot);
             }
         }
+
 
         // === VISION EVENT HANDLERS ===
         private void OnPlayerDetected(ulong target, Vec3 position)
@@ -162,6 +200,8 @@ namespace GameScripts
             // Play alert sound
             API.PlaySoundAt("enemy_alert", "Resources/Audio/playerPunch_1.wav", enemyPos, false);
             API.SetSoundVolume("enemy_alert", 0.8f);
+            // Set 3D audio distance - alert should be heard from medium distance
+            API.Set3DMinMaxDistance("enemy_alert", 1.0f, 25.0f);
 
             // Damage player (only once per detection)
             if (!_hasDealtDamage)

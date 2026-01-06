@@ -12,7 +12,7 @@
 #define GLM_DLL
 
 #pragma warning(push)
-#pragma warning(disable : 4101 4244 4267 4365 4458 4100 5054 4189 26819 6262 26495) //library warnings disable
+#pragma warning(disable : 4101 4244 4267 4365 4458 4100 5054 4189 26819 6262 26495 4834) //library warnings disable + nodiscard
 // add headers that you want to pre-compile here
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -47,6 +47,8 @@
 #include <foundation/PxMath.h>
 #pragma warning(pop)
 
+// Disable [[nodiscard]] warnings for the rest of the project
+#pragma warning(disable : 4834)
 
 // include spdlog
 //#define FMT_HEADER_ONLY
@@ -118,7 +120,7 @@ BOOM_INLINE constexpr uint32_t TypeID()
 		BOOM_API std::shared_ptr<spdlog::logger>& GetLogger();
 	}
 
-	// Convenience macros — expand to no-ops when logging is disabled:
+	// Convenience macros ï¿½ expand to no-ops when logging is disabled:
 	#define BOOM_TRACE(...) Boom::GetLogger()->trace(__VA_ARGS__)
 	#define BOOM_DEBUG(...) Boom::GetLogger()->debug(__VA_ARGS__)
 	#define BOOM_INFO(...)  Boom::GetLogger()->info(__VA_ARGS__)

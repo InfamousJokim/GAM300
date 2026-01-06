@@ -1,0 +1,75 @@
+Version: 1.0
+ENTITIES:
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Light
+      UID: 16190032514868591270
+    TransformComponent:
+      Transform:
+        Translate: [0.200269207, 1.11039901, 1.50860608]
+        Rotate: [0, -0, 0]
+        Scale: [0.100000001, 0.100000001, 0.100000001]
+    ModelComponent:
+      ModelID: 11565258723769024311
+      MaterialID: 8803557448742180096
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+    PointLightComponent:
+      Light:
+        Radiance: [1, 1, 1]
+        Intensity: 1
+        Range: 1.55999994
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: TestCube
+      UID: 705627972154458215
+    TransformComponent:
+      Transform:
+        Translate: [-0.493524134, 0, 0.636552513]
+        Rotate: [0, -0, 0]
+        Scale: [1, 1, 1]
+    ModelComponent:
+      ModelID: 7633162898494281895
+      MaterialID: 0
+      ModelName: ""
+      MaterialName: ""
+      ModelSource: ""
+      MaterialSource: ""
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - InfoComponent:
+      Parent: 0
+      Name: Camera
+      UID: 9201024860084647067
+    TransformComponent:
+      Transform:
+        Translate: [0.581147969, 1.11812961, 2.3053422]
+        Rotate: [-20.0625, 23.5625, 0]
+        Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        NearPlane: 0.300000012
+        FarPlane: 1000
+        FOV: 91
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}

@@ -22,7 +22,7 @@ namespace Boom
                 if (scene.all_of<T>(entity)) {
                     auto& comp = scene.get<T>(entity);
 
-                    BOOM_INFO("[PropertySerializer] Serializing {} for entity {}", name, (uint32_t)entity);  // ADD THIS
+                    // BOOM_INFO("[PropertySerializer] Serializing {} for entity {}", name, (uint32_t)entity);
 
                     e << YAML::Key << name << YAML::Value << YAML::BeginMap;
 
@@ -39,7 +39,7 @@ namespace Boom
             },
             // ===== DESERIALIZE =====
             [name](const YAML::Node& node, EntityRegistry& scene, EntityID entity, AssetRegistry& /*assets*/) {
-                BOOM_INFO("[PropertySerializer] Deserializing {} for entity {}", name, (uint32_t)entity);  // ADD THIS
+                // BOOM_INFO("[PropertySerializer] Deserializing {} for entity {}", name, (uint32_t)entity);
 
                 auto& comp = scene.get_or_emplace<T>(entity);
 
@@ -47,7 +47,7 @@ namespace Boom
                     xproperty::settings::context ctx;
                     if (auto* pObj = xproperty::getObject(comp)) {
                         DeserializeObjectFromYAML(node, pObj, (void*)&comp, ctx);
-                        BOOM_INFO("[PropertySerializer] Successfully deserialized {}", name);  // ADD THIS
+                        // BOOM_INFO("[PropertySerializer] Successfully deserialized {}", name);
                     }
                     else {
                         BOOM_ERROR("[PropertySerializer] Failed to get object info for {} during deserialize", name);
@@ -238,6 +238,10 @@ namespace Boom
                 if (data["CurrentStateIndex"]) {
                     animator->SetDefaultState(data["CurrentStateIndex"].as<size_t>(0));
                 }
+
+                // Initialize bone transforms with bind pose
+                // Without this, cloned animators have empty m_Transforms and models won't render
+                animator->Animate(0.0f);
 
                 BOOM_INFO("[AnimatorComponent] Deserialized with {} clips, {} states",
                     animator->GetClipCount(), animator->GetStateCount());
@@ -530,6 +534,9 @@ namespace Boom
         // === PAUSE MEN TAG COMPONENT ===
         RegisterPropertyComponent<PauseMenuTagComponent>("PauseMenuTagComponent");
 
+        // === DEACTIVATED COMPONENT ===
+        RegisterPropertyComponent<DeactivatedComponent>("DeactivatedComponent");
+
         // === SOUND COMPONENT ===
         registry.RegisterComponentSerializer(
             "SoundComponent",
@@ -565,6 +572,7 @@ namespace Boom
             },
             // Deserialize
             [](const YAML::Node& node, EntityRegistry& reg, EntityID ent, AssetRegistry& assets) {
+                (void)assets; // Unused parameter
                 if (!node || !node.IsMap()) return;
                 auto& sc = reg.get_or_emplace<SoundComponent>(ent);
                 sc.entries.clear();

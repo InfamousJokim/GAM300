@@ -64,7 +64,7 @@ namespace EditorUI
                 return;
             }
 
-            // Clamp selection so static analyzers don’t warn
+            // Clamp selection so static analyzers donï¿½t warn
             if (m_Selected <0 || m_Selected >= static_cast<int>(m_Tracks.size()))
                 m_Selected =0;
 
@@ -148,6 +148,99 @@ namespace EditorUI
                 }
                 ImGui::PopID();
                 if ((i %3) !=2) ImGui::SameLine();
+            }
+
+            // ----- 3D Audio Settings -----
+            ImGui::SeparatorText("3D Audio Settings");
+
+            // Per-sound 3D distance settings
+            if (ImGui::TreeNode("3D Distance Settings")) {
+                ImGui::TextWrapped("Adjust min/max distance for 3D spatial audio. Min = full volume radius, Max = silent distance.");
+
+                static float minDist = 1.0f;
+                static float maxDist = 50.0f;
+
+                if (ImGui::SliderFloat("Min Distance", &minDist, 0.1f, 100.0f, "%.1f")) {
+                    if (minDist >= maxDist) minDist = maxDist - 0.1f;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("?##minDist")) {
+                    ImGui::OpenPopup("MinDistHelp");
+                }
+                if (ImGui::BeginPopup("MinDistHelp")) {
+                    ImGui::TextWrapped("Min Distance: Sound plays at full volume within this radius from the source.");
+                    ImGui::EndPopup();
+                }
+
+                if (ImGui::SliderFloat("Max Distance", &maxDist, 1.0f, 200.0f, "%.1f")) {
+                    if (maxDist <= minDist) maxDist = minDist + 0.1f;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("?##maxDist")) {
+                    ImGui::OpenPopup("MaxDistHelp");
+                }
+                if (ImGui::BeginPopup("MaxDistHelp")) {
+                    ImGui::TextWrapped("Max Distance: Sound becomes silent beyond this distance. Volume fades linearly between min and max.");
+                    ImGui::EndPopup();
+                }
+
+                if (ImGui::Button("Apply to Current Track")) {
+                    audio.Set3DMinMaxDistance(name, minDist, maxDist);
+                    ImGui::OpenPopup("Applied3DSettings");
+                }
+                if (ImGui::BeginPopup("Applied3DSettings")) {
+                    ImGui::Text("3D settings applied to: %s", name.c_str());
+                    ImGui::EndPopup();
+                }
+
+                ImGui::TreePop();
+            }
+
+            // Global 3D audio settings
+            if (ImGui::TreeNode("Global 3D Audio Settings")) {
+                ImGui::TextWrapped("These settings affect all 3D sounds globally.");
+
+                static bool enableDebug = false;
+                if (ImGui::Checkbox("Enable 3D Debug Logging", &enableDebug)) {
+                    audio.SetDebug3D(enableDebug);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("?##debug3D")) {
+                    ImGui::OpenPopup("Debug3DHelp");
+                }
+                if (ImGui::BeginPopup("Debug3DHelp")) {
+                    ImGui::TextWrapped("When enabled, prints 3D audio debug info (listener position, sound positions, distances) to console.");
+                    ImGui::EndPopup();
+                }
+
+                // Display listener position
+                glm::vec3 listenerPos = audio.GetListenerPosition();
+                ImGui::Text("Listener Position: (%.1f, %.1f, %.1f)", listenerPos.x, listenerPos.y, listenerPos.z);
+
+                ImGui::TreePop();
+            }
+
+            // Preset configurations
+            if (ImGui::TreeNode("3D Audio Presets")) {
+                ImGui::TextWrapped("Quick presets for common scenarios:");
+
+                if (ImGui::Button("Close Range (Footsteps)")) {
+                    audio.Set3DMinMaxDistance(name, 0.5f, 10.0f);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Medium Range (Dialogue)")) {
+                    audio.Set3DMinMaxDistance(name, 1.0f, 30.0f);
+                }
+
+                if (ImGui::Button("Long Range (Environment)")) {
+                    audio.Set3DMinMaxDistance(name, 2.0f, 100.0f);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Extra Long (Music/Ambient)")) {
+                    audio.Set3DMinMaxDistance(name, 5.0f, 200.0f);
+                }
+
+                ImGui::TreePop();
             }
         }
         ImGui::End();

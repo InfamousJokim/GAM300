@@ -116,6 +116,8 @@ namespace Boom
             // Play the footstep sound at the entity's position (3D sound)
             API.PlaySoundAt(soundName, _footstepSounds[soundIndex], position, false);
             API.SetSoundVolume(soundName, _footstepVolume);
+            // Note: No Set3DMinMaxDistance needed - player should always hear their own footsteps clearly
+            // since the camera/listener follows right behind the player
 
             API.Log($"[FootstepComponent] Played footstep {soundIndex + 1} at position ({position.X:F1}, {position.Y:F1}, {position.Z:F1})");
         }

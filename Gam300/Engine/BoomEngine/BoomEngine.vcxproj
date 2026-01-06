@@ -229,6 +229,7 @@
     <ClInclude Include="includes\Graphics\Shaders\Final.h" />
     <ClInclude Include="includes\Graphics\Shaders\LoadingShader.h" />
     <ClInclude Include="includes\Graphics\Shaders\PBR.h" />
+    <ClInclude Include="includes\Graphics\Shaders\PickingShader.h" />
     <ClInclude Include="includes\Graphics\Shaders\Shader.h" />
     <ClInclude Include="includes\Graphics\Shaders\Shadow.h" />
     <ClInclude Include="includes\Graphics\Shaders\Skybox.h" />

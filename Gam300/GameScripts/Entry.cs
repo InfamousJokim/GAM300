@@ -3,224 +3,179 @@ using Boom;
 
 namespace GameScripts
 {
+
     public static class Entry
     {
-        // --- Scene Management ---
-        private const string LEVEL_SCENE_NAME = "level";
-        private const string PAUSE_SCENE_NAME = "PauseMenu";
-        private const string MAIN_MENU_SCENE_NAME = "MainMenu";
-        private const string HOW_TO_PLAY_SCENE_NAME = "HowToPlay";
-        private static string _currentSceneName;
+        public const string LEVEL_SCENE_NAME = "M3 GAMEPLAY";
+        public const string PAUSE_SCENE_NAME = "PauseMenu";
+        public const string MAIN_MENU_SCENE_NAME = "MainMenu";
+        public const string HOW_TO_PLAY_SCENE_NAME = "HowToPlay";
+        public static string _currentSceneName;
         public static bool IsGamePaused = false;
 
-        // Key state trackers
-        private static bool _h_KeyWasDown = false;
+        // GLFW key constants
+        public const int KEY_ESCAPE = 256;
+
+        public enum PauseMenuAction
+        {
+            None,
+            Resume,
+            Restart,
+            MainMenu,
+            Quit
+        }
+
+        public static PauseMenuAction s_RequestedAction = PauseMenuAction.None;
+
         private static bool _p_KeyWasDown = false;
-        private static bool _r_KeyWasDown = false;
-        private static bool _y_KeyWasDown = false;
-        private static bool _m_KeyWasDown = false;
-        private static bool _q_KeyWasDown = false;
+        private static bool _escape_KeyWasDown = false;
+        public static PauseMenu s_ActivePauseMenuInstance = null;
+
 
         public static void Start()
         {
-            // Reset keys every time a scene loads
-            _h_KeyWasDown = false;
             _p_KeyWasDown = false;
-            _r_KeyWasDown = false;
-            _y_KeyWasDown = false;
-            _m_KeyWasDown = false;
-            _q_KeyWasDown = false;
+            _escape_KeyWasDown = false;
             IsGamePaused = false;
+            s_RequestedAction = PauseMenuAction.None;
 
             _currentSceneName = API.GetCurrentSceneName();
+            API.EnableFileWatcher(true);
+            API.SetGameLogicPaused(false);
+            s_ActivePauseMenuInstance = null;
 
             API.Log("[C#] Entry.Start() called for scene: " + _currentSceneName);
+
+            if (_currentSceneName == LEVEL_SCENE_NAME)
+            {
+                API.Log("Pre-loading pause menu additively...");
+                API.LoadSceneAdditive(PAUSE_SCENE_NAME);
+            }
         }
 
         public static void Update(float dt)
         {
-            int state = API.GetApplicationState();
+            // CRITICAL FIX: Always update game logic pause state FIRST (before any early returns)
+            API.SetGameLogicPaused(IsGamePaused);
 
-            if (state == API.APP_STATE_RUNNING)
+            if (s_RequestedAction == PauseMenuAction.MainMenu ||
+                s_RequestedAction == PauseMenuAction.Restart ||
+                s_RequestedAction == PauseMenuAction.Quit)
             {
-                // --- STATE: RUNNING ---
-
-                if (IsGamePaused)
-                {
-                    if (API.IsPauseMenuLoaded())
-                    {
-                        UpdatePauseMenu();
-                    }
-                }
-                else
-                {
-                    UpdateGame(dt);
-                }
+                UpdatePauseMenu(dt);
+                return;
             }
-            else if (state == API.APP_STATE_PAUSED)
+
+            if (IsGamePaused)
             {
                 if (API.IsPauseMenuLoaded())
                 {
-                    UpdatePauseMenu();
+                    UpdatePauseMenu(dt);
                 }
+            }
+            else
+            {
+                UpdateGame(dt);
             }
         }
 
-        // This function runs all your game logic
         private static void UpdateGame(float dt)
         {
-            // Get key states once
-            bool p_KeyDown = API.IsKeyDown(API.KEY_P); // Menu Play
-            bool h_KeyDown = API.IsKeyDown(API.KEY_H); // Menu How to Play
-            bool r_KeyDown = API.IsKeyDown(API.KEY_R); // How to Play return to Menu
-            bool q_KeyDown = API.IsKeyDown(API.KEY_Q); // Quit
+            bool p_KeyDown = API.IsKeyDown(API.KEY_P);
+            bool escape_KeyDown = API.IsKeyDown(KEY_ESCAPE);
             bool ctrl_KeyDown = API.IsKeyDown(API.KEY_LEFT_CONTROL);
 
-            // --- LOGIC FOR MAIN MENU ---
-            if (_currentSceneName == MAIN_MENU_SCENE_NAME)
+            // Handle Escape key to pause
+            if (escape_KeyDown && !_escape_KeyWasDown)
             {
-                // Check for 'P' (without Ctrl) to START the Level
-                if (p_KeyDown && !_p_KeyWasDown && !ctrl_KeyDown)
-                {
-                    API.Log("Starting game... Loading 'level' scene.");
-                    API.LoadScene(LEVEL_SCENE_NAME);
-                    _p_KeyWasDown = p_KeyDown;
-                    return;
-                }
+                API.Log("Pausing game (Escape key)...");
+                IsGamePaused = true;
+                API.ShowPauseMenu();
+                API.EnableFileWatcher(false);
 
-                // Check for 'H' (without Ctrl) to go to HOW TO PLAY
-                if (h_KeyDown && !_h_KeyWasDown && !ctrl_KeyDown)
-                {
-                    API.Log("Loading 'HowToPlay' scene.");
-                    API.LoadScene(HOW_TO_PLAY_SCENE_NAME);
-                    _h_KeyWasDown = h_KeyDown; // Set tracker
-                    return; // Exit after action
-                }
-
-                // Check for 'Q' (without Ctrl) to QUIT
-                if (q_KeyDown && !_q_KeyWasDown && !ctrl_KeyDown)
-                {
-                    //API.Log("Quitting application from main menu.");
-                    //API.QuitGame(); // This will close the application
-                    API.Log("Quitting scene (temporary)...");
-                    IsGamePaused = false;
-                    API.LoadScene(_currentSceneName);
-
-                    _q_KeyWasDown = q_KeyDown; // Set tracker
-                    return; // Exit after action
-                }
-
-                // Update all menu key trackers if no action was taken
-                _p_KeyWasDown = p_KeyDown;
-                _h_KeyWasDown = h_KeyDown;
-                _r_KeyWasDown = r_KeyDown; // (Doesn't hurt to update this)
-                _q_KeyWasDown = q_KeyDown;
-
-                return; // Exit UpdateGame
+                _escape_KeyWasDown = escape_KeyDown;
+                return;
             }
+            _escape_KeyWasDown = escape_KeyDown;
 
-            // --- LOGIC FOR HOW TO PLAY MENU ---
-            else if (_currentSceneName == HOW_TO_PLAY_SCENE_NAME)
-            {
-                // Check for 'R' (without Ctrl) to RETURN TO MAIN MENU
-                if (r_KeyDown && !_r_KeyWasDown && !ctrl_KeyDown)
-                {
-                    API.Log("Returning to Main Menu from HowToPlay.");
-                    API.LoadScene(MAIN_MENU_SCENE_NAME);
-                    _r_KeyWasDown = r_KeyDown; // Set tracker
-                    return; // Exit after action
-                }
-
-                // Update all menu key trackers if no action was taken
-                _p_KeyWasDown = p_KeyDown;
-                _h_KeyWasDown = h_KeyDown;
-                _r_KeyWasDown = r_KeyDown;
-                _q_KeyWasDown = q_KeyDown;
-
-                return; // Exit UpdateGame
-            }
-
-            // --- LOGIC FOR IN-GAME ---
-
-            // Check for 'P' (without Ctrl) to PAUSE the game
+            // Handle P key to pause (legacy support)
             if (p_KeyDown && !_p_KeyWasDown && !ctrl_KeyDown)
             {
                 API.Log("Pausing game (P key)...");
                 IsGamePaused = true;
-                // API.TogglePause();
-                API.LoadSceneAdditive(PAUSE_SCENE_NAME);
+                API.ShowPauseMenu();
+                API.EnableFileWatcher(false);
+
                 _p_KeyWasDown = p_KeyDown;
                 return;
             }
             _p_KeyWasDown = p_KeyDown;
-
-            // NOTE: Player movement is now handled by PlayerMovement.cs script
-            // The PlayerMovement script should be attached to the player entity
         }
 
-        // This function runs all your pause menu logic
-        private static void UpdatePauseMenu()
+
+        private static void UpdatePauseMenu(float dt)
         {
-            // --- Resume Button (R) ---
-            bool r_KeyDown = API.IsKeyDown(API.KEY_R);
-            if (r_KeyDown && !_r_KeyWasDown)
+            bool escape_KeyDown = API.IsKeyDown(KEY_ESCAPE);
+
+            // Handle Escape key to resume
+            if (escape_KeyDown && !_escape_KeyWasDown)
             {
-                API.Log("Resuming game...");
-
-                // --- NEW RESUME LOGIC ---
-                API.UnloadPauseMenu(); // 1. Destroy the menu objects
-                IsGamePaused = false;
-                // API.TogglePause();
-
-                _r_KeyWasDown = r_KeyDown;
+                API.Log("Resuming game (Escape key)...");
+                s_RequestedAction = PauseMenuAction.Resume;
+                _escape_KeyWasDown = escape_KeyDown;
                 return;
             }
-            _r_KeyWasDown = r_KeyDown;
+            _escape_KeyWasDown = escape_KeyDown;
 
-            // --- Main Menu Button (M) ---
-            bool m_KeyDown = API.IsKeyDown(API.KEY_M);
-            if (m_KeyDown && !_m_KeyWasDown)
+            if (s_ActivePauseMenuInstance != null)
             {
-                API.Log("Returning to Main Menu...");
-                IsGamePaused = false;
-                // API.TogglePause();
-                API.LoadScene(MAIN_MENU_SCENE_NAME); // 2. ...THEN load the new scene (this will clear everything)
-
-                _m_KeyWasDown = m_KeyDown;
-                return;
+                s_ActivePauseMenuInstance.OnUpdate(dt);
             }
-            _m_KeyWasDown = m_KeyDown;
 
-            // --- Restart Button (Y) ---
-            bool y_KeyDown = API.IsKeyDown(API.KEY_Y);
-            if (y_KeyDown && !_y_KeyWasDown)
+
+            switch (s_RequestedAction)
             {
-                API.Log("Restarting scene...");
-                IsGamePaused = false;
-                // API.TogglePause();
-                // 2. Reload the current game scene
-                // (This replaces all scenes, including the pause menu)
-                API.LoadScene(_currentSceneName);
+                case PauseMenuAction.Resume:
+                    s_RequestedAction = PauseMenuAction.None;
+                    ResumeGame();
+                    return;
 
-                _y_KeyWasDown = y_KeyDown;
-                return;
+                case PauseMenuAction.MainMenu:
+                    API.Log("Returning to Main Menu (Button Click)...");
+                    IsGamePaused = false;
+                    API.EnableFileWatcher(true);
+                    s_RequestedAction = PauseMenuAction.None;
+                    API.LoadScene(MAIN_MENU_SCENE_NAME);
+                    return;
+
+                case PauseMenuAction.Restart:
+                    API.Log("Restarting scene (Button Click)...");
+                    IsGamePaused = false;
+                    API.EnableFileWatcher(true);
+                    s_RequestedAction = PauseMenuAction.None;
+                    API.LoadScene(_currentSceneName);
+                    return;
+
+                case PauseMenuAction.Quit:
+                    API.Log("Quitting game (Button Click)...");
+                    s_RequestedAction = PauseMenuAction.None;
+                    API.ShutdownApplication();
+                    return;
             }
-            _y_KeyWasDown = y_KeyDown;
+        }
 
-            // --- Quit Button (Q) ---
-            bool q_KeyDown = API.IsKeyDown(API.KEY_Q);
-            if (q_KeyDown && !_q_KeyWasDown)
+        public static void ResumeGame()
+        {
+            API.Log("Resuming game (Button click)...");
+
+            if (s_ActivePauseMenuInstance != null)
             {
-                //API.Log("Quitting game...");
-                //API.QuitGame();
-                API.Log("Quitting scene (temporary)...");
-                IsGamePaused = false;
-                API.LoadScene(_currentSceneName);
-
-                _q_KeyWasDown = q_KeyDown;
-                return;
+                s_ActivePauseMenuInstance.ResetButtonState();
             }
-            _q_KeyWasDown = q_KeyDown;
+
+            API.UnloadPauseMenu();
+            IsGamePaused = false;
+            API.EnableFileWatcher(true);
         }
     }
 }

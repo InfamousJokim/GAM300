@@ -42,7 +42,7 @@ namespace EditorUI {
         double        QueryDeltaTime() const;    // prefers AppInterface::GetDeltaTime()
 
         // Ray casting
-        void HandleMouseClick(const ImVec2& mousePos, const ImVec2& viewportSize);
+        void HandleMouseClick(uint32_t enttID);
 
         void DrawGuizmo3D(ImVec2 const& itemMin, ImVec2 const& rectSz, glm::mat4 const& view, glm::mat4 const& proj, bool& gizmoWantsInput);
         void DrawGuizmo2D(ImVec2 const& itemMin, ImVec2 const& rectSz, bool& gizmoWantsInput);

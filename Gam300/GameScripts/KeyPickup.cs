@@ -11,7 +11,7 @@ namespace GameScripts
         public ulong Entity;
 
         // Optional: sound to play on pickup
-        private string _pickupSound = "Resources/Audio/playerPunch_1.wav";
+        private string _pickupSound = "Resources/Audio/pickup.wav";
 
         private static readonly Dictionary<ulong, KeyPickup> s_instances = new Dictionary<ulong, KeyPickup>();
         private bool _collected = false;
@@ -62,6 +62,7 @@ namespace GameScripts
 
             inst._collected = true;
             PlayerInventory.AddKey(1);
+            UIManager.ShowKeyPickup();
 
             // Play pickup SFX at key's position
             if (API.HasTransform(inst.Entity))
@@ -71,16 +72,14 @@ namespace GameScripts
                 API.SetSoundVolume("sfx_key_pickup", 0.9f);
             }
 
-            // "Destroy" key: disable trigger and hide it
+            // "Destroy" key: unregister callbacks and teleport it far below the map
             API.UnregisterTriggerCallbacks(inst.Entity);
-            API.SetTrigger(inst.Entity, false);
 
-            // Hide: scale to zero (visible off)
-            var t = API.GetTransform(inst.Entity);
-            t.Scale = new Vec3(0f, 0f, 0f);
-            API.SetTransform(inst.Entity, t);
+            // Teleport key to bottom of map (far below Y = -100)
+            var currentPos = API.GetPosition(inst.Entity);
+            API.SetPosition(inst.Entity, new Vec3(currentPos.X, -100f, currentPos.Z));
 
-            API.Log($"[KeyPickup] Key collected and removed. Entity={inst.Entity}");
+            API.Log("[KeyPickup] Key collected! Total keys: " + PlayerInventory.GetKeyCount());
         }
 
         private static void OnTriggerExit(ulong triggerEntity, ulong otherEntity)

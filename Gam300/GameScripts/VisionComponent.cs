@@ -1,14 +1,15 @@
-﻿using System;
-using Boom;
+﻿using Boom;
+using System;
+using System.Collections.Generic;
 
 namespace GameScripts
 {
     public class VisionComponent
     {
         public ulong Entity;
-        // Tracks whether native linecast succeeded at least once. If it fails we stop trying.
         private static bool _linecastAvailable = true;
         private static bool _warnedNoLinecast = false;
+        private List<ulong> _ignoredEntitiesForLOS = new List<ulong>(); // Cache ignored entity handles
 
         public delegate void VisionEventHandler(ulong target, Vec3 position);
         public event VisionEventHandler OnTargetDetected;
@@ -25,6 +26,7 @@ namespace GameScripts
             public float alertDuration = 4f;
             public float verticalMaxDifference = 2.5f;
             public string[] targetNames = { "Samurai", "Player" };
+            public string[] ignoreEntitiesForLOS = { "LionStatue_1", "LionStatue_2", "LionStatue_3", "LionStatue_4", "LionStatue_5", "LionStatue_6", "LionStatue_7", "LionStatue_8", "LionStatue_9" };
             public bool requireLineOfSight = true;
             public bool debugLog = false;
             public bool debugReasons = false;
@@ -43,6 +45,30 @@ namespace GameScripts
         public void OnStart(string jsonParams)
         {
             ValidateEntity();
+
+            // Cache all ignored entity references
+            _ignoredEntitiesForLOS.Clear();
+            foreach (string entityName in _settings.ignoreEntitiesForLOS)
+            {
+                ulong entity = API.FindEntity(entityName);
+                if (entity != 0)
+                {
+                    _ignoredEntitiesForLOS.Add(entity);
+                    if (_settings.debugLog)
+                    {
+                        API.Log($"[VisionComponent] Cached ignored entity for LOS: {entityName} (handle: {entity})");
+                    }
+                }
+                else if (_settings.debugLog)
+                {
+                    API.Log($"[VisionComponent] Warning: Ignored entity '{entityName}' not found");
+                }
+            }
+
+            if (_settings.debugLog)
+            {
+                API.Log($"[VisionComponent] Initialized with {_ignoredEntitiesForLOS.Count} ignored entities for LOS checks");
+            }
         }
 
         public void OnUpdate(float dt)
@@ -108,6 +134,11 @@ namespace GameScripts
         private bool ValidateTarget(ulong target)
         {
             if (target == 0) return false;
+
+            // NEW: Skip player if in stealth crouch invisibility
+            if (target == PlayerMovement.GetPlayerEntity() && PlayerMovement.IsPlayerInvisibleToEnemies())
+                return false;
+
             var enemyPos = API.GetPosition(Entity);
             var enemyRot = API.GetRotation(Entity);
             var targetPos = API.GetPosition(target);
@@ -160,8 +191,41 @@ namespace GameScripts
                 Vec3 fromEye = new Vec3(from.X, from.Y + 1.5f, from.Z);
                 Vec3 toEye = new Vec3(to.X, to.Y + 1.5f, to.Z);
 
+                // First check: ignore self and target (most common case)
                 bool clear = API.LinecastIgnoreBoth(fromEye, toEye, Entity, targetHandle);
-                return clear;
+
+                if (clear)
+                {
+                    if (_settings.debugLOS)
+                        API.Log("[VisionComponent] LOS clear (no obstruction)");
+                    return true;
+                }
+
+                // If blocked, check if any ignored entity is blocking
+                // Try combinations of ignored entities with self and target
+                foreach (ulong ignoredEntity in _ignoredEntitiesForLOS)
+                {
+                    // Try ignoring: ignoredEntity + target
+                    if (API.LinecastIgnoreBoth(fromEye, toEye, ignoredEntity, targetHandle))
+                    {
+                        if (_settings.debugLOS)
+                            API.Log($"[VisionComponent] LOS clear (ignored entity {ignoredEntity} with target)");
+                        return true;
+                    }
+
+                    // Try ignoring: ignoredEntity + self
+                    if (API.LinecastIgnoreBoth(fromEye, toEye, ignoredEntity, Entity))
+                    {
+                        if (_settings.debugLOS)
+                            API.Log($"[VisionComponent] LOS clear (ignored entity {ignoredEntity} with self)");
+                        return true;
+                    }
+                }
+
+                if (_settings.debugLOS)
+                    API.Log("[VisionComponent] LOS blocked");
+
+                return false;
             }
             catch
             {
@@ -211,7 +275,6 @@ namespace GameScripts
         public ulong GetCurrentTarget() => _currentTarget;
         public Vec3 GetLastKnownTargetPosition() => _lastKnownTargetPosition;
         public bool HasTarget() => _currentTarget != 0;
-
         public void SetDetectionRange(float r) => _settings.detectionRange = r;
         public void SetDetectionAngle(float a) => _settings.detectionAngle = a;
         public void SetUpdateInterval(float i) => _settings.updateInterval = i;
@@ -220,8 +283,6 @@ namespace GameScripts
         public void EnableDebugReasons(bool v) => _settings.debugReasons = v;
         public void EnableDebugLOS(bool v) => _settings.debugLOS = v;
 
-        public void OnDestroy()
-        {
-        }
+        public void OnDestroy() { }
     }
 }

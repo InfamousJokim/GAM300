@@ -117,10 +117,16 @@ namespace Boom
         internal static extern void Boom_API_QuitGame();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_ShutdownApplication(); // CORRECT QUIT
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_LoadSceneAdditive(string name);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_UnloadPauseMenu();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern void Boom_API_ShowPauseMenu();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_TogglePause();
@@ -156,6 +162,9 @@ namespace Boom
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_SetSoundVolume(string name, float volume);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern void Boom_API_Set3DMinMaxDistance(string name, float minDist, float maxDist);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern bool Boom_API_IsSoundPlaying(string name);
@@ -173,19 +182,50 @@ namespace Boom
         [MethodImpl(MethodImplOptions.InternalCall)] 
         internal static extern ulong Boom_API_PickGameEntity();
         [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern bool Boom_API_GetMousePosInViewport(out Vec2 outPos);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern bool Boom_API_ProjectWorldToViewport(ref Vec3 worldPos, out Vec2 outViewportPos);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern bool Boom_API_Check2DViewportClick(ulong handle, float mouseX, float mouseY);
+
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static bool Boom_API_Linecast(ref Vec3 from, ref Vec3 to, ulong ignoreEntity);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_SetRotationY(ulong handle, float yawDegrees);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal static extern bool LinecastIgnoreBoth(Vec3 from, Vec3 to, ulong ignoreEntity1, ulong ignoreEntity2);
+        internal static extern bool Boom_API_LinecastIgnoreBoth(Vec3 from, Vec3 to, ulong ignoreEntity1, ulong ignoreEntity2);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern void Boom_API_SetGameLogicPaused(bool paused);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern void Boom_API_EnableFileWatcher(bool enable);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static void Boom_API_TeleportRigidBody(ulong handle, ref Vec3 pos);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void Boom_API_SetScreenFadeAlpha(float alpha);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static bool Boom_API_HasSprite(ulong handle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_GetSpriteColor(ulong handle, out Vec4 color);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_SetSpriteColor(ulong handle, ref Vec4 color);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static float Boom_API_GetSpriteAlpha(ulong handle);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_SetSpriteAlpha(ulong handle, float alpha);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static void Boom_API_SetSpriteTexture(ulong handle, string texturePath);
     }
 
     // ========= DELEGATES =========
@@ -193,6 +233,14 @@ namespace Boom
     public delegate void TriggerCallback(ulong triggerEntity, ulong otherEntity);
 
     // ========= DATA STRUCTURES =========
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Vec2
+    {
+        public float X, Y;
+        public Vec2(float x, float y) { X = x; Y = y; }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct Vec3
     {
@@ -215,6 +263,11 @@ namespace Boom
         {
             X = x; Y = y; Z = z; W = w;
         }
+
+        public static Vec4 operator +(Vec4 a, Vec4 b) => new Vec4(a.X + b.X, a.Y + b.Y, a.Z + b.Z, a.W + b.W);
+        public static Vec4 operator -(Vec4 a, Vec4 b) => new Vec4(a.X - b.X, a.Y - b.Y, a.Z - b.Z, a.W - b.W);
+        public static Vec4 operator *(Vec4 a, float s) => new Vec4(a.X * s, a.Y * s, a.Z * s, a.W * s);
+        public static Vec4 operator /(Vec4 a, float s) => new Vec4(a.X / s, a.Y / s, a.Z / s, a.W / s);
     }
 
     // RENAMED to avoid conflict with the static class below
@@ -322,6 +375,30 @@ namespace Boom
             Native.Boom_API_SetRotation(h, ref r);
         }
 
+        public static Vec3 GetScale(ulong h)
+        {
+            if (!Native.Boom_API_HasTransform(h))
+            {
+                Log($"[WARNING] Entity {h} does not have TransformComponent!");
+                return new Vec3(1, 1, 1);
+            }
+            // Get the full transform and return only the scale part
+            Native.Boom_API_GetTransform(h, out var t);
+            return t.Scale;
+        }
+
+        public static void SetScale(ulong h, Vec3 s)
+        {
+            if (!Native.Boom_API_HasTransform(h))
+            {
+                Log($"[WARNING] Entity {h} does not have TransformComponent! Cannot set scale.");
+                return;
+            }
+
+            Native.Boom_API_GetTransform(h, out var t);
+            t.Scale = s;
+            Native.Boom_API_SetTransform(h, ref t);
+        }
         // ===== Rotation axis helpers =====
         public static float GetRotationX(ulong h)
         {
@@ -465,8 +542,10 @@ namespace Boom
         public static void LoadScene(string name) => Native.Boom_API_LoadScene(name);
         public static string GetCurrentSceneName() => Native.Boom_API_GetCurrentSceneName();
         public static void QuitGame() => Native.Boom_API_QuitGame();
+        public static void ShutdownApplication() => Native.Boom_API_ShutdownApplication(); // CORRECT QUIT 
         public static void LoadSceneAdditive(string name) => Native.Boom_API_LoadSceneAdditive(name);
         public static void UnloadPauseMenu() => Native.Boom_API_UnloadPauseMenu();
+        public static void ShowPauseMenu() => Native.Boom_API_ShowPauseMenu();
         public static void TogglePause() => Native.Boom_API_TogglePause();
         public static int GetApplicationState() => Native.Boom_API_GetApplicationState();
         public static bool IsPauseMenuLoaded() => Native.Boom_API_IsPauseMenuLoaded();
@@ -512,6 +591,17 @@ namespace Boom
         {
             Native.Boom_API_SetSoundVolume(name, volume);
         }
+
+        /// <summary>
+        /// Set 3D audio min/max distance for spatial audio attenuation.
+        /// </summary>
+        /// <param name="name">Sound instance name</param>
+        /// <param name="minDist">Distance at which sound is at full volume (world units)</param>
+        /// <param name="maxDist">Distance at which sound becomes silent (world units)</param>
+        public static void Set3DMinMaxDistance(string name, float minDist, float maxDist)
+        {
+            Native.Boom_API_Set3DMinMaxDistance(name, minDist, maxDist);
+        }
         
         /// <summary>
         /// Check if a sound is currently playing
@@ -547,13 +637,25 @@ namespace Boom
 
         public static bool LinecastIgnoreBoth(Vec3 from, Vec3 to, ulong ignoreEntity1, ulong ignoreEntity2)
         {
-            return Native.LinecastIgnoreBoth(from, to, ignoreEntity1, ignoreEntity2);
+            return Native.Boom_API_LinecastIgnoreBoth(from, to, ignoreEntity1, ignoreEntity2);
         }
 
         // Raycasting
         public static ulong PickGameEntity() => Native.Boom_API_PickGameEntity();
+        public static bool GetMousePosInViewport(out Vec2 outPos)
+        {
+            return Native.Boom_API_GetMousePosInViewport(out outPos);
+        }
+        public static bool ProjectWorldToViewport(Vec3 worldPos, out Vec2 outViewportPos)
+        {
+            return Native.Boom_API_ProjectWorldToViewport(ref worldPos, out outViewportPos);
+        }
+        public static bool Check2DViewportClick(ulong entityID, float mouseX, float mouseY)
+        {
+            return Native.Boom_API_Check2DViewportClick(entityID, mouseX, mouseY);
+        }
 
-        
+
         public static bool Linecast(Vec3 from, Vec3 to, ulong ignoreEntity = 0)
         {
             return Native.Boom_API_Linecast(ref from, ref to, ignoreEntity);
@@ -562,6 +664,13 @@ namespace Boom
         public static void SetRotationY(ulong h, float yawDegrees)
         {
             Native.Boom_API_SetRotationY(h, yawDegrees);
+        }
+
+        public static void SetGameLogicPaused(bool paused) => Native.Boom_API_SetGameLogicPaused(paused);
+
+        public static void EnableFileWatcher(bool enable)
+        {
+            Native.Boom_API_EnableFileWatcher(enable);
         }
 
         public static void TeleportRigidBody(ulong h, Vec3 p)
@@ -577,6 +686,37 @@ namespace Boom
         public static void SetScreenFadeAlpha(float alpha)
         {
             Native.Boom_API_SetScreenFadeAlpha(alpha);
+        }
+
+        // ========= SPRITE COMPONENT METHODS =========
+        public static bool HasSprite(ulong entity) => Native.Boom_API_HasSprite(entity);
+
+        public static Vec4 GetSpriteColor(ulong entity)
+        {
+            Native.Boom_API_GetSpriteColor(entity, out Vec4 color);
+            return color;
+        }
+
+        public static void SetSpriteColor(ulong entity, Vec4 color)
+        {
+            Native.Boom_API_SetSpriteColor(entity, ref color);
+        }
+
+        public static float GetSpriteAlpha(ulong entity) => Native.Boom_API_GetSpriteAlpha(entity);
+
+        public static void SetSpriteAlpha(ulong entity, float alpha)
+        {
+            Native.Boom_API_SetSpriteAlpha(entity, alpha);
+        }
+
+        public static void SetSpriteTexture(ulong entity, string texturePath)
+        {
+            if (!HasSprite(entity))
+            {
+                Log($"[WARNING] Entity {entity} does not have SpriteComponent! Cannot set texture.");
+                return;
+            }
+            Native.Boom_API_SetSpriteTexture(entity, texturePath);
         }
 
         // ===== GLFW key codes =====

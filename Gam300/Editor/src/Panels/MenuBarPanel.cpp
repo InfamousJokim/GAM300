@@ -44,12 +44,15 @@ namespace EditorUI {
 			 m.showResources        = &m_Owner->m_ShowResources;
 			 m.showDirectory        = &m_Owner->m_ShowDirectory;
              m.showAnimatorGraph    = &m_Owner->m_ShowAnimatorGraph;
+             m.showModelPreview     = &m_Owner->m_ShowModelPreview;
+             m.showAnimationTimeline = &m_Owner->m_ShowAnimationTimeline;
              //Dialog flags & helpers can also be wired here if Editor exposes them.
              m.showSaveDialog = &m_Owner->m_ShowSaveDialog;
              m.showLoadDialog = &m_Owner->m_ShowLoadDialog;
+             m.showExportDialog = &m_Owner->m_ShowExportDialog;
              m.sceneNameBuffer = m_Owner->m_SceneNameBuffer;
              m.sceneNameBufferSize = sizeof(m_Owner->m_SceneNameBuffer);
-             
+
              m.RefreshSceneList = [this](bool force){ m_Owner->RefreshSceneList(force); };
         }
     }
@@ -116,8 +119,14 @@ namespace EditorUI {
 
             if (ImGui::MenuItem("Load Scene", "Ctrl+O")) {
                 if (m.showLoadDialog) *m.showLoadDialog = true;
-           
+
                 if (m.RefreshSceneList) m.RefreshSceneList(false);
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Export Game...", "Ctrl+E")) {
+                if (m.showExportDialog) *m.showExportDialog = true;
             }
 
             ImGui::Separator();
@@ -142,6 +151,8 @@ namespace EditorUI {
 			if (m.showResources)     ImGui::MenuItem("Resources", nullptr, m.showResources);
 			if (m.showDirectory)       ImGui::MenuItem("Directory", nullptr, m.showDirectory);
             if (m.showAnimatorGraph)    ImGui::MenuItem("Animator Graph", nullptr, m.showAnimatorGraph);
+            if (m.showModelPreview)     ImGui::MenuItem("Model Preview", nullptr, m.showModelPreview);
+            if (m.showAnimationTimeline) ImGui::MenuItem("Animation Timeline", nullptr, m.showAnimationTimeline);
             ImGui::EndMenu();
         }
 
@@ -172,7 +183,10 @@ namespace EditorUI {
                         m_Owner->GetApp()->m_PhysDebugViz = physDebugViz;
                         BOOM_INFO("[Options] Physics Debug Visualization (Collision Lines): {}", physDebugViz ? "ON" : "OFF");
                     }
-                }				ImGui::MenuItem("Bloom", nullptr, &m.ctx->renderer->enabledBloom);
+                }				
+                ImGui::MenuItem("Bloom", nullptr, &m.ctx->renderer->enabledBloom);
+
+                ImGui::MenuItem("Picking ignore GUI", nullptr, &m.ctx->renderer->isPickIgnoreGUI);
             }
             ImGui::EndMenu();
         }

@@ -99,6 +99,7 @@
     <ClInclude Include="includes\Input\RayCast.h" />
     <ClInclude Include="includes\Auxiliaries\AssetLoadContext.h" />
     <ClInclude Include="includes\Auxiliaries\AsyncAssetLoader.h" />
+    <ClInclude Include="includes\Graphics\Shaders\PickingShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VendorSettings.props" />

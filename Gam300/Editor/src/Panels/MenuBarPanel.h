@@ -40,10 +40,14 @@ namespace EditorUI {
 		bool* showResources{ nullptr };
 		bool* showDirectory{ nullptr };
         bool* showAnimatorGraph{ nullptr };
+        bool* showSkeletonTree{ nullptr };
+        bool* showModelPreview{ nullptr };
+        bool* showAnimationTimeline{ nullptr };
         // Dialog flags
         bool* showSaveDialog{ nullptr };
         bool* showLoadDialog{ nullptr };
         bool* showSavePrefabDialog{ nullptr };
+        bool* showExportDialog{ nullptr };
 
         // Selected entity handle (optional; used by Save/Delete Selected)
         entt::entity selectedEntity{ entt::null};

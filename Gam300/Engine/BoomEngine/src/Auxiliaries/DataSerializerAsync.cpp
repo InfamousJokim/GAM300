@@ -1,4 +1,5 @@
 #include "Core.h"
+#pragma warning(disable : 4834) // Disable [[nodiscard]] warnings for std::to_string() in logging
 #include "Auxiliaries/DataSerializer.h"
 #include "Auxiliaries/AsyncAssetLoader.h"
 #include "Auxiliaries/AssetLoadContext.h"

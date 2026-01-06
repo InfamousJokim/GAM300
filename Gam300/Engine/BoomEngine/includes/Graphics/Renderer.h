@@ -8,6 +8,7 @@
 #include "Shaders/Bloom.h"
 #include "Shaders/Shadow.h"
 #include "Shaders/Color.h"
+#include "Shaders/PickingShader.h"
 #include "GlobalConstants.h"
 
 #include <memory>
@@ -55,10 +56,12 @@ namespace Boom {
             shadowShader = std::make_unique<ShadowShader>("shadow.glsl");
             colorShader = std::make_unique<ColorShader>("color2D.glsl", glm::vec4(1.f));
             color3DShader = std::make_unique<Color3DShader>("color3D.glsl", glm::vec4(1.f));
+            pickShader = std::make_unique<PickingShader>("picking.glsl");
             InitLightUBOs();
             // --- Framebuffers ---
             frame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/false);
             lowPolyFrame = std::make_unique<FrameBuffer>(w, h, /*lowPoly=*/true);
+            oPickFrame = std::make_unique<FrameBuffer>(w, h, false, GL_R32UI, GL_RED_INTEGER);
 
             // --- Meshes ---
             skyboxMesh = CreateSkyboxMesh();
@@ -162,6 +165,7 @@ namespace Boom {
             // set pbr shader light space mtx and depth map
             pbrShader->Use();
             pbrShader->SetLightSpaceMatrix(lightSpaceMtx);
+            pbrShader->SetEnvMaps(0, 0, 0, shadowShader->GetDepthMap());
 
             // begin depth rendering
             shadowShader->BeginFrame(lightSpaceMtx);
@@ -181,11 +185,19 @@ namespace Boom {
         }
 
     public: // -------------------- Animator (skinning) -------------
-        BOOM_INLINE void SetJoints(std::vector<glm::mat4>& transforms) {
-            pbrShader->SetJoints(transforms);
+        BOOM_INLINE void SetJoints(std::vector<glm::mat4>& transforms, bool isPick = false) {
+            if (!isPick) pbrShader->SetJoints(transforms);
+            else pickShader->SetJoints(transforms);
         }
 
     public: // -------- Camera / draw (uses aspect override if set) --------
+        BOOM_INLINE void SetPickCamera(Camera3D& cam, Transform3D const& transform) {
+            const float aspect =
+                (m_AspectOverride > 0.0f) ? m_AspectOverride
+                : frame->Ratio();
+
+            pickShader->SetCamera(cam, transform, aspect);
+        }
         BOOM_INLINE void SetCamera(Camera3D& cam, Transform3D const& transform) {
             const float aspect =
                 (m_AspectOverride > 0.0f) ? m_AspectOverride
@@ -207,6 +219,17 @@ namespace Boom {
             else {
                 pbrShader->Draw(model, transform, material, showNormalTexture);
             }
+        }
+
+        BOOM_INLINE void DrawPick(Model3D const& model, Transform3D const& transform) {
+            pickShader->Draw(model, transform);
+        }
+        BOOM_INLINE void DrawPick(Transform3D const& transform) {
+            pickShader->Draw(transform);
+        }
+        BOOM_INLINE void DrawPick(Transform2D const& transform) {
+            if (isPickIgnoreGUI) return;
+            pickShader->Draw(transform);
         }
 
         BOOM_INLINE void DrawQuad(Texture const& tex, Transform3D const& transform, glm::vec4 col = glm::vec4{ 1.f }) {
@@ -245,6 +268,24 @@ namespace Boom {
                 frame->End();
                 bloom->Compute(frame->GetBrightnessMap(), 10);
             }
+        }
+
+        BOOM_INLINE void StartPickFrame() {
+            oPickFrame->Begin();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GLuint zero = 0u;
+            glClearBufferuiv(GL_COLOR, 0, &zero);
+
+            pickShader->Use();
+        }
+
+        BOOM_INLINE void EndPickFrame() {
+            pickShader->UnUse();
+            oPickFrame->End();
+        }
+
+        BOOM_INLINE void SetPickUniform(uint32_t id) {
+            pickShader->SetIDUniform(id);
         }
 
         // NOTE: When embedding in ImGui, prefer calling Final pass yourself via ImGui::Image with the texture returned by GetFrame().
@@ -292,6 +333,19 @@ namespace Boom {
             return finalShader->GetMap();
         }
 
+        BOOM_INLINE uint32_t GetFrameEnttID(int x, int y) const {
+            uint32_t enttID{};
+            oPickFrame->SBind();
+
+            glReadBuffer(GL_COLOR_ATTACHMENT0);
+            glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, &enttID);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            //BOOM_DEBUG("Mouse[{},{}] id[{}]", x, y, enttID);
+            return enttID;
+        }
+
         BOOM_INLINE float& DitherThreshold() { return pbrShader->ditherThreshold; }
         BOOM_INLINE float& AmbientStrength()
         {
@@ -304,6 +358,7 @@ namespace Boom {
         BOOM_INLINE void ClearAspectOverride() { m_AspectOverride = -1.0f; }
         BOOM_INLINE void SetTouchViewport(bool on) { m_TouchViewport = on; }
         BOOM_INLINE std::pair<int32_t, int32_t> BackbufferSize() const { return { m_Width, m_Height }; }
+        BOOM_INLINE std::pair<int32_t, int32_t> GetPickSize() const { return { oPickFrame->GetWidth(), oPickFrame->GetHeight() }; }
 
     private:
         BOOM_INLINE void PrintSpecs() {
@@ -351,8 +406,10 @@ namespace Boom {
         std::unique_ptr<FinalShader>   finalShader;
         std::unique_ptr<PBRShader>     pbrShader;
         std::unique_ptr<ShadowShader>  shadowShader;
+        std::unique_ptr<PickingShader> pickShader;
         std::unique_ptr<FrameBuffer>   frame;
         std::unique_ptr<FrameBuffer>   lowPolyFrame;
+        std::unique_ptr<FrameBuffer>   oPickFrame;
         std::unique_ptr<BloomShader>   bloom;
         std::unique_ptr<ColorShader>   colorShader;
         std::unique_ptr<Color3DShader> color3DShader;
@@ -371,6 +428,7 @@ namespace Boom {
         bool showLowPoly{};
         bool showNormalTexture{};
         bool enabledBloom{};
+        bool isPickIgnoreGUI{};
     };
 
 } // namespace Boom

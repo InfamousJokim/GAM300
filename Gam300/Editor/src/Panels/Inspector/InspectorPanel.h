@@ -33,6 +33,7 @@ namespace EditorUI {
         void AssetUpdate();
         void DeleteUpdate();
         void ComponentSelector(Boom::Entity& selected);
+        void SnapEntity(Boom::Entity& entity, glm::vec3 direction);
         template <class Type> void UpdateComponent(Boom::ComponentID id, Boom::Entity& selected);
         //to be placed right below collapsing header that has flag: ImGuiTreeNodeFlags_AllowItemOverlap
         template <class CType> bool ComponentSettings(Boom::AppContext* ctx);

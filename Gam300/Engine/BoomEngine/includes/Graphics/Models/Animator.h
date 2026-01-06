@@ -135,6 +135,10 @@ namespace Boom
             return m_Transforms;
         }
 
+        BOOM_INLINE auto& GetJoints() {
+            return m_Transforms;
+        }
+
         // NEW: Switch animation at runtime
         BOOM_INLINE void PlayClip(size_t clipIndex)
         {
@@ -162,6 +166,12 @@ namespace Boom
         BOOM_INLINE float GetTime() const { return m_Time; }
         BOOM_INLINE size_t GetClipCount() const { return m_Clips.size(); }
         BOOM_INLINE const AnimationClip* GetClip(size_t index) const
+        {
+            return (index < m_Clips.size()) ? m_Clips[index].get() : nullptr;
+        }
+
+        // Mutable version for editing (used by Animation Timeline panel)
+        BOOM_INLINE AnimationClip* GetClipMutable(size_t index)
         {
             return (index < m_Clips.size()) ? m_Clips[index].get() : nullptr;
         }
@@ -288,10 +298,73 @@ namespace Boom
         BOOM_INLINE std::vector<State>& GetStates() { return m_States; }
         BOOM_INLINE const std::vector<State>& GetStates() const { return m_States; }
 
+        BOOM_INLINE void AddClip(std::shared_ptr<AnimationClip> clip) {
+            m_Clips.push_back(clip);
+        }
+
         BOOM_INLINE void RemoveClip(size_t index) {
             if (index < m_Clips.size()) {
                 m_Clips.erase(m_Clips.begin() + index);
             }
+        }
+
+        // === KEYFRAME EDITING API (for Animation Timeline) ===
+
+        // Get mutable track for editing
+        BOOM_INLINE std::vector<KeyFrame>* GetTrackMutable(size_t clipIndex, const std::string& jointName)
+        {
+            if (clipIndex >= m_Clips.size()) return nullptr;
+            auto& clip = m_Clips[clipIndex];
+            auto it = clip->tracks.find(jointName);
+            return (it != clip->tracks.end()) ? &it->second : nullptr;
+        }
+
+        // Add keyframe to track (maintains sorted order by timestamp)
+        BOOM_INLINE bool AddKeyframe(size_t clipIndex, const std::string& jointName, const KeyFrame& keyframe)
+        {
+            if (clipIndex >= m_Clips.size()) return false;
+            auto& clip = m_Clips[clipIndex];
+
+            // Create track if it doesn't exist
+            auto& track = clip->tracks[jointName];
+
+            // Find insertion point to maintain sorted order
+            auto insertPos = std::lower_bound(track.begin(), track.end(), keyframe,
+                [](const KeyFrame& a, const KeyFrame& b) { return a.timeStamp < b.timeStamp; });
+
+            track.insert(insertPos, keyframe);
+            return true;
+        }
+
+        // Remove keyframe at specific index from track
+        BOOM_INLINE bool RemoveKeyframe(size_t clipIndex, const std::string& jointName, size_t keyframeIndex)
+        {
+            auto* track = GetTrackMutable(clipIndex, jointName);
+            if (!track || keyframeIndex >= track->size()) return false;
+
+            track->erase(track->begin() + keyframeIndex);
+            return true;
+        }
+
+        // Update keyframe timestamp (re-sorts track)
+        BOOM_INLINE bool UpdateKeyframeTime(size_t clipIndex, const std::string& jointName, size_t keyframeIndex, float newTime)
+        {
+            auto* track = GetTrackMutable(clipIndex, jointName);
+            if (!track || keyframeIndex >= track->size()) return false;
+
+            // Store the keyframe data
+            KeyFrame kf = (*track)[keyframeIndex];
+            kf.timeStamp = newTime;
+
+            // Remove old keyframe
+            track->erase(track->begin() + keyframeIndex);
+
+            // Re-insert at correct position
+            auto insertPos = std::lower_bound(track->begin(), track->end(), kf,
+                [](const KeyFrame& a, const KeyFrame& b) { return a.timeStamp < b.timeStamp; });
+            track->insert(insertPos, kf);
+
+            return true;
         }
 
     private:
@@ -665,7 +738,7 @@ namespace Boom
             prev = next = keys.back();
         }
 
-        BOOM_INLINE glm::mat4 Interpolate(const KeyFrame& prev, const KeyFrame& next, float progression)
+        BOOM_INLINE glm::mat4 Interpolate(const KeyFrame& prev, const KeyFrame& next, float progression) const
         {
             return glm::translate(glm::mat4(1.0f), glm::mix(prev.position, next.position, progression)) *
                 glm::toMat4(glm::normalize(glm::slerp(prev.rotation, next.rotation, progression))) *
@@ -731,16 +804,126 @@ namespace Boom
         }
 
     public:
+        // === SKELETON VISUALIZATION ===
+        struct BoneLine {
+            glm::vec3 start;
+            glm::vec3 end;
+            std::string boneName;
+        };
+
+    private:
+        // Extract bone world positions recursively for visualization
+        void ExtractBoneLines(const Joint& joint, const glm::mat4& parentWorldMat,
+                             std::vector<BoneLine>& outLines, bool isRoot = false) const
+        {
+            // Calculate this joint's local transform (same logic as UpdateJoints but read-only)
+            glm::mat4 localTransform = glm::mat4(1.0f);
+
+            // Determine active clip
+            size_t clipIndex = m_CurrentClip;
+            if (!m_States.empty() && m_CurrentStateIndex < m_States.size())
+            {
+                clipIndex = m_States[m_CurrentStateIndex].clipIndex;
+            }
+
+            // Get animated transform if available
+            if (clipIndex < m_Clips.size())
+            {
+                const AnimationClip* clip = m_Clips[clipIndex].get();
+                const auto* keys = clip->GetTrack(joint.name);
+
+                if (keys && keys->size() >= 2)
+                {
+                    KeyFrame prev, next;
+                    GetPreviousAndNextFrames(*keys, prev, next);
+
+                    float progression = 0.0f;
+                    float dt = next.timeStamp - prev.timeStamp;
+                    if (dt > 0.0f)
+                    {
+                        progression = (m_Time - prev.timeStamp) / dt;
+                    }
+
+                    localTransform = Interpolate(prev, next, progression);
+                }
+                else if (keys && keys->size() == 1)
+                {
+                    const KeyFrame& key = (*keys)[0];
+                    localTransform = glm::translate(glm::mat4(1.0f), key.position) *
+                        glm::toMat4(key.rotation) *
+                        glm::scale(glm::mat4(1.0f), key.scale);
+                }
+            }
+
+            // Calculate world space position
+            glm::mat4 worldMat = parentWorldMat * localTransform;
+            glm::vec3 jointPos = glm::vec3(worldMat[3]);
+
+            // Draw line from parent to this joint (skip for root)
+            if (!isRoot)
+            {
+                glm::vec3 parentPos = glm::vec3(parentWorldMat[3]);
+                outLines.push_back({ parentPos, jointPos, joint.name });
+            }
+
+            // Recurse to children
+            for (const auto& child : joint.children)
+            {
+                ExtractBoneLines(child, worldMat, outLines, false);
+            }
+        }
+
+    public:
+        // Access to skeleton root
+        BOOM_INLINE const Joint& GetRoot() const { return m_Root; }
+
+        // Extract skeleton as lines for debug visualization
+        BOOM_INLINE std::vector<BoneLine> GetSkeletonLines() const
+        {
+            std::vector<BoneLine> lines;
+            lines.reserve(100);
+            ExtractBoneLines(m_Root, glm::mat4(1.0f), lines, true);
+            return lines;
+        }
+
+        // Update skeleton from another animator (preserves states/clips/parameters)
+        BOOM_INLINE void UpdateSkeletonFrom(const Animator& source)
+        {
+            m_Root = source.m_Root;
+            m_GlobalTransform = source.m_GlobalTransform;
+            m_Transforms = source.m_Transforms;  // Copy actual transform values
+            // Keep existing m_States, m_Clips, parameters intact
+        }
+
         // For cloning
         BOOM_INLINE std::shared_ptr<Animator> Clone() const
         {
             auto clone = std::make_shared<Animator>();
+
+            // Skeleton data
             clone->m_GlobalTransform = m_GlobalTransform;
-            clone->m_Clips = m_Clips; // Shared ownership of clips
             clone->m_Root = m_Root;
-            clone->m_Transforms.resize(m_Transforms.size());
+            clone->m_Transforms = m_Transforms;  // Copy actual transform values
+
+            // Animation data
+            clone->m_Clips = m_Clips; // Shared ownership of clips
             clone->m_CurrentClip = m_CurrentClip;
             clone->m_Time = m_Time;
+
+            // State machine data
+            clone->m_States = m_States;
+            clone->m_CurrentStateIndex = m_CurrentStateIndex;
+            clone->m_IsBlending = m_IsBlending;
+            clone->m_TargetStateIndex = m_TargetStateIndex;
+            clone->m_BlendProgress = m_BlendProgress;
+            clone->m_BlendDuration = m_BlendDuration;
+            clone->m_TargetTime = m_TargetTime;
+
+            // Parameters
+            clone->m_FloatParams = m_FloatParams;
+            clone->m_BoolParams = m_BoolParams;
+            clone->m_Triggers = m_Triggers;
+
             return clone;
         }
 
@@ -752,6 +935,22 @@ namespace Boom
                 // Clamp to clip duration
                 m_Time = std::min(m_Time, m_Clips[m_CurrentClip]->duration);
             }
+        }
+
+        BOOM_INLINE void SetCurrentClip(size_t clipIndex)
+        {
+            // Set current clip WITHOUT resetting time (unlike PlayClip)
+            if (clipIndex < m_Clips.size())
+            {
+                m_CurrentClip = clipIndex;
+            }
+        }
+
+        BOOM_INLINE void UpdateJointsFromCurrentTime()
+        {
+            // Force joint transform update without advancing time
+            // Used when seeking to a specific time position
+            UpdateJoints(m_Root, glm::identity<glm::mat4>());
         }
 
         BOOM_INLINE void LoadAnimationFromFile(const std::string& filepath, const std::string& clipName = "")

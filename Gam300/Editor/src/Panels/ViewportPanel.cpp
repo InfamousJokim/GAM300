@@ -162,18 +162,24 @@ namespace EditorUI {
 
                 // Handle mouse clicks for entity selection - ONLY if gizmo is not being used
                 if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !gizmoWantsInput) {
+                    ImVec2 displayedSize = ImGui::GetItemRectSize();
+                    ImVec2 displayedPos = ImGui::GetItemRectMin();
                     ImVec2 mousePos = ImGui::GetMousePos();
-                    ImVec2 windowPos = ImGui::GetWindowPos();
-                    ImVec2 contentRegion = ImGui::GetWindowContentRegionMin();
 
-                    ImVec2 relativeMousePos(
-                        mousePos.x - windowPos.x - contentRegion.x,
-                        mousePos.y - windowPos.y - contentRegion.y
-                    );
+                    // Relative position inside the displayed image (0..1 range)
+                    float u = (mousePos.x - displayedPos.x) / displayedSize.x;
+                    float v = (mousePos.y - displayedPos.y) / displayedSize.y;
 
-                    if (relativeMousePos.x >= 0 && relativeMousePos.y >= 0 &&
-                        relativeMousePos.x < viewportSize.x && relativeMousePos.y < viewportSize.y) {
-                        HandleMouseClick(relativeMousePos, viewportSize);
+                    if (u >= 0.f && u <= 1.f && v >= 0.f && v <= 1.f) {
+                        // Map to picking framebuffer pixel coordinates
+                        auto const& fbSize{ m_Ctx->renderer->GetPickSize() };
+                        int pickX = (int)(u * fbSize.first);
+                        int pickY = (int)(v * fbSize.second);
+
+                        // Now flip Y because OpenGL framebuffer has origin at bottom-left
+                        int glY = fbSize.second - pickY - 1;
+
+                        HandleMouseClick(m_Ctx->renderer->GetFrameEnttID(pickX, glY));
                     }
                 }
 
@@ -426,27 +432,17 @@ namespace EditorUI {
         m_GizmoWasUsing = ImGuizmo::IsUsing();
     }
 
-    void ViewportPanel::HandleMouseClick(const ImVec2& mousePos, const ImVec2&)
+    void ViewportPanel::HandleMouseClick(uint32_t enttID)
     {
-        if (!m_Ctx || !m_RayCast) return;
-        // 2. Get the main Application instance
-    // We cast m_Ctx->app because it points to the root Application object
+        //must be running context
+        if (!m_Ctx) return;
         auto* app = static_cast<Boom::Application*>(m_Ctx->app);
-
-        // 3. Check if the game is running
-        // If it is, we RETURN immediately so the Editor doesn't steal the click
         if (app && app->GetState() == Boom::ApplicationState::RUNNING) {
             return;
         }
 
-        // 4. Perform ray cast (Rest of your code continues here...)
-        entt::entity hitEntity = m_RayCast->CastRayFromScreen(
-            mousePos.x, mousePos.y,
-            m_CurrentViewMatrix,
-            m_CurrentProjectionMatrix,
-            m_CurrentCameraPosition,
-            m_CurrentViewportSize
-        );
+        //gather entity from scene
+        entt::entity hitEntity{ enttID };
 
         // Update selection
         if (m_App) {

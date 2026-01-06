@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4834) // Disable [[nodiscard]] warnings for logging
 #include <memory>
 #include <vector>
 #include <string>

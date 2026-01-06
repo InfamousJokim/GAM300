@@ -1,4 +1,5 @@
 #include "Panels/HierarchyPanel.h"
+#pragma warning(disable : 4834) // Disable [[nodiscard]] warnings for logging
 
 // keep header light; pull real types here
 #include "Editor.h"
@@ -402,15 +403,30 @@ namespace EditorUI {
             }
 
             // Render only root entities (those with no parent)
+            // Collect root entities and sort by UID for consistent order across scene reloads
+            struct RootEntity {
+                entt::entity entity;
+                AssetID uid;
+            };
+            std::vector<RootEntity> rootEntities;
+
             auto view = registry.view<Boom::InfoComponent>();
             for (entt::entity e : view)
             {
                 const auto& info = view.get<Boom::InfoComponent>(e);
-
-                // Only render if this entity has no parent (is a root)
+                // Only collect root entities (those with no parent)
                 if (info.parent == EMPTY_ASSET) {
-                    RenderEntityNode(registry, e, m_App, m_Ctx, m_ShowDeletePopup, m_EntityToDelete);
+                    rootEntities.push_back({e, info.uid});
                 }
+            }
+
+            // Sort by UID to maintain consistent order (UIDs are stable, entity IDs are not)
+            std::sort(rootEntities.begin(), rootEntities.end(),
+                     [](const RootEntity& a, const RootEntity& b) { return a.uid < b.uid; });
+
+            // Render in sorted order
+            for (const auto& root : rootEntities) {
+                RenderEntityNode(registry, root.entity, m_App, m_Ctx, m_ShowDeletePopup, m_EntityToDelete);
             }
 
             // Delete confirmation popup

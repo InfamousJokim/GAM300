@@ -46,7 +46,8 @@ namespace Boom {
         // Draw world-space colored lines
         BOOM_INLINE void Draw(const glm::mat4& view, const glm::mat4& proj,
             const std::vector<LineVert>& verts,
-            float lineWidth = 1.5f)
+            float lineWidth = 1.5f,
+            bool disableDepthTest = false)
         {
             if (verts.empty()) return;
 
@@ -67,14 +68,20 @@ namespace Boom {
                 glBufferSubData(GL_ARRAY_BUFFER, 0, bytes, verts.data());
             }
 
-            // Lines render fine with the scene depth. You can disable depth for overlay effect.
-            // glDisable(GL_DEPTH_TEST);
+            // Optional depth test disable for overlay effect (skeleton bones always visible)
+            if (disableDepthTest) {
+                glDisable(GL_DEPTH_TEST);
+            }
+
             glDisable(GL_CULL_FACE);
             glLineWidth(lineWidth);
             glDrawArrays(GL_LINES, 0, static_cast<GLint>(verts.size()));
             glLineWidth(1.0f);
             glEnable(GL_CULL_FACE);
-            // glEnable(GL_DEPTH_TEST);
+
+            if (disableDepthTest) {
+                glEnable(GL_DEPTH_TEST);
+            }
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);

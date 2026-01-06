@@ -202,7 +202,7 @@ namespace Boom {
         }
 
         // Expand AABB slightly to make selection easier
-        const float expandAmount = 0.1f;
+        const float expandAmount = 0.01f;
         aabbMin -= glm::vec3(expandAmount);
         aabbMax += glm::vec3(expandAmount);
     }

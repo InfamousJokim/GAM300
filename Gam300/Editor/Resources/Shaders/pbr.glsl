@@ -84,9 +84,10 @@ layout (location=0) out vec4 out_fragment;
 layout(location=1) out vec4 out_brightness; //for bloom
 const vec3 BLOOM_THRESHOLD = vec3(0.2126, 0.7152, 0.0722) ;
 
-#define MAX_POINT_LIGHTS 128
+//must also change in PBR.h limits
+#define MAX_POINT_LIGHTS 32
 #define MAX_DIR_LIGHTS   32
-#define MAX_SPOT_LIGHTS  32
+#define MAX_SPOT_LIGHTS  128
 
 // GPU-friendly packed structs (std140-friendly: only vec4)
 struct GPUPointLight {
@@ -255,7 +256,6 @@ void main() {
     if (length(color - quanColor) <= threshold * ditherThreshold) color = quanColor;
 
     out_fragment = vec4(color, 1.0);
-    
 }
 
 vec3 FresnelSchlick(float cosTheta, vec3 f0) {
@@ -298,7 +298,7 @@ vec3 ComputePointLights(vec3 N, vec3 V, vec3 f0, vec3 albedo, float roughness, f
         float nDotL = max(dot(N, L), 0.0);
         float nDotV = max(dot(N, V), 0.0);
 
-        // Cook–Torrance BRDF (same as before)
+        // Cookï¿½Torrance BRDF (same as before)
         float NDF = DistributionGGX(N, H, roughness);
         vec3  FS  = FresnelSchlick(clamp(dot(H, V), 0.0, 1.0), f0);
         float GS  = GeometrySmithGGX(nDotV, nDotL, roughness);

@@ -1,4 +1,5 @@
 #include "Core.h"
+#pragma warning(disable : 4834) // Disable [[nodiscard]] warnings for exception::what() in logging
 #include "Scripting/FileWatcher.h"
 
 namespace Boom {
