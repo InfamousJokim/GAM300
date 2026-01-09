@@ -1869,6 +1869,73 @@ namespace EditorUI {
             ImGui::Spacing();
         }
 
+        // --- Video Component UI ---
+        if (selected.Has<Boom::VideoComponent>()) {
+            ImGui::PushID("Video");
+            auto& vc = selected.Get<Boom::VideoComponent>();
+
+            bool compRemoved = false;
+            bool isOpen = ImGui::CollapsingHeader("Video",
+                ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+
+            // settings popup ("...")
+            const ImVec2 shMin = ImGui::GetItemRectMin();
+            const ImVec2 shMax = ImGui::GetItemRectMax();
+            const float shLineH = ImGui::GetFrameHeight();
+            const float shY = shMin.y + (shMax.y - shMin.y - shLineH) * 0.5f;
+            ImGui::SetCursorScreenPos(ImVec2(shMax.x - shLineH, shY));
+            if (ImGui::Button("...", ImVec2(shLineH, shLineH))) ImGui::OpenPopup("VideoSettings");
+            if (ImGui::BeginPopup("VideoSettings")) {
+                if (ImGui::MenuItem("Remove Component")) compRemoved = true;
+                ImGui::EndPopup();
+            }
+
+            ImGui::SetCursorScreenPos(ImVec2(shMin.x, shMax.y + ImGui::GetStyle().ItemSpacing.y));
+
+            if (isOpen) {
+                ImGui::Indent(12.0f);
+                ImGui::Spacing();
+
+                // File path (manual input)
+                char pathBuf[512];
+#ifdef _MSC_VER
+                strncpy_s(pathBuf, sizeof(pathBuf), vc.filePath.c_str(), sizeof(pathBuf) - 1);
+#else
+                std::snprintf(pathBuf, sizeof(pathBuf), "%s", vc.filePath.c_str());
+#endif
+                if (ImGui::InputText("File Path", pathBuf, sizeof(pathBuf))) {
+                    vc.filePath = std::string(pathBuf);
+                }
+
+                // Basic settings
+                ImGui::Checkbox("Autoplay", &vc.autoplay);
+                ImGui::SameLine();
+                ImGui::Checkbox("Loop", &vc.loop);
+
+                ImGui::Checkbox("Mute", &vc.mute);
+                if (!vc.mute) {
+                    ImGui::SliderFloat("Volume", &vc.volume, 0.0f, 1.0f);
+                }
+
+                // Optional runtime display (if you have these fields)
+                ImGui::Separator();
+                ImGui::TextDisabled("Runtime");
+                ImGui::Text("Playing: %s", vc.playing ? "Yes" : "No");
+
+                ImGui::Unindent(12.0f);
+            }
+
+            ImGui::PopID();
+
+            if (compRemoved) {
+                ctx->scene.remove<Boom::VideoComponent>(m_App->SelectedEntity());
+                return;
+            }
+
+            ImGui::Spacing();
+        }
+
+
         // ===== Add Component =====
         ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
         if (ImGui::Button("Add Component", ImVec2(-1, 30))) {
@@ -2133,6 +2200,7 @@ namespace EditorUI {
 					UpdateComponent<Boom::SpriteComponent>(Boom::ComponentID::SPRITE, selected);
                     UpdateComponent<Boom::PauseMenuTagComponent>(Boom::ComponentID::PAUSE_MENU_TAG, selected);
                     UpdateComponent<Boom::DeactivatedComponent>(Boom::ComponentID::DEACTIVATED_TAG, selected);
+                    UpdateComponent<Boom::VideoComponent>(Boom::ComponentID::VIDEO, selected);
                     ImGui::EndTable();
                 }
             }
